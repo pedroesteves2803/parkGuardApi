@@ -1,6 +1,5 @@
 <?php
 
-use Exception;
 use Src\Shared\Domain\ValueObjects\Password;
 
 test('validates instance password', function () {

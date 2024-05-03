@@ -1,6 +1,5 @@
 <?php
 
-use Exception;
 use Src\Shared\Domain\ValueObjects\Type;
 
 test('validates instance type', function () {
