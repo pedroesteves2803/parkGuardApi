@@ -2,20 +2,31 @@
 
 namespace Database\Factories;
 
+use App\Models\Employee;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Facades\Hash;
 
-/**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\ModelsEmployee>
- */
 class EmployeeFactory extends Factory
 {
-    public function definition(): array
+    /**
+     * The name of the factory's corresponding model.
+     *
+     * @var string
+     */
+    protected $model = Employee::class;
+
+    /**
+     * Define the model's default state.
+     *
+     * @return array
+     */
+    public function definition()
     {
         return [
-            'name' => $this->faker->name,
-            'email' => $this->faker->unique()->safeEmail,
-            'password' => bcrypt('password'),
-            'type' => $this->faker->randomElement([0, 1]), // Usando enum [0, 1] para representar os tipos
+            'name' => 'teste',
+            'email' => 'teste@email.com',
+            'password' => Hash::make('Password@123'),
+            'type' => 1,
         ];
     }
 }
