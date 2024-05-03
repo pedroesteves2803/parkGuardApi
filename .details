@@ -1,0 +1,81 @@
+# Contextos Limitados (Bounded Contexts):
+- **Administração**:
+  - Entidades: Administrador, Funcionário.
+  - Gerencia o registro e as permissões dos administradores e funcionários do sistema.
+
+- **Veículos**:
+  - Entidades: Veículo, Informações do Veículo.
+  - Responsável pelo registro e gerenciamento das informações dos veículos que utilizam o estacionamento.
+
+- **Pendências Legais**:
+  - Entidades: Pendência.
+  - Integra-se a uma API governamental ou policial para verificar pendências legais dos veículos e notificar os administradores.
+
+- **Pagamentos**:
+  - Entidades: Pagamento.
+  - Responsável pelo recebimento e registro de pagamentos relacionados ao estacionamento.
+
+- **Relatórios**:
+  - Entidades: Relatório.
+  - Gera relatórios sobre o funcionamento do estacionamento, como estatísticas de uso e de segurança.
+
+# Agregados e Entidades:
+- **Administrador**:
+  - ID do Administrador
+  - Nome
+  - Email
+  - Senha
+
+- **Funcionário**:
+  - ID do Funcionário
+  - Nome
+  - Email
+  - Senha
+
+- **Veículo**:
+  - ID do Veículo
+  - Fabricante
+  - Cor
+  - Modelo
+  - Placa
+  - Entrada no Estacionamento
+  - Saída do Estacionamento
+
+- **Pendência**:
+  - ID da Pendência
+  - Tipo de Pendência
+  - Descrição
+  - Veículo Associado
+
+- **Pagamento**:
+  - ID do Pagamento
+  - Valor
+  - Data e Hora
+  - Método de Pagamento
+  - Veículo Associado
+
+- **Relatório**:
+  - ID do Relatório
+  - Data e Hora da Geração
+  - Conteúdo
+
+# Serviços:
+- **Gerenciamento de Administração**: Serviços para registrar e gerenciar administradores e funcionários.
+- **Gerenciamento de Veículos**: Serviços para registrar e gerenciar informações dos veículos, incluindo entrada e saída do estacionamento.
+- **Verificação de Pendências Legais**: Serviços para integrar-se à API governamental ou policial e verificar pendências legais dos veículos.
+- **Gerenciamento de Pagamentos**: Serviços para receber e registrar pagamentos relacionados ao estacionamento.
+- **Geração de Relatórios**: Serviços para gerar relatórios sobre o funcionamento do estacionamento.
+
+# Eventos de Domínio:
+- **VeículoRegistrado**: Evento disparado quando um veículo é registrado no sistema.
+- **PendênciaDetectada**: Evento disparado quando uma pendência legal é detectada para um veículo.
+- **PagamentoRecebido**: Evento disparado quando um pagamento é recebido pelo sistema.
+- **RelatórioGerado**: Evento disparado quando um relatório é gerado.
+
+# Repositórios:
+- **Repositório de Administradores**: Para acessar e persistir dados dos administradores.
+- **Repositório de Funcionários**: Para acessar e persistir dados dos funcionários.
+- **Repositório de Veículos**: Para acessar e persistir dados dos veículos.
+- **Repositório de Pendências**: Para acessar e persistir dados das pendências legais.
+- **Repositório de Pagamentos**: Para acessar e persistir dados dos pagamentos.
+- **Repositório de Relatórios**: Para acessar e persistir dados dos relatórios.
