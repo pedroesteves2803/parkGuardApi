@@ -3,6 +3,8 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Src\Administration\Domain\Repositories\IEmployeeRepository;
+use Src\Catalogue\Infrastructure\EloquentEmployeeRepository;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -11,6 +13,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
+        app()->bind(IEmployeeRepository::class, EloquentEmployeeRepository::class);
     }
 
     /**
