@@ -1,6 +1,6 @@
 # Contextos Limitados (Bounded Contexts):
 - **Administração**:
-  - Entidades: Administrador, Funcionário.
+  - Entidades: Funcionário.
   - Gerencia o registro e as permissões dos administradores e funcionários do sistema.
 
 - **Veículos**:
@@ -20,17 +20,12 @@
   - Gera relatórios sobre o funcionamento do estacionamento, como estatísticas de uso e de segurança.
 
 # Agregados e Entidades:
-- **Administrador**:
-  - ID do Administrador
-  - Nome
-  - Email
-  - Senha
-
 - **Funcionário**:
   - ID do Funcionário
   - Nome
   - Email
   - Senha
+  - Tipo
 
 - **Veículo**:
   - ID do Veículo
@@ -60,7 +55,7 @@
   - Conteúdo
 
 # Serviços:
-- **Gerenciamento de Administração**: Serviços para registrar e gerenciar administradores e funcionários.
+- **Gerenciamento de Administração**: Serviços para registrar e gerenciar funcionários.
 - **Gerenciamento de Veículos**: Serviços para registrar e gerenciar informações dos veículos, incluindo entrada e saída do estacionamento.
 - **Verificação de Pendências Legais**: Serviços para integrar-se à API governamental ou policial e verificar pendências legais dos veículos.
 - **Gerenciamento de Pagamentos**: Serviços para receber e registrar pagamentos relacionados ao estacionamento.
@@ -73,7 +68,6 @@
 - **RelatórioGerado**: Evento disparado quando um relatório é gerado.
 
 # Repositórios:
-- **Repositório de Administradores**: Para acessar e persistir dados dos administradores.
 - **Repositório de Funcionários**: Para acessar e persistir dados dos funcionários.
 - **Repositório de Veículos**: Para acessar e persistir dados dos veículos.
 - **Repositório de Pendências**: Para acessar e persistir dados das pendências legais.
