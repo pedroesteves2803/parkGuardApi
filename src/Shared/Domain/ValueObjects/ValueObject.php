@@ -2,5 +2,6 @@
 
 namespace Src\Shared\Domain\ValueObjects;
 
-abstract class ValueObject {
+abstract class ValueObject
+{
 }

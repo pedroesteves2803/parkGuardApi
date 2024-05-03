@@ -2,5 +2,6 @@
 
 namespace Src\Shared\Domain\Entities;
 
-interface IAggregateRoot {
+interface IAggregateRoot
+{
 }

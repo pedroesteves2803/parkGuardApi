@@ -48,8 +48,8 @@
             "@php -r \"file_exists('database/database.sqlite') || touch('database/database.sqlite');\"",
             "@php artisan migrate --graceful --ansi"
         ],
-        "cs-fixer": [
-            "@php $COMPOSER_BIN_DIR/php-cs-fixer fix"
+        "fix": [
+            "@php tools/php-cs-fixer/vendor/bin/php-cs-fixer fix"
         ]
     },
     "extra": {

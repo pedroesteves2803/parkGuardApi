@@ -20,7 +20,6 @@ test('throws an exception for the empty name', function () {
 
 test('test Name object to string conversion', function () {
     $name = new Name('Produto 1');
-    $expectedString = "Produto 1";
-    expect((string)$name)->toBe($expectedString);
+    $expectedString = 'Produto 1';
+    expect((string) $name)->toBe($expectedString);
 });
-
