@@ -4,7 +4,6 @@ namespace Src\Shared\Domain\ValueObjects;
 
 final class Password extends ValueObject
 {
-
     public function __construct(
         private string $password,
         private bool $isHashed = false

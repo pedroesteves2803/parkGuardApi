@@ -23,10 +23,10 @@ class EmployeeFactory extends Factory
     public function definition()
     {
         return [
-            'name' => 'teste',
-            'email' => 'teste@email.com',
+            'name'     => 'teste',
+            'email'    => 'teste@email.com',
             'password' => Hash::make('Password@123'),
-            'type' => 1,
+            'type'     => 1,
         ];
     }
 }
