@@ -26,7 +26,6 @@ test('test employee object to string conversion', function () {
     expect((string) $employee)->toBe($expectedString);
 });
 
-
 function createValidEmployee()
 {
     return new Employee(
