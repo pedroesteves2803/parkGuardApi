@@ -4,7 +4,7 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Src\Administration\Domain\Repositories\IEmployeeRepository;
-use Src\Catalogue\Infrastructure\EloquentEmployeeRepository;
+use Src\Administration\Infrastructure\EloquentEmployeeRepository;
 
 class AppServiceProvider extends ServiceProvider
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace Src\Catalogue\Infrastructure;
+namespace Src\Administration\Infrastructure;
 
 use App\Models\Employee as ModelsEmployee;
 use Illuminate\Database\Eloquent\Collection;
