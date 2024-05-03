@@ -1,5 +1,4 @@
 <?php
-
 use Src\Shared\Domain\ValueObjects\Password;
 
 test('validates instance password', function () {
@@ -46,4 +45,9 @@ it('throws an exception for a password with no special character', function () {
     $this->expectException(Exception::class);
     $this->expectExceptionMessage('The password must contain at least one special character.');
     new Password('Password123');
+});
+
+it('accepts hashed password and does not validate it', function () {
+    $password = new Password('$2a$12$NhD.F7UP.twqMtPxDo6A8eri.9ESq027PMYoPBonGkZ7uFGO.LaYe', true);
+    expect($password->isHashed())->toBeTrue();
 });
