@@ -46,7 +46,7 @@ final class EloquentEmployeeRepository implements IEmployeeRepository
         $modelsEmployee = new ModelsEmployee();
         $modelsEmployee->name = $employee->name->value();
         $modelsEmployee->email = $employee->email->value();
-        $modelsEmployee->password = $employee->password->value();
+        $modelsEmployee->password = bcrypt($employee->password->value());
         $modelsEmployee->type = $employee->type->value();
         $modelsEmployee->save();
 
@@ -54,7 +54,7 @@ final class EloquentEmployeeRepository implements IEmployeeRepository
             $modelsEmployee->id,
             new Name($modelsEmployee->name),
             new Email($modelsEmployee->email),
-            new Password($modelsEmployee->password),
+            new Password($modelsEmployee->password, true),
             new Type($modelsEmployee->type)
         );
     }
