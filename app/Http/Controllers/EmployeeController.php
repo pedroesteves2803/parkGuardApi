@@ -3,12 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\Employee\CreateEmployeeResource;
+use App\Http\Resources\Employee\DeleteEmployeeByIdResource;
 use App\Http\Resources\Employee\GetAllEmpoyeesResource;
 use App\Http\Resources\Employee\GetEmpoyeeByIdResource;
 use App\Models\Employee;
 use Illuminate\Http\Request;
 use Src\Administration\Application\Employee\CreateEmployee;
+use Src\Administration\Application\Employee\DeleteEmployeeById;
 use Src\Administration\Application\Employee\Dtos\CreateEmployeeInputDto;
+use Src\Administration\Application\Employee\Dtos\DeleteEmployeeByIdInputDto;
+use Src\Administration\Application\Employee\Dtos\DeleteEmployeeByIdOutputDto;
 use Src\Administration\Application\Employee\Dtos\GetEmployeeByIdInputDto;
 use Src\Administration\Application\Employee\GetAllEmployees;
 use Src\Administration\Application\Employee\GetEmployeeById;
@@ -43,7 +47,7 @@ class EmployeeController extends Controller
     }
 
     public function show(
-        int $id,
+        string $id,
         GetEmployeeById $getEmployeeById
     ) {
         $inputDto = new GetEmployeeByIdInputDto(
@@ -65,7 +69,17 @@ class EmployeeController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Employee $employee)
+    public function destroy(
+        string $id,
+        DeleteEmployeeById $deleteEmployeeById
+    )
     {
+        $inputDto = new DeleteEmployeeByIdInputDto(
+            $id,
+        );
+
+        $output = $deleteEmployeeById->execute($inputDto);
+
+        return new DeleteEmployeeByIdResource($output);
     }
 }
