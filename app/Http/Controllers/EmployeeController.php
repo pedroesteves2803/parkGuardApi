@@ -3,31 +3,30 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\Employee\CreateEmployeeResource;
-use App\Http\Resources\Employee\CreateResource;
+use App\Http\Resources\Employee\GetAllEmpoyeesResource;
+use App\Http\Resources\Employee\GetEmpoyeeByIdResource;
 use App\Models\Employee;
 use Illuminate\Http\Request;
 use Src\Administration\Application\Employee\CreateEmployee;
 use Src\Administration\Application\Employee\Dtos\CreateEmployeeInputDto;
+use Src\Administration\Application\Employee\Dtos\GetEmployeeByIdInputDto;
+use Src\Administration\Application\Employee\GetAllEmployees;
+use Src\Administration\Application\Employee\GetEmployeeById;
 
 class EmployeeController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
+    public function index(
+        GetAllEmployees $getAllEmployees
+    ) {
+        $output = $getAllEmployees->execute();
+
+        return new GetAllEmpoyeesResource($output);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(
         Request $request,
         CreateEmployee $createEmployee
-    )
-    {
-
+    ) {
         $inputDto = new CreateEmployeeInputDto(
             null,
             $request->name,
@@ -43,12 +42,17 @@ class EmployeeController extends Controller
         );
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Employee $employee)
-    {
-        //
+    public function show(
+        Employee $employee,
+        GetEmployeeById $getEmployeeById
+    ) {
+        $inputDto = new GetEmployeeByIdInputDto(
+            $employee->id,
+        );
+
+        $output = $getEmployeeById->execute($inputDto);
+
+        return new GetEmpoyeeByIdResource($output);
     }
 
     /**
@@ -56,7 +60,6 @@ class EmployeeController extends Controller
      */
     public function update(Request $request, Employee $employee)
     {
-        //
     }
 
     /**
@@ -64,6 +67,5 @@ class EmployeeController extends Controller
      */
     public function destroy(Employee $employee)
     {
-        //
     }
 }

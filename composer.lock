@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ce40fdc8cbb69b695ad7a6cbdc04eb97",
+    "content-hash": "7315ff1a18dc8c39a61065023acea4b3",
     "packages": [
         {
             "name": "brick/math",
@@ -7260,16 +7260,16 @@
         },
         {
             "name": "phpstan/phpdoc-parser",
-            "version": "1.28.0",
+            "version": "1.29.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpdoc-parser.git",
-                "reference": "cd06d6b1a1b3c75b0b83f97577869fd85a3cd4fb"
+                "reference": "536889f2b340489d328f5ffb7b02bb6b183ddedc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpdoc-parser/zipball/cd06d6b1a1b3c75b0b83f97577869fd85a3cd4fb",
-                "reference": "cd06d6b1a1b3c75b0b83f97577869fd85a3cd4fb",
+                "url": "https://api.github.com/repos/phpstan/phpdoc-parser/zipball/536889f2b340489d328f5ffb7b02bb6b183ddedc",
+                "reference": "536889f2b340489d328f5ffb7b02bb6b183ddedc",
                 "shasum": ""
             },
             "require": {
@@ -7301,9 +7301,9 @@
             "description": "PHPDoc parser with support for nullable, intersection and generic types",
             "support": {
                 "issues": "https://github.com/phpstan/phpdoc-parser/issues",
-                "source": "https://github.com/phpstan/phpdoc-parser/tree/1.28.0"
+                "source": "https://github.com/phpstan/phpdoc-parser/tree/1.29.0"
             },
-            "time": "2024-04-03T18:51:33+00:00"
+            "time": "2024-05-06T12:04:23+00:00"
         },
         {
             "name": "phpunit/php-code-coverage",
@@ -8708,16 +8708,16 @@
         },
         {
             "name": "spatie/flare-client-php",
-            "version": "1.5.0",
+            "version": "1.5.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/flare-client-php.git",
-                "reference": "9aa60f6ded35a774554e7a5256dca12b72693b78"
+                "reference": "e27977d534eefe04c154c6fd8460217024054c05"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/flare-client-php/zipball/9aa60f6ded35a774554e7a5256dca12b72693b78",
-                "reference": "9aa60f6ded35a774554e7a5256dca12b72693b78",
+                "url": "https://api.github.com/repos/spatie/flare-client-php/zipball/e27977d534eefe04c154c6fd8460217024054c05",
+                "reference": "e27977d534eefe04c154c6fd8460217024054c05",
                 "shasum": ""
             },
             "require": {
@@ -8765,7 +8765,7 @@
             ],
             "support": {
                 "issues": "https://github.com/spatie/flare-client-php/issues",
-                "source": "https://github.com/spatie/flare-client-php/tree/1.5.0"
+                "source": "https://github.com/spatie/flare-client-php/tree/1.5.1"
             },
             "funding": [
                 {
@@ -8773,20 +8773,20 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-05-02T13:18:42+00:00"
+            "time": "2024-05-03T15:43:14+00:00"
         },
         {
             "name": "spatie/ignition",
-            "version": "1.14.0",
+            "version": "1.14.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/ignition.git",
-                "reference": "80385994caed328f6f9c9952926932e65b9b774c"
+                "reference": "c23cc018c5f423d2f413b99f84655fceb6549811"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/ignition/zipball/80385994caed328f6f9c9952926932e65b9b774c",
-                "reference": "80385994caed328f6f9c9952926932e65b9b774c",
+                "url": "https://api.github.com/repos/spatie/ignition/zipball/c23cc018c5f423d2f413b99f84655fceb6549811",
+                "reference": "c23cc018c5f423d2f413b99f84655fceb6549811",
                 "shasum": ""
             },
             "require": {
@@ -8856,7 +8856,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-04-26T08:45:51+00:00"
+            "time": "2024-05-03T15:56:16+00:00"
         },
         {
             "name": "spatie/laravel-ignition",
@@ -9140,5 +9140,5 @@
         "php": "^8.2"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.3.0"
+    "plugin-api-version": "2.6.0"
 }
