@@ -3,7 +3,7 @@
 namespace Src\Administration\Infrastructure;
 
 use App\Models\Employee as ModelsEmployee;
-use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Collection;
 use Src\Administration\Domain\Entities\Employee;
 use Src\Administration\Domain\Repositories\IEmployeeRepository;
 use Src\Shared\Domain\ValueObjects\Email;
@@ -17,9 +17,15 @@ final class EloquentEmployeeRepository implements IEmployeeRepository
     {
         $employees = ModelsEmployee::all();
 
-        if (is_null($employees)) {
-            return null;
-        }
+        $employees = $employees->map(function ($employee) {
+            return new Employee(
+                $employee->id,
+                new Name($employee->name),
+                new Email($employee->email),
+                new Password($employee->password),
+                new Type($employee->type),
+            );
+        });
 
         return $employees;
     }
