@@ -5,7 +5,7 @@ namespace App\Http\Resources\Employee;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class GetEmpoyeeByIdResource extends JsonResource
+class UpdateEmployeeResource extends JsonResource
 {
     public function toArray(Request $request): array
     {
@@ -29,7 +29,7 @@ class GetEmpoyeeByIdResource extends JsonResource
 
     private function getMessage()
     {
-        return empty($this->employee) ? null : $this->employee->name.' encontrado!';
+        return empty($this->employee) ? null : $this->employee->name.' atualizado!';
     }
 
     private function getEmployeeDetails()

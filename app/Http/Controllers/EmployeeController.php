@@ -4,8 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\Employee\CreateEmployeeResource;
 use App\Http\Resources\Employee\DeleteEmployeeByIdResource;
+use App\Http\Resources\Employee\GetAllEmployeesResource;
 use App\Http\Resources\Employee\GetAllEmpoyeesResource;
+use App\Http\Resources\Employee\GetEmployeeByIdResource;
 use App\Http\Resources\Employee\GetEmpoyeeByIdResource;
+use App\Http\Resources\Employee\UpdateEmployeeResource;
 use App\Models\Employee;
 use Illuminate\Http\Request;
 use Src\Administration\Application\Employee\CreateEmployee;
@@ -14,8 +17,10 @@ use Src\Administration\Application\Employee\Dtos\CreateEmployeeInputDto;
 use Src\Administration\Application\Employee\Dtos\DeleteEmployeeByIdInputDto;
 use Src\Administration\Application\Employee\Dtos\DeleteEmployeeByIdOutputDto;
 use Src\Administration\Application\Employee\Dtos\GetEmployeeByIdInputDto;
+use Src\Administration\Application\Employee\Dtos\UpdateEmployeeInputDto;
 use Src\Administration\Application\Employee\GetAllEmployees;
 use Src\Administration\Application\Employee\GetEmployeeById;
+use Src\Administration\Application\Employee\UpdateEmployee;
 
 class EmployeeController extends Controller
 {
@@ -24,7 +29,7 @@ class EmployeeController extends Controller
     ) {
         $output = $getAllEmployees->execute();
 
-        return new GetAllEmpoyeesResource($output);
+        return new GetAllEmployeesResource($output);
     }
 
     public function store(
@@ -32,7 +37,6 @@ class EmployeeController extends Controller
         CreateEmployee $createEmployee
     ) {
         $inputDto = new CreateEmployeeInputDto(
-            null,
             $request->name,
             $request->email,
             $request->password,
@@ -56,14 +60,29 @@ class EmployeeController extends Controller
 
         $output = $getEmployeeById->execute($inputDto);
 
-        return new GetEmpoyeeByIdResource($output);
+        return new GetEmployeeByIdResource($output);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Employee $employee)
+    public function update(
+        Request $request,
+        string $id,
+        UpdateEmployee $updateEmployee
+    )
     {
+        $inputDto = new UpdateEmployeeInputDto(
+            $id,
+            $request->name,
+            $request->email,
+            $request->password,
+            $request->type
+        );
+
+        $output = $updateEmployee->execute($inputDto);
+
+        return new UpdateEmployeeResource($output);
     }
 
     /**

@@ -5,7 +5,7 @@ namespace App\Http\Resources\Employee;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class GetAllEmpoyeesResource extends JsonResource
+class GetAllEmployeesResource extends JsonResource
 {
     public function toArray(Request $request): array
     {

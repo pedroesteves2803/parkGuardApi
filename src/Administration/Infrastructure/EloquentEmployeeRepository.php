@@ -69,7 +69,7 @@ final class EloquentEmployeeRepository implements IEmployeeRepository
     {
         $modelsEmployee = ModelsEmployee::find($employee->id);
 
-        if (is_null($employee)) {
+        if (is_null($modelsEmployee)) {
             return null;
         }
 
