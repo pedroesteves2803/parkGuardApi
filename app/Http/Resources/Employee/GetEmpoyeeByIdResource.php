@@ -38,15 +38,11 @@ class GetEmpoyeeByIdResource extends JsonResource
             return [];
         }
 
-        $employees = $this->employee->map(function ($item) {
-            return [
-                'id'    => $item->id,
-                'name'  => $item->name->value(),
-                'email' => $item->email->value(),
-                'tipo'  => $item->type->value(),
-            ];
-        });
-
-        return $employees;
+        return [
+            'id'    => $this->employee->id,
+            'name'  => $this->employee->name->value(),
+            'email' => $this->employee->email->value(),
+            'tipo'  => $this->employee->type->value(),
+        ];
     }
 }

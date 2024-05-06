@@ -43,11 +43,11 @@ class EmployeeController extends Controller
     }
 
     public function show(
-        Employee $employee,
+        int $id,
         GetEmployeeById $getEmployeeById
     ) {
         $inputDto = new GetEmployeeByIdInputDto(
-            $employee->id,
+            $id,
         );
 
         $output = $getEmployeeById->execute($inputDto);

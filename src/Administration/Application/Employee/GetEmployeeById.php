@@ -22,7 +22,7 @@ final class GetEmployeeById
         $employee = $this->resolveEmployeeById($input);
 
         if ($employee instanceof Notification) {
-            return new GetAllEmployeesOutputDto(
+            return new GetEmployeeByIdOutputDto(
                 null,
                 $this->notification
             );
