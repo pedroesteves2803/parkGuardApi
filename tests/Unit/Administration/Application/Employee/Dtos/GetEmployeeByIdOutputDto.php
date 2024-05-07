@@ -1,6 +1,6 @@
 <?php
 
-use Src\Administration\Application\Employee\Dtos\CreateEmployeeOutputDto;
+use Src\Administration\Application\Employee\Dtos\GetEmployeeByIdOutputDto;
 use Src\Administration\Domain\Entities\Employee;
 use Src\Shared\Domain\ValueObjects\Email;
 use Src\Shared\Domain\ValueObjects\Name;
@@ -8,7 +8,7 @@ use Src\Shared\Domain\ValueObjects\Password;
 use Src\Shared\Domain\ValueObjects\Type;
 use Src\Shared\Utils\Notification;
 
-it('can create an instance of CreateEmployeeOutputDto with a valid employee', function () {
+it('can create an instance of GetEmployeeByIdOutputDto with a valid employee', function () {
     $id = '1';
     $name = 'John Doe';
     $email = 'john@example.com';
@@ -25,14 +25,14 @@ it('can create an instance of CreateEmployeeOutputDto with a valid employee', fu
 
     $notification = new Notification();
 
-    $outputDto = new CreateEmployeeOutputDto($employee, $notification);
+    $outputDto = new GetEmployeeByIdOutputDto($employee, $notification);
 
-    expect($outputDto)->toBeInstanceOf(CreateEmployeeOutputDto::class);
+    expect($outputDto)->toBeInstanceOf(GetEmployeeByIdOutputDto::class);
     expect($outputDto->employee)->toBe($employee);
     expect($outputDto->notification)->toBe($notification);
 });
 
-it('can create an instance of CreateEmployeeOutputDto with null employee and error notifications', function () {
+it('can create an instance of GetEmployeeByIdOutputDto with null employee and error notifications', function () {
     $notification = new Notification();
 
     $notification->addError([
@@ -40,9 +40,9 @@ it('can create an instance of CreateEmployeeOutputDto with null employee and err
         'message' => 'test',
     ]);
 
-    $outputDto = new CreateEmployeeOutputDto(null, $notification);
+    $outputDto = new GetEmployeeByIdOutputDto(null, $notification);
 
-    expect($outputDto)->toBeInstanceOf(CreateEmployeeOutputDto::class);
+    expect($outputDto)->toBeInstanceOf(GetEmployeeByIdOutputDto::class);
     expect($outputDto->employee)->toBeNull();
     expect($outputDto->notification)->toBe($notification);
 });
