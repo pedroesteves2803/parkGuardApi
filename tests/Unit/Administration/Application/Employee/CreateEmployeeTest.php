@@ -31,7 +31,7 @@ it('successfully creates an employee', function () {
 
     $createEmployee = new CreateEmployee($this->repositoryMock, $notification);
 
-    $inputDto = new CreateEmployeeInputDto(null, 'Nome', 'email@test.com', 'Password@123', 1);
+    $inputDto = new CreateEmployeeInputDto('Nome', 'email@test.com', 'Password@123', 1);
     $outputDto = $createEmployee->execute($inputDto);
 
     expect($outputDto)->toBeInstanceOf(CreateEmployeeOutputDto::class);
@@ -45,7 +45,7 @@ it('fails to create an employee with existing email', function () {
     $this->repositoryMock->shouldReceive('existByEmail')->once()->andReturnTrue();
     $createEmployee = new CreateEmployee($this->repositoryMock, $notification);
 
-    $inputDto = new CreateEmployeeInputDto(null, 'Nome', 'email@test.com', 'Password@123', 1);
+    $inputDto = new CreateEmployeeInputDto('Nome', 'email@test.com', 'Password@123', 1);
     $outputDto = $createEmployee->execute($inputDto);
 
     expect($outputDto)->toBeInstanceOf(CreateEmployeeOutputDto::class);
