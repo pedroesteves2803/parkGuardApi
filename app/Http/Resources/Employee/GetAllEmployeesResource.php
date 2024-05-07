@@ -29,16 +29,16 @@ class GetAllEmployeesResource extends JsonResource
 
     private function getMessage()
     {
-        return empty($this->employee) ? null : 'Lista de funcionarios encontrados!';
+        return empty($this->employees) ? null : 'Lista de funcionarios encontrados!';
     }
 
     private function getEmployeesDetails()
     {
-        if (empty($this->employee)) {
+        if (empty($this->employees)) {
             return [];
         }
 
-        $employees = $this->employee->map(function ($item) {
+        $employees = $this->employees->map(function ($item) {
             return [
                 'id'    => $item->id,
                 'name'  => $item->name->value(),
