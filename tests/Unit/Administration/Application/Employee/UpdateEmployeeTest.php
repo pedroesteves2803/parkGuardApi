@@ -1,0 +1,128 @@
+<?php
+
+use Src\Administration\Application\Employee\UpdateEmployee;
+use Src\Administration\Application\Employee\Dtos\UpdateEmployeeInputDto;
+use Src\Administration\Application\Employee\Dtos\UpdateEmployeeOutputDto;
+use Src\Administration\Domain\Entities\Employee;
+use Src\Administration\Domain\Repositories\IEmployeeRepository;
+use Src\Shared\Domain\ValueObjects\Email;
+use Src\Shared\Domain\ValueObjects\Name;
+use Src\Shared\Domain\ValueObjects\Password;
+use Src\Shared\Domain\ValueObjects\Type;
+use Src\Shared\Utils\Notification;
+
+beforeEach(function () {
+    $this->repositoryMock = mock(IEmployeeRepository::class);
+});
+
+it('can update an existing employee with valid input', function () {
+    $notification = new Notification();
+
+    $employeeId = 1;
+
+    $employee = new Employee(
+        $employeeId,
+        new Name('John Doe'),
+        new Email('john@example.com'),
+        new Password('Password@123'),
+        new Type(1),
+    );
+
+    $this->repositoryMock->shouldReceive('getById')->once()->andReturn($employee);
+
+    $this->repositoryMock->shouldReceive('existByEmail')->once()->andReturnFalse();
+
+    $employeeUpdate = new Employee(
+        $employeeId,
+        new Name('Updated Name'),
+        new Email('updated@example.com'),
+        new Password('NewPassword@456'),
+        new Type(2),
+    );
+
+    $this->repositoryMock->shouldReceive('update')->once()->andReturn($employeeUpdate);
+
+    $updateEmployee = new UpdateEmployee($this->repositoryMock, $notification);
+
+    $inputDto = new UpdateEmployeeInputDto(
+        $employeeId,
+        'Updated Name',
+        'updated@example.com',
+        'NewPassword@456',
+        2,
+    );
+
+    $outputDto = $updateEmployee->execute($inputDto);
+
+    expect($outputDto)->toBeInstanceOf(UpdateEmployeeOutputDto::class);
+    expect($outputDto->employee)->toBe($employeeUpdate);
+    expect($outputDto->notification->getErrors())->toBeEmpty();
+});
+
+it('returns error notification when trying to update an employee with non-existing ID', function () {
+    $notification = new Notification();
+
+    $employeeId = 1;
+
+    $this->repositoryMock->shouldReceive('getById')->once()->andReturnNull();
+
+    $updateEmployee = new UpdateEmployee($this->repositoryMock, $notification);
+
+    $inputDto = new UpdateEmployeeInputDto(
+        $employeeId,
+        'Updated Name',
+        'updated@example.com',
+        'NewPassword@456',
+        2,
+    );
+
+    $outputDto = $updateEmployee->execute($inputDto);
+
+    expect($outputDto)->toBeInstanceOf(UpdateEmployeeOutputDto::class);
+    expect($outputDto->employee)->toBeNull();
+    expect($outputDto->notification->getErrors())->toBe([
+        [
+            'context' => 'employee_not_found',
+            'message' => 'Funcionario não encontrado!',
+        ],
+    ]);
+});
+
+it('returns error notification when trying to update an employee with an already existing email', function () {
+    $notification = new Notification();
+
+    $employeeId = 1;
+
+    $employee = new Employee(
+        $employeeId,
+        new Name('John Doe'),
+        new Email('john@example.com'),
+        new Password('Password@123'),
+        new Type(1),
+    );
+
+    $this->repositoryMock->shouldReceive('getById')->once()->andReturn($employee);
+
+    $this->repositoryMock->shouldReceive('existByEmail')->once()->andReturnTrue();
+
+    $updateEmployee = new UpdateEmployee($this->repositoryMock, $notification);
+
+    $inputDto = new UpdateEmployeeInputDto(
+        $employeeId,
+        'Updated Name',
+        'updated@example.com',
+        'NewPassword@456',
+        2,
+    );
+
+    $outputDto = $updateEmployee->execute($inputDto);
+
+    expect($outputDto)->toBeInstanceOf(UpdateEmployeeOutputDto::class);
+    expect($outputDto->employee)->toBeNull();
+    expect($outputDto->notification->getErrors())->toBe([
+        [
+            'context' => 'employee_email_already_exists',
+            'message' => 'Email já cadastrado!',
+        ],
+    ]);
+});
