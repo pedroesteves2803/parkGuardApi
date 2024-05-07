@@ -5,17 +5,13 @@ namespace App\Http\Controllers;
 use App\Http\Resources\Employee\CreateEmployeeResource;
 use App\Http\Resources\Employee\DeleteEmployeeByIdResource;
 use App\Http\Resources\Employee\GetAllEmployeesResource;
-use App\Http\Resources\Employee\GetAllEmpoyeesResource;
 use App\Http\Resources\Employee\GetEmployeeByIdResource;
-use App\Http\Resources\Employee\GetEmpoyeeByIdResource;
 use App\Http\Resources\Employee\UpdateEmployeeResource;
-use App\Models\Employee;
 use Illuminate\Http\Request;
 use Src\Administration\Application\Employee\CreateEmployee;
 use Src\Administration\Application\Employee\DeleteEmployeeById;
 use Src\Administration\Application\Employee\Dtos\CreateEmployeeInputDto;
 use Src\Administration\Application\Employee\Dtos\DeleteEmployeeByIdInputDto;
-use Src\Administration\Application\Employee\Dtos\DeleteEmployeeByIdOutputDto;
 use Src\Administration\Application\Employee\Dtos\GetEmployeeByIdInputDto;
 use Src\Administration\Application\Employee\Dtos\UpdateEmployeeInputDto;
 use Src\Administration\Application\Employee\GetAllEmployees;
@@ -70,8 +66,7 @@ class EmployeeController extends Controller
         Request $request,
         string $id,
         UpdateEmployee $updateEmployee
-    )
-    {
+    ) {
         $inputDto = new UpdateEmployeeInputDto(
             $id,
             $request->name,
@@ -91,8 +86,7 @@ class EmployeeController extends Controller
     public function destroy(
         string $id,
         DeleteEmployeeById $deleteEmployeeById
-    )
-    {
+    ) {
         $inputDto = new DeleteEmployeeByIdInputDto(
             $id,
         );

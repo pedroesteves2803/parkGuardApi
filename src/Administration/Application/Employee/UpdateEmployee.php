@@ -2,8 +2,6 @@
 
 namespace Src\Administration\Application\Employee;
 
-use Src\Administration\Application\Employee\Dtos\CreateEmployeeInputDto;
-use Src\Administration\Application\Employee\Dtos\CreateEmployeeOutputDto;
 use Src\Administration\Application\Employee\Dtos\UpdateEmployeeInputDto;
 use Src\Administration\Application\Employee\Dtos\UpdateEmployeeOutputDto;
 use Src\Administration\Domain\Entities\Employee;

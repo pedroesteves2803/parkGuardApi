@@ -2,16 +2,10 @@
 
 namespace Src\Administration\Application\Employee;
 
-use Src\Administration\Application\Employee\Dtos\CreateEmployeeInputDto;
-use Src\Administration\Application\Employee\Dtos\CreateEmployeeOutputDto;
 use Src\Administration\Application\Employee\Dtos\DeleteEmployeeByIdInputDto;
 use Src\Administration\Application\Employee\Dtos\DeleteEmployeeByIdOutputDto;
 use Src\Administration\Domain\Entities\Employee;
 use Src\Administration\Domain\Repositories\IEmployeeRepository;
-use Src\Shared\Domain\ValueObjects\Email;
-use Src\Shared\Domain\ValueObjects\Name;
-use Src\Shared\Domain\ValueObjects\Password;
-use Src\Shared\Domain\ValueObjects\Type;
 use Src\Shared\Utils\Notification;
 
 final class DeleteEmployeeById
@@ -41,11 +35,11 @@ final class DeleteEmployeeById
         );
     }
 
-
-    private function resolveCategoryById(int $id): Employee | Notification {
+    private function resolveCategoryById(int $id): Employee|Notification
+    {
         $employee = $this->iEmployeeRepository->getById($id);
 
-        if(is_null($employee)){
+        if (is_null($employee)) {
             return $this->notification->addError([
                 'context' => 'employee_not_found',
                 'message' => 'Funcionario não encontrado!',

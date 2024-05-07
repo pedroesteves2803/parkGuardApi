@@ -2,7 +2,6 @@
 
 namespace Src\Administration\Application\Employee;
 
-use Src\Administration\Application\Employee\Dtos\GetAllEmployeesOutputDto;
 use Src\Administration\Application\Employee\Dtos\GetEmployeeByIdInputDto;
 use Src\Administration\Application\Employee\Dtos\GetEmployeeByIdOutputDto;
 use Src\Administration\Domain\Entities\Employee;
