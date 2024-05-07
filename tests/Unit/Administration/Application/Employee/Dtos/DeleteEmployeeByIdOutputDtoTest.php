@@ -11,6 +11,7 @@ it('can create an instance of DeleteEmployeeByIdOutputDto with null employee and
     expect($outputDto)->toBeInstanceOf(DeleteEmployeeByIdOutputDto::class);
     expect($outputDto->employee)->toBeNull();
     expect($outputDto->notification)->toBe($notification);
+    expect($outputDto->notification->getErrors())->toBe([]);
 });
 
 it('can create an instance of DeleteEmployeeByIdOutputDto with null employee and error notifications', function () {
@@ -25,5 +26,10 @@ it('can create an instance of DeleteEmployeeByIdOutputDto with null employee and
 
     expect($outputDto)->toBeInstanceOf(DeleteEmployeeByIdOutputDto::class);
     expect($outputDto->employee)->toBeNull();
-    expect($outputDto->notification)->toBe($notification);
+    expect($outputDto->notification->getErrors())->toBe([
+        [
+            'context' => 'test_error',
+            'message' => 'test',
+        ],
+    ]);
 });

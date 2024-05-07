@@ -30,6 +30,7 @@ it('can create an instance of CreateEmployeeOutputDto with a valid employee', fu
     expect($outputDto)->toBeInstanceOf(CreateEmployeeOutputDto::class);
     expect($outputDto->employee)->toBe($employee);
     expect($outputDto->notification)->toBe($notification);
+    expect($outputDto->notification->getErrors())->toBe([]);
 });
 
 it('can create an instance of CreateEmployeeOutputDto with null employee and error notifications', function () {
@@ -44,5 +45,10 @@ it('can create an instance of CreateEmployeeOutputDto with null employee and err
 
     expect($outputDto)->toBeInstanceOf(CreateEmployeeOutputDto::class);
     expect($outputDto->employee)->toBeNull();
-    expect($outputDto->notification)->toBe($notification);
+    expect($outputDto->notification->getErrors())->toBe([
+        [
+            'context' => 'test_error',
+            'message' => 'test',
+        ],
+    ]);
 });
