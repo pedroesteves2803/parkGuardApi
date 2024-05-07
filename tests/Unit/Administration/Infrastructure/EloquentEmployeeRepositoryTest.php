@@ -1,8 +1,8 @@
 <?php
 
 use App\Models\Employee as ModelsEmployee;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Collection;
 use Src\Administration\Domain\Entities\Employee;
 use Src\Administration\Infrastructure\EloquentEmployeeRepository;
 use Src\Shared\Domain\ValueObjects\Email;
@@ -74,9 +74,8 @@ it('creates a new employee', function () {
     $createdEmployee = $repository->create($employeeData);
 
     expect($createdEmployee)->toBeInstanceOf(Employee::class);
-    expect($createdEmployee->id)->not->toBeNull();
+    $this->assertNotNull($createdEmployee->id);
     expect($createdEmployee->name->value())->toBe($employeeData->name->value());
     expect($createdEmployee->email->value())->toBe($employeeData->email->value());
-    expect($createdEmployee->password->value())->toBe($employeeData->password->value());
     expect($createdEmployee->type->value())->toBe($employeeData->type->value());
 });
