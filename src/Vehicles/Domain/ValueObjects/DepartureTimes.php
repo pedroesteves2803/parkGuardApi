@@ -2,10 +2,12 @@
 
 namespace Src\Shared\Domain\ValueObjects;
 
-final class Color extends ValueObject
+use DateTime;
+
+final class DepartureTimes extends ValueObject
 {
     public function __construct(
-        private string $value
+        private DateTime $value
     ) {
         $this->validate();
     }
@@ -13,16 +15,11 @@ final class Color extends ValueObject
     public function validate()
     {
         if (empty($this->value)) {
-            throw new \Exception('Color cannot be empty.');
+            throw new \Exception('Departure times cannot be empty.');
         }
     }
 
-    public function value(): string
-    {
-        return $this->value;
-    }
-
-    public function __toString(): string
+    public function value(): DateTime
     {
         return $this->value;
     }

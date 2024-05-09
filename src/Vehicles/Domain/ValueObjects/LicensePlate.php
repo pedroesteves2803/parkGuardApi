@@ -13,7 +13,7 @@ final class LicensePlate extends ValueObject
     public function validate()
     {
         if (empty($this->value)) {
-            throw new \Exception('Codel cannot be empty.');
+            throw new \Exception('LicensePlate cannot be empty.');
         }
     }
 

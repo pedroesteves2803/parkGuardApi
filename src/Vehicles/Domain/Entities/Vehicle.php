@@ -5,6 +5,9 @@ namespace Src\Administration\Domain\Entities;
 use Src\Shared\Domain\Entities\Entity;
 use Src\Shared\Domain\Entities\IAggregator;
 use Src\Shared\Domain\ValueObjects\Color;
+use Src\Shared\Domain\ValueObjects\DepartureTimes;
+use Src\Shared\Domain\ValueObjects\EntryTimes;
+use Src\Shared\Domain\ValueObjects\LicensePlate;
 use Src\Shared\Domain\ValueObjects\Manufacturer;
 use Src\Shared\Domain\ValueObjects\Model;
 
@@ -12,12 +15,12 @@ class Vehicle extends Entity implements IAggregator
 {
     public function __construct(
         readonly ?int $id,
-        readonly Manufacturer $manufacturer,
-        readonly Color $color,
-        readonly Model $modelo,
-        readonly string $licensePlate,
-        readonly string $entrada,
-        readonly string $saida,
+        readonly ?Manufacturer $manufacturer,
+        readonly ?Color $color,
+        readonly ?Model $model,
+        readonly LicensePlate $licensePlate,
+        readonly EntryTimes $entryTimes,
+        readonly ?DepartureTimes $departureTimes,
     ) {
     }
 
@@ -31,29 +34,29 @@ class Vehicle extends Entity implements IAggregator
         return $this->manufacturer;
     }
 
-    public function cor(): string
+    public function color(): string
+    {
+        return $this->color;
+    }
+
+    public function model(): Model
+    {
+        return $this->model;
+    }
+
+    public function licensePlate(): string
     {
         return $this->licensePlate;
     }
 
-    public function fđđđo(): Model
+    public function entryTimes(): EntryTimes
     {
-        return $this->modelo;
+        return $this->entryTimes;
     }
 
-    public function placa(): string
+    public function departureTimes(): DepartureTimes
     {
-        return $this->placa;
-    }
-
-    public function entrada(): string
-    {
-        return $this->entrada;
-    }
-
-    public function saida(): string
-    {
-        return $this->saida;
+        return $this->departureTimes;
     }
 
     public function __toString(): string
