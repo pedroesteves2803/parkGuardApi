@@ -1,10 +1,10 @@
 <?php
 
 use Src\Administration\Domain\Entities\Employee;
-use Src\Shared\Domain\ValueObjects\Email;
-use Src\Shared\Domain\ValueObjects\Name;
-use Src\Shared\Domain\ValueObjects\Password;
-use Src\Shared\Domain\ValueObjects\Type;
+use Src\Administration\Domain\ValueObjects\Email;
+use Src\Administration\Domain\ValueObjects\Name;
+use Src\Administration\Domain\ValueObjects\Password;
+use Src\Administration\Domain\ValueObjects\Type;
 
 test('validates instance employee', function () {
     $employee = createValidEmployee();

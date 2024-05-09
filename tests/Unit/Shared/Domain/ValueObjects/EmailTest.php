@@ -1,6 +1,6 @@
 <?php
 
-use Src\Shared\Domain\ValueObjects\Email;
+use Src\Administration\Domain\ValueObjects\Email;
 
 test('validates instance email', function () {
     $email = new Email('email@test.com');

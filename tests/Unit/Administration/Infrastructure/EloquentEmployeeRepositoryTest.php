@@ -5,10 +5,10 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Collection;
 use Src\Administration\Domain\Entities\Employee;
 use Src\Administration\Infrastructure\EloquentEmployeeRepository;
-use Src\Shared\Domain\ValueObjects\Email;
-use Src\Shared\Domain\ValueObjects\Name;
-use Src\Shared\Domain\ValueObjects\Password;
-use Src\Shared\Domain\ValueObjects\Type;
+use Src\Administration\Domain\ValueObjects\Email;
+use Src\Administration\Domain\ValueObjects\Name;
+use Src\Administration\Domain\ValueObjects\Password;
+use Src\Administration\Domain\ValueObjects\Type;
 use Tests\TestCase;
 
 uses(TestCase::class, RefreshDatabase::class);

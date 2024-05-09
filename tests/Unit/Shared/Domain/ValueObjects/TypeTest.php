@@ -1,6 +1,6 @@
 <?php
 
-use Src\Shared\Domain\ValueObjects\Type;
+use Src\Administration\Domain\ValueObjects\Type;
 
 test('validates instance type', function () {
     $type = new Type(1);

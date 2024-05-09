@@ -4,7 +4,7 @@ namespace Src\Administration\Domain\Repositories;
 
 use Illuminate\Support\Collection;
 use Src\Administration\Domain\Entities\Employee;
-use Src\Shared\Domain\ValueObjects\Email;
+use Src\Administration\Domain\ValueObjects\Email;
 
 interface IEmployeeRepository
 {

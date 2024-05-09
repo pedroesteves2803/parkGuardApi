@@ -1,6 +1,6 @@
 <?php
 
-use Src\Shared\Domain\ValueObjects\Name;
+use Src\Administration\Domain\ValueObjects\Name;
 
 test('validates instance name', function () {
     $name = new Name('Produto 1');

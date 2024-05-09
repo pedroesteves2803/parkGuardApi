@@ -1,6 +1,6 @@
 <?php
 
-use Src\Shared\Domain\ValueObjects\Password;
+use Src\Administration\Domain\ValueObjects\Password;
 
 test('validates instance password', function () {
     $type = new Password('Password@123');

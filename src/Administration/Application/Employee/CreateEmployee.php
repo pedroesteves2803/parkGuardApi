@@ -6,10 +6,10 @@ use Src\Administration\Application\Employee\Dtos\CreateEmployeeInputDto;
 use Src\Administration\Application\Employee\Dtos\CreateEmployeeOutputDto;
 use Src\Administration\Domain\Entities\Employee;
 use Src\Administration\Domain\Repositories\IEmployeeRepository;
-use Src\Shared\Domain\ValueObjects\Email;
-use Src\Shared\Domain\ValueObjects\Name;
-use Src\Shared\Domain\ValueObjects\Password;
-use Src\Shared\Domain\ValueObjects\Type;
+use Src\Administration\Domain\ValueObjects\Email;
+use Src\Administration\Domain\ValueObjects\Name;
+use Src\Administration\Domain\ValueObjects\Password;
+use Src\Administration\Domain\ValueObjects\Type;
 use Src\Shared\Utils\Notification;
 
 final class CreateEmployee
