@@ -1,22 +1,14 @@
 <?php
 
-namespace Src\Shared\Domain\ValueObjects;
+namespace Src\Vehicles\Domain\ValueObjects;
 
 use DateTime;
-
+use Src\Shared\Domain\ValueObjects\ValueObject;
 final class DepartureTimes extends ValueObject
 {
     public function __construct(
         private DateTime $value
     ) {
-        $this->validate();
-    }
-
-    public function validate()
-    {
-        if (empty($this->value)) {
-            throw new \Exception('Departure times cannot be empty.');
-        }
     }
 
     public function value(): DateTime

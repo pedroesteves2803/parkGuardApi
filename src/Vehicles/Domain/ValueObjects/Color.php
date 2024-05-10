@@ -1,6 +1,8 @@
 <?php
 
-namespace Src\Shared\Domain\ValueObjects;
+namespace Src\Vehicles\Domain\ValueObjects;
+
+use Src\Shared\Domain\ValueObjects\ValueObject;
 
 final class Color extends ValueObject
 {
