@@ -4,12 +4,12 @@ namespace Src\Administration\Domain\Entities;
 
 use Src\Shared\Domain\Entities\Entity;
 use Src\Shared\Domain\Entities\IAggregator;
-use Src\Shared\Domain\ValueObjects\Color;
-use Src\Shared\Domain\ValueObjects\DepartureTimes;
-use Src\Shared\Domain\ValueObjects\EntryTimes;
-use Src\Shared\Domain\ValueObjects\LicensePlate;
-use Src\Shared\Domain\ValueObjects\Manufacturer;
-use Src\Shared\Domain\ValueObjects\Model;
+use Src\Vehicles\Domain\ValueObjects\Color;
+use Src\Vehicles\Domain\ValueObjects\DepartureTimes;
+use Src\Vehicles\Domain\ValueObjects\EntryTimes;
+use Src\Vehicles\Domain\ValueObjects\LicensePlate;
+use Src\Vehicles\Domain\ValueObjects\Model;
+use Src\Vehicles\Domain\ValueObjects\Manufacturer;
 
 class Vehicle extends Entity implements IAggregator
 {
@@ -34,7 +34,7 @@ class Vehicle extends Entity implements IAggregator
         return $this->manufacturer;
     }
 
-    public function color(): string
+    public function color(): Color
     {
         return $this->color;
     }
@@ -44,7 +44,7 @@ class Vehicle extends Entity implements IAggregator
         return $this->model;
     }
 
-    public function licensePlate(): string
+    public function licensePlate(): LicensePlate
     {
         return $this->licensePlate;
     }
