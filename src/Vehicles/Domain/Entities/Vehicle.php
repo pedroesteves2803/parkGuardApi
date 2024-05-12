@@ -1,6 +1,6 @@
 <?php
 
-namespace Src\Administration\Domain\Entities;
+namespace Src\Vehicles\Domain\Entities;
 
 use Src\Shared\Domain\Entities\Entity;
 use Src\Shared\Domain\Entities\IAggregator;
@@ -57,10 +57,5 @@ class Vehicle extends Entity implements IAggregator
     public function departureTimes(): DepartureTimes
     {
         return $this->departureTimes;
-    }
-
-    public function __toString(): string
-    {
-        return 'Veiculo:';
     }
 }
