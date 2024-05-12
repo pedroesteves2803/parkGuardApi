@@ -1,6 +1,6 @@
 <?php
 
-namespace Src\Administration\Application\Employee\Dtos;
+namespace Src\Vehicles\Application\Vehicle\Dtos;
 
 use DateTime;
 
@@ -12,7 +12,7 @@ final class CreateVehicleInputDto
         readonly string $model,
         readonly string $licensePlate,
         readonly DateTime $entryTimes,
-        readonly DateTime $departureTimes,
+        readonly ?DateTime $departureTimes,
     ) {
     }
 }

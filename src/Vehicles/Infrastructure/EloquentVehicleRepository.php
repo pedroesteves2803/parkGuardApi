@@ -1,17 +1,9 @@
 <?php
 
-namespace Src\Administration\Infrastructure;
+namespace Src\Vehicles\Infrastructure;
 
-use App\Models\Employee as ModelsEmployee;
 use App\Models\Vehicle as ModelsVehicle;
 use DateTime;
-use Illuminate\Support\Collection;
-use Src\Administration\Domain\Entities\Employee;
-use Src\Administration\Domain\Repositories\IEmployeeRepository;
-use Src\Administration\Domain\ValueObjects\Email;
-use Src\Administration\Domain\ValueObjects\Name;
-use Src\Administration\Domain\ValueObjects\Password;
-use Src\Administration\Domain\ValueObjects\Type;
 use Src\Vehicles\Domain\Entities\Vehicle;
 use Src\Vehicles\Domain\Repositories\IVehicleRepository;
 use Src\Vehicles\Domain\ValueObjects\Color;
@@ -49,8 +41,8 @@ final class EloquentVehicleRepository implements IVehicleRepository
         $modelsVehicle->manufacturer = $vehicle->manufacturer->value();
         $modelsVehicle->color = $vehicle->color->value();
         $modelsVehicle->model =$vehicle->model->value();
-        $modelsVehicle->license_plate = $vehicle->entryTimes->value();
-        $modelsVehicle->departure_times = $vehicle->departureTimes->value();
+        $modelsVehicle->license_plate = $vehicle->licensePlate->value();
+        $modelsVehicle->entry_times = $vehicle->entryTimes->value();
         $modelsVehicle->save();
 
         return new Vehicle(
@@ -59,12 +51,16 @@ final class EloquentVehicleRepository implements IVehicleRepository
             new Color($modelsVehicle->color),
             new Model($modelsVehicle->model),
             new LicensePlate($modelsVehicle->license_plate),
-            new EntryTimes(new DateTime($modelsVehicle->entry_times)),
-            new DepartureTimes(new DateTime($modelsVehicle->departure_times))
+            new EntryTimes(
+                new DateTime(
+                    $modelsVehicle->entry_times->format('Y-m-d H:i:s')
+                    )
+            ),
+            $modelsVehicle->departure_times
         );
     }
 
-    public function existVehicle(string $licensePlate): bool {
+    public function existVehicle(LicensePlate $licensePlate): bool {
 
         $vehicle = ModelsVehicle::where(['license_plate' => $licensePlate, 'departure_times' => null])->exists();
         return $vehicle;

@@ -1,6 +1,6 @@
 <?php
 
-namespace Src\Administration\Application\Employee\Dtos;
+namespace Src\Vehicles\Application\Vehicle\Dtos;
 
 use Src\Shared\Utils\Notification;
 use Src\Vehicles\Domain\Entities\Vehicle;

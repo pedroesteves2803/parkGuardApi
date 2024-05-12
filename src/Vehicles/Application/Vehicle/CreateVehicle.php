@@ -1,67 +1,75 @@
 <?php
 
-namespace Src\Vehicle\Application\Employee;
+namespace Src\Vehicles\Application\Vehicle;
 
-use Src\Administration\Application\Employee\Dtos\CreateEmployeeInputDto;
+use DateTime;
 use Src\Administration\Application\Employee\Dtos\CreateEmployeeOutputDto;
-use Src\Administration\Application\Employee\Dtos\CreateVehicleInputDto;
-use Src\Administration\Application\Employee\Dtos\CreateVehicleOutputDto;
-use Src\Administration\Domain\Entities\Employee;
-use Src\Administration\Domain\Repositories\IEmployeeRepository;
-use Src\Administration\Domain\ValueObjects\Email;
-use Src\Administration\Domain\ValueObjects\Name;
-use Src\Administration\Domain\ValueObjects\Password;
-use Src\Administration\Domain\ValueObjects\Type;
+use Src\Vehicles\Application\Vehicle\Dtos\CreateVehicleInputDto;
+use Src\Vehicles\Application\Vehicle\Dtos\CreateVehicleOutputDto;
 use Src\Shared\Utils\Notification;
+use Src\Vehicles\Domain\Entities\Vehicle;
+use Src\Vehicles\Domain\Repositories\IVehicleRepository;
+use Src\Vehicles\Domain\ValueObjects\Color;
+
+use Src\Vehicles\Domain\ValueObjects\EntryTimes;
+use Src\Vehicles\Domain\ValueObjects\LicensePlate;
+use Src\Vehicles\Domain\ValueObjects\Manufacturer;
+use Src\Vehicles\Domain\ValueObjects\Model;
 
 final class CreateVehicle
 {
     public function __construct(
-        readonly IEmployeeRepository $iEmployeeRepository,
+        readonly IVehicleRepository $iVehicleRepository,
         readonly Notification $notification,
     ) {
     }
 
     public function execute(CreateVehicleInputDto $input): CreateVehicleOutputDto
     {
-        $existEmployee = $this->resolveExistVehicle($input->licensePlate);
+        $existVehicle = $this->resolveExistVehicle($input->licensePlate);
 
-        if ($existEmployee instanceof Notification) {
-            return new CreateEmployeeOutputDto(
+        if ($existVehicle instanceof Notification) {
+            return new CreateVehicleOutputDto(
                 null,
                 $this->notification
             );
         }
 
-        $employee = $this->iEmployeeRepository->create(
-            new Employee(
+        $vehicle = $this->iVehicleRepository->create(
+            new Vehicle(
                 null,
-                new Name($input->name),
-                new Email($input->email),
-                new Password($input->password),
-                new Type($input->type),
+                new Manufacturer($input->manufacturer),
+                new Color($input->color),
+                new Model($input->model),
+                new LicensePlate($input->licensePlate),
+                new EntryTimes(
+                    new DateTime(
+                        $input->entryTimes->format('Y-m-d H:i:s')
+                        )
+                ),
+                null
             )
         );
 
-        return new CreateEmployeeOutputDto(
-            $employee,
+        return new CreateVehicleOutputDto(
+            $vehicle,
             $this->notification
         );
     }
 
     private function resolveExistVehicle(string $licensePlate): bool|Notification
     {
-        $existEmployee = $this->iEmployeeRepository->existByEmail(
-            new Email($employeeEmail)
+        $existVehicle = $this->iVehicleRepository->existVehicle(
+            new LicensePlate($licensePlate)
         );
 
-        if ($existEmployee) {
+        if ($existVehicle) {
             return $this->notification->addError([
                 'context' => 'license_plate_already_exists',
                 'message' => 'Placa já cadastrado!',
             ]);
         }
 
-        return $existEmployee;
+        return $existVehicle;
     }
 }

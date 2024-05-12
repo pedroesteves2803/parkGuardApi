@@ -2,8 +2,8 @@
 
 namespace Src\Vehicles\Domain\Repositories;
 
-use Illuminate\Support\Collection;
 use Src\Vehicles\Domain\Entities\Vehicle;
+use Src\Vehicles\Domain\ValueObjects\LicensePlate;
 
 interface IVehicleRepository
 {
@@ -17,5 +17,5 @@ interface IVehicleRepository
 
     // public function delete(int $id): void;
 
-    public function existVehicle(string $licensePlate): bool;
+    public function existVehicle(LicensePlate $licensePlate): bool;
 }
