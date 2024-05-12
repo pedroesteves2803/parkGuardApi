@@ -1,8 +1,8 @@
 <?php
 
-use Src\Administration\Application\Employee\UpdateEmployee;
 use Src\Administration\Application\Employee\Dtos\UpdateEmployeeInputDto;
 use Src\Administration\Application\Employee\Dtos\UpdateEmployeeOutputDto;
+use Src\Administration\Application\Employee\UpdateEmployee;
 use Src\Administration\Domain\Entities\Employee;
 use Src\Administration\Domain\Repositories\IEmployeeRepository;
 use Src\Administration\Domain\ValueObjects\Email;

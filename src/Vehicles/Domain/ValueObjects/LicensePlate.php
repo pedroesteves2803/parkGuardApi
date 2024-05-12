@@ -10,7 +10,6 @@ final class LicensePlate extends ValueObject
 
     private $mercosurStandard = '/^[A-Z]{3}\d[A-Z]\d{2}$/';
 
-
     public function __construct(
         private string $value
     ) {

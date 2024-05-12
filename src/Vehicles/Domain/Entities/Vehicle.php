@@ -8,8 +8,8 @@ use Src\Vehicles\Domain\ValueObjects\Color;
 use Src\Vehicles\Domain\ValueObjects\DepartureTimes;
 use Src\Vehicles\Domain\ValueObjects\EntryTimes;
 use Src\Vehicles\Domain\ValueObjects\LicensePlate;
-use Src\Vehicles\Domain\ValueObjects\Model;
 use Src\Vehicles\Domain\ValueObjects\Manufacturer;
+use Src\Vehicles\Domain\ValueObjects\Model;
 
 class Vehicle extends Entity implements IAggregator
 {
@@ -61,6 +61,6 @@ class Vehicle extends Entity implements IAggregator
 
     public function __toString(): string
     {
-        return "Veiculo:";
+        return 'Veiculo:';
     }
 }

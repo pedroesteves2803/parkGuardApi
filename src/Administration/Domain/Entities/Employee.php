@@ -2,12 +2,12 @@
 
 namespace Src\Administration\Domain\Entities;
 
-use Src\Shared\Domain\Entities\Entity;
-use Src\Shared\Domain\Entities\IAggregator;
 use Src\Administration\Domain\ValueObjects\Email;
 use Src\Administration\Domain\ValueObjects\Name;
 use Src\Administration\Domain\ValueObjects\Password;
 use Src\Administration\Domain\ValueObjects\Type;
+use Src\Shared\Domain\Entities\Entity;
+use Src\Shared\Domain\Entities\IAggregator;
 
 class Employee extends Entity implements IAggregator
 {

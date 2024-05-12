@@ -63,6 +63,6 @@ it('returns error notification when trying to delete a non-existing employee', f
         [
             'context' => 'employee_not_found',
             'message' => 'Funcionario não encontrado!',
-        ]
+        ],
     ]);
 });

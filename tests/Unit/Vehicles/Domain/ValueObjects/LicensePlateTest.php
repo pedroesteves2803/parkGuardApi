@@ -2,7 +2,6 @@
 
 namespace Tests\Unit\Shared\Domain\ValueObjects;
 
-use Exception;
 use Src\Vehicles\Domain\ValueObjects\LicensePlate;
 
 test('validates instance license plate', function () {
@@ -17,7 +16,7 @@ it('throws exception for empty license plate', function () {
 });
 
 it('throws exception for invalid license plate', function () {
-    $this->expectException(Exception::class);
+    $this->expectException(\Exception::class);
     $this->expectExceptionMessage('It must be a valid license plate.');
     new LicensePlate('INVALID');
 });

@@ -1,9 +1,6 @@
 <?php
 
 use Illuminate\Support\Collection;
-use Src\Administration\Application\Employee\DeleteEmployeeById;
-use Src\Administration\Application\Employee\Dtos\DeleteEmployeeByIdInputDto;
-use Src\Administration\Application\Employee\Dtos\DeleteEmployeeByIdOutputDto;
 use Src\Administration\Application\Employee\Dtos\GetAllEmployeesOutputDto;
 use Src\Administration\Application\Employee\GetAllEmployees;
 use Src\Administration\Domain\Entities\Employee;

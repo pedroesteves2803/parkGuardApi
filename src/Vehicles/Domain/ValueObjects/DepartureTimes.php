@@ -2,16 +2,16 @@
 
 namespace Src\Vehicles\Domain\ValueObjects;
 
-use DateTime;
 use Src\Shared\Domain\ValueObjects\ValueObject;
+
 final class DepartureTimes extends ValueObject
 {
     public function __construct(
-        private DateTime $value
+        private \DateTime $value
     ) {
     }
 
-    public function value(): DateTime
+    public function value(): \DateTime
     {
         return $this->value;
     }
