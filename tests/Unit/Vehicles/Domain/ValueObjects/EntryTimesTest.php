@@ -3,6 +3,7 @@
 namespace Tests\Unit\Shared\Domain\ValueObjects;
 
 use DateTime;
+use Exception;
 use Src\Vehicles\Domain\ValueObjects\EntryTimes;
 
 test('validates instance entry times', function () {
