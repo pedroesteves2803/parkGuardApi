@@ -31,7 +31,7 @@ final class EloquentVehicleRepository implements IVehicleRepository
             new Model($vehicle->model),
             new LicensePlate($vehicle->license_plate),
             new EntryTimes(new DateTime($vehicle->entry_times)),
-            new DepartureTimes(new DateTime($vehicle->departure_times))
+            new DepartureTimes($vehicle->departure_times)
         );
     }
 

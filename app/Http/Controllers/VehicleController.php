@@ -2,11 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\Vehicle\GetVehicleByIdResource;
+use App\Http\Resources\Vehicle\CreateVehicleResource;
 use App\Models\Vehicle;
 use DateTime;
 use Illuminate\Http\Request;
 use Src\Vehicles\Application\Vehicle\Dtos\CreateVehicleInputDto;
 use Src\Vehicles\Application\Vehicle\CreateVehicle;
+use Src\Vehicles\Application\Vehicle\Dtos\GetVehicleInputDto;
+use Src\Vehicles\Application\Vehicle\GetVehicleById;
 
 class VehicleController extends Controller
 {
@@ -37,18 +41,26 @@ class VehicleController extends Controller
 
         $outputDto = $createVehicle->execute($inputDto);
 
-        dd($outputDto);
-
+        return new CreateVehicleResource(
+            $outputDto
+        );
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Vehicle $vehicle)
-    {
-        //
-    }
+    public function show(
+        int $id,
+        GetVehicleById $getVehicleById
+    ) {
+        $inputDto = new GetVehicleInputDto(
+            $id,
+        );
 
+        $outputDto = $getVehicleById->execute($inputDto);
+
+        return new GetVehicleByIdResource($outputDto);
+    }
     /**
      * Update the specified resource in storage.
      */

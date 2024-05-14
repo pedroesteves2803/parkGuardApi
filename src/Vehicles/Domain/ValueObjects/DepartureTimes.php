@@ -7,11 +7,11 @@ use Src\Shared\Domain\ValueObjects\ValueObject;
 final class DepartureTimes extends ValueObject
 {
     public function __construct(
-        private \DateTime $value
+        private ?\DateTime $value
     ) {
     }
 
-    public function value(): \DateTime
+    public function value(): \DateTime|null
     {
         return $this->value;
     }

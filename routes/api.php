@@ -11,3 +11,4 @@ Route::patch('/employee/{employee}', [EmployeeController::class, 'update'])->nam
 Route::delete('/employee/{employee}', [EmployeeController::class, 'destroy'])->name('employee.destroy');
 
 Route::post('/vehicle', [VehicleController::class, 'store'])->name('vehicle.store');
+Route::get('/vehicle/{vehicle}', [VehicleController::class, 'show'])->name('vehicle.show');

@@ -43,9 +43,7 @@ final class CreateVehicle
                 new Model($input->model),
                 new LicensePlate($input->licensePlate),
                 new EntryTimes(
-                    new DateTime(
-                        $input->entryTimes->format('Y-m-d H:i:s')
-                        )
+                        $input->entryTimes
                 ),
                 null
             )
