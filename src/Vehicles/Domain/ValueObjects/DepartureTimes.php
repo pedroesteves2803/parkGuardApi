@@ -11,7 +11,7 @@ final class DepartureTimes extends ValueObject
     ) {
     }
 
-    public function value(): \DateTime|null
+    public function value(): ?\DateTime
     {
         return $this->value;
     }

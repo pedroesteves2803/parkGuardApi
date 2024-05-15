@@ -10,5 +10,6 @@ Route::get('/employee/{employee}', [EmployeeController::class, 'show'])->name('e
 Route::patch('/employee/{employee}', [EmployeeController::class, 'update'])->name('employee.update');
 Route::delete('/employee/{employee}', [EmployeeController::class, 'destroy'])->name('employee.destroy');
 
+Route::get('/vehicles', [VehicleController::class, 'index'])->name('vehicle.index');
 Route::post('/vehicle', [VehicleController::class, 'store'])->name('vehicle.store');
 Route::get('/vehicle/{vehicle}', [VehicleController::class, 'show'])->name('vehicle.show');

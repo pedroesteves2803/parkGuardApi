@@ -3,7 +3,7 @@
 namespace Src\Vehicles\Infrastructure;
 
 use App\Models\Vehicle as ModelsVehicle;
-use DateTime;
+use Illuminate\Support\Collection;
 use Src\Vehicles\Domain\Entities\Vehicle;
 use Src\Vehicles\Domain\Repositories\IVehicleRepository;
 use Src\Vehicles\Domain\ValueObjects\Color;
@@ -15,6 +15,24 @@ use Src\Vehicles\Domain\ValueObjects\Model;
 
 final class EloquentVehicleRepository implements IVehicleRepository
 {
+    public function getAll(): ?Collection
+    {
+        $vehicles = ModelsVehicle::all();
+
+        $vehicles = $vehicles->map(function ($vehicle) {
+            return new Vehicle(
+                $vehicle->id,
+                new Manufacturer($vehicle->manufacturer),
+                new Color($vehicle->color),
+                new Model($vehicle->model),
+                new LicensePlate($vehicle->license_plate),
+                new EntryTimes(new \DateTime($vehicle->entry_times)),
+                new DepartureTimes($vehicle->departure_times)
+            );
+        });
+
+        return $vehicles;
+    }
 
     public function getById(int $id): ?Vehicle
     {
@@ -30,7 +48,7 @@ final class EloquentVehicleRepository implements IVehicleRepository
             new Color($vehicle->color),
             new Model($vehicle->model),
             new LicensePlate($vehicle->license_plate),
-            new EntryTimes(new DateTime($vehicle->entry_times)),
+            new EntryTimes(new \DateTime($vehicle->entry_times)),
             new DepartureTimes($vehicle->departure_times)
         );
     }
@@ -40,7 +58,7 @@ final class EloquentVehicleRepository implements IVehicleRepository
         $modelsVehicle = new ModelsVehicle();
         $modelsVehicle->manufacturer = $vehicle->manufacturer->value();
         $modelsVehicle->color = $vehicle->color->value();
-        $modelsVehicle->model =$vehicle->model->value();
+        $modelsVehicle->model = $vehicle->model->value();
         $modelsVehicle->license_plate = $vehicle->licensePlate->value();
         $modelsVehicle->entry_times = $vehicle->entryTimes->value();
         $modelsVehicle->save();
@@ -52,17 +70,18 @@ final class EloquentVehicleRepository implements IVehicleRepository
             new Model($modelsVehicle->model),
             new LicensePlate($modelsVehicle->license_plate),
             new EntryTimes(
-                new DateTime(
+                new \DateTime(
                     $modelsVehicle->entry_times->format('Y-m-d H:i:s')
-                    )
+                )
             ),
             $modelsVehicle->departure_times
         );
     }
 
-    public function existVehicle(LicensePlate $licensePlate): bool {
-
+    public function existVehicle(LicensePlate $licensePlate): bool
+    {
         $vehicle = ModelsVehicle::where(['license_plate' => $licensePlate, 'departure_times' => null])->exists();
+
         return $vehicle;
     }
 }

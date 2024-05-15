@@ -29,7 +29,7 @@ it('successfully creates an vehicle', function () {
             new Model('Corolla'),
             new LicensePlate('ABC-1234'),
             new EntryTimes(new DateTime('2024-05-12 08:00:00')),
-        new DepartureTimes(new DateTime('2024-05-12 17:00:00'))
+            new DepartureTimes(new DateTime('2024-05-12 17:00:00'))
         )
     );
 

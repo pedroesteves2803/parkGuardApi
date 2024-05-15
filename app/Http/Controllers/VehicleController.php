@@ -2,40 +2,37 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\Vehicle\GetVehicleByIdResource;
 use App\Http\Resources\Vehicle\CreateVehicleResource;
+use App\Http\Resources\Vehicle\GetAllVehiclesResource;
+use App\Http\Resources\Vehicle\GetVehicleByIdResource;
 use App\Models\Vehicle;
-use DateTime;
 use Illuminate\Http\Request;
-use Src\Vehicles\Application\Vehicle\Dtos\CreateVehicleInputDto;
 use Src\Vehicles\Application\Vehicle\CreateVehicle;
+use Src\Vehicles\Application\Vehicle\Dtos\CreateVehicleInputDto;
 use Src\Vehicles\Application\Vehicle\Dtos\GetVehicleInputDto;
+use Src\Vehicles\Application\Vehicle\GetAllVehicles;
 use Src\Vehicles\Application\Vehicle\GetVehicleById;
 
 class VehicleController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
+    public function index(
+        GetAllVehicles $getAllVehicles
+    ) {
+        $output = $getAllVehicles->execute();
+
+        return new GetAllVehiclesResource($output);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(
         Request $request,
         CreateVehicle $createVehicle
-    )
-    {
+    ) {
         $inputDto = new CreateVehicleInputDto(
             $request->manufacturer,
             $request->color,
             $request->model,
             $request->licensePlate,
-            new DateTime(),
+            new \DateTime(),
             null,
         );
 
@@ -46,9 +43,6 @@ class VehicleController extends Controller
         );
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(
         int $id,
         GetVehicleById $getVehicleById
@@ -61,19 +55,12 @@ class VehicleController extends Controller
 
         return new GetVehicleByIdResource($outputDto);
     }
-    /**
-     * Update the specified resource in storage.
-     */
+
     public function update(Request $request, Vehicle $vehicle)
     {
-        //
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(Vehicle $vehicle)
     {
-        //
     }
 }

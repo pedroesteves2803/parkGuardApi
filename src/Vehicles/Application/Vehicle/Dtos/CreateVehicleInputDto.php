@@ -2,8 +2,6 @@
 
 namespace Src\Vehicles\Application\Vehicle\Dtos;
 
-use DateTime;
-
 final class CreateVehicleInputDto
 {
     public function __construct(
@@ -11,8 +9,8 @@ final class CreateVehicleInputDto
         readonly string $color,
         readonly string $model,
         readonly string $licensePlate,
-        readonly DateTime $entryTimes,
-        readonly ?DateTime $departureTimes,
+        readonly \DateTime $entryTimes,
+        readonly ?\DateTime $departureTimes,
     ) {
     }
 }
