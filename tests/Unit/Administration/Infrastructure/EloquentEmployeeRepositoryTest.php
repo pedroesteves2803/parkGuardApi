@@ -79,3 +79,61 @@ it('creates a new employee', function () {
     expect($createdEmployee->email->value())->toBe($employeeData->email->value());
     expect($createdEmployee->type->value())->toBe($employeeData->type->value());
 });
+
+it('update a employee', function () {
+    ModelsEmployee::factory()->create([
+        'name'     => 'nome 1',
+        'email'    => 'email1@teste.com',
+        'password' => '$2a$12$NhD.F7UP.twqMtPxDo6A8eri.9ESq027PMYoPBonGkZ7uFGO.LaYe',
+        'type'     => 1,
+    ]);
+
+    $employeeData = new Employee(
+        1,
+        new Name('Update'),
+        new Email('update@test.com'),
+        new Password('Password@123'),
+        new Type(1)
+    );
+
+    $repository = new EloquentEmployeeRepository();
+    $createdEmployee = $repository->update($employeeData);
+
+    expect($createdEmployee)->toBeInstanceOf(Employee::class);
+    $this->assertNotNull($createdEmployee->id);
+    expect($createdEmployee->name->value())->toBe($employeeData->name->value());
+    expect($createdEmployee->email->value())->toBe($employeeData->email->value());
+    expect($createdEmployee->type->value())->toBe($employeeData->type->value());
+});
+
+it('check if there is an employee', function () {
+    ModelsEmployee::factory()->create([
+        'name'     => 'nome 1',
+        'email'    => 'email1@teste.com',
+        'password' => '$2a$12$NhD.F7UP.twqMtPxDo6A8eri.9ESq027PMYoPBonGkZ7uFGO.LaYe',
+        'type'     => 1,
+    ]);
+
+    $repository = new EloquentEmployeeRepository();
+    $existEmployee = $repository->existByEmail(
+        new Email('email1@teste.com')
+    );
+
+    expect($existEmployee)->toBeTrue();
+});
+
+it('check if there is no employee', function () {
+    ModelsEmployee::factory()->create([
+        'name'     => 'nome 1',
+        'email'    => 'email1@teste.com',
+        'password' => '$2a$12$NhD.F7UP.twqMtPxDo6A8eri.9ESq027PMYoPBonGkZ7uFGO.LaYe',
+        'type'     => 1,
+    ]);
+
+    $repository = new EloquentEmployeeRepository();
+    $existEmployee = $repository->existByEmail(
+        new Email('emailerrado@teste.com')
+    );
+
+    expect($existEmployee)->toBeFalse();
+});

@@ -5,13 +5,16 @@ namespace App\Http\Controllers;
 use App\Http\Resources\Vehicle\CreateVehicleResource;
 use App\Http\Resources\Vehicle\GetAllVehiclesResource;
 use App\Http\Resources\Vehicle\GetVehicleByIdResource;
+use App\Http\Resources\Vehicle\UpdateVehicleResource;
 use App\Models\Vehicle;
 use Illuminate\Http\Request;
 use Src\Vehicles\Application\Vehicle\CreateVehicle;
 use Src\Vehicles\Application\Vehicle\Dtos\CreateVehicleInputDto;
 use Src\Vehicles\Application\Vehicle\Dtos\GetVehicleInputDto;
+use Src\Vehicles\Application\Vehicle\Dtos\UpdateVehicleInputDto;
 use Src\Vehicles\Application\Vehicle\GetAllVehicles;
 use Src\Vehicles\Application\Vehicle\GetVehicleById;
+use Src\Vehicles\Application\Vehicle\UpdateVehicle;
 
 class VehicleController extends Controller
 {
@@ -56,8 +59,23 @@ class VehicleController extends Controller
         return new GetVehicleByIdResource($outputDto);
     }
 
-    public function update(Request $request, Vehicle $vehicle)
+    public function update(
+        Request $request,
+        int $id,
+        UpdateVehicle $updateVehicle
+    )
     {
+        $inputDto = new UpdateVehicleInputDto(
+            $id,
+            $request->manufacturer,
+            $request->color,
+            $request->model,
+            $request->licensePlate
+        );
+
+        $outputDto = $updateVehicle->execute($inputDto);
+
+        return new UpdateVehicleResource($outputDto);
     }
 
     public function destroy(Vehicle $vehicle)
