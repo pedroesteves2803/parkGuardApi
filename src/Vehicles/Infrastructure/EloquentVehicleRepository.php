@@ -60,6 +60,31 @@ final class EloquentVehicleRepository implements IVehicleRepository
         );
     }
 
+    public function update(Vehicle $vehicle): ?Vehicle {
+
+        $modelsEmployee = ModelsVehicle::find($vehicle->id);
+
+        if (is_null($vehicle)) {
+            return null;
+        }
+
+        $modelsEmployee->manufacturer = $vehicle->manufacturer;
+        $modelsEmployee->color = $vehicle->color;
+        $modelsEmployee->model = $vehicle->model;
+        $modelsEmployee->license_plate = $vehicle->licensePlate;
+        $modelsEmployee->update();
+
+        return new Vehicle(
+            $vehicle->id,
+            new Manufacturer($vehicle->manufacturer),
+            new Color($vehicle->color),
+            new Model($vehicle->model),
+            new LicensePlate($vehicle->licensePlate),
+           $vehicle->entryTimes,
+            $vehicle->departureTimes
+        );
+    }
+
     public function existVehicle(LicensePlate $licensePlate): bool {
 
         $vehicle = ModelsVehicle::where(['license_plate' => $licensePlate, 'departure_times' => null])->exists();
