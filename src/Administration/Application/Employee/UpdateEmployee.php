@@ -78,7 +78,6 @@ final class UpdateEmployee
             return false;
         }
 
-
         $existEmployee = $this->iEmployeeRepository->existByEmail(
             new Email($input->email)
         );
