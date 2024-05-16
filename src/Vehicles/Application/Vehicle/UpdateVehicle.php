@@ -37,15 +37,6 @@ final class UpdateVehicle
             );
         }
 
-        $existVehicle = $this->resolveExistVehicle($input->licensePlate);
-
-        if ($existVehicle instanceof Notification) {
-            return new UpdateVehicleOutputDto(
-                null,
-                $this->notification
-            );
-        }
-
         $vehicle = $this->iVehicleRepository->update(
             new Vehicle(
                 $input->id,
@@ -76,21 +67,5 @@ final class UpdateVehicle
         }
 
         return $vehicle;
-    }
-
-    private function resolveExistVehicle(string $licensePlate): bool|Notification
-    {
-        $existVehicle = $this->iVehicleRepository->existVehicle(
-            new LicensePlate($licensePlate)
-        );
-
-        if ($existVehicle) {
-            return $this->notification->addError([
-                'context' => 'license_plate_already_exists',
-                'message' => 'Placa já cadastrado!',
-            ]);
-        }
-
-        return $existVehicle;
     }
 }
