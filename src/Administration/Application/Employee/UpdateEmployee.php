@@ -30,7 +30,7 @@ final class UpdateEmployee
             );
         }
 
-        $existEmployee = $this->resolveExistCategoryByEmail($input->email);
+        $existEmployee = $this->resolveExistEmployeeByEmail($employeeById, $input);
 
         if ($existEmployee instanceof Notification) {
             return new UpdateEmployeeOutputDto(
@@ -69,10 +69,18 @@ final class UpdateEmployee
         return $employee;
     }
 
-    private function resolveExistCategoryByEmail(string $employeeEmail): bool|Notification
+    private function resolveExistEmployeeByEmail(
+        Employee $employee,
+        UpdateEmployeeInputDto $input
+    ): bool|Notification
     {
+        if($employee->email->value() === $input->email) {
+            return false;
+        }
+
+
         $existEmployee = $this->iEmployeeRepository->existByEmail(
-            new Email($employeeEmail)
+            new Email($input->email)
         );
 
         if ($existEmployee) {
