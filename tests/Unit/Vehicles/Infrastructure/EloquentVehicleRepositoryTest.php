@@ -1,8 +1,8 @@
 <?php
 
 use App\Models\Vehicle as ModelsVehicle;
-use Illuminate\Support\Collection;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Collection;
 use Src\Vehicles\Domain\Entities\Vehicle;
 use Src\Vehicles\Domain\ValueObjects\Color;
 use Src\Vehicles\Domain\ValueObjects\EntryTimes;
@@ -16,22 +16,21 @@ uses(TestCase::class, RefreshDatabase::class);
 
 it('can get all vehicles', function () {
     ModelsVehicle::factory()->create([
-        'manufacturer' => 'Honda',
-        'color' => 'Azul',
-        'model' => 'Civic',
-        'license_plate' => 'DGF-1798',
-        'entry_times' => new DateTime(),
+        'manufacturer'    => 'Honda',
+        'color'           => 'Azul',
+        'model'           => 'Civic',
+        'license_plate'   => 'DGF-1798',
+        'entry_times'     => new DateTime(),
         'departure_times' => null,
     ]);
     ModelsVehicle::factory()->create([
-        'manufacturer' => 'Fiat',
-        'color' => 'Preto',
-        'model' => 'Uno',
-        'license_plate' => 'DEF-1028',
-        'entry_times' => new DateTime(),
+        'manufacturer'    => 'Fiat',
+        'color'           => 'Preto',
+        'model'           => 'Uno',
+        'license_plate'   => 'DEF-1028',
+        'entry_times'     => new DateTime(),
         'departure_times' => null,
     ]);
-
 
     $repository = new EloquentVehicleRepository();
     $vehicles = $repository->getAll();
@@ -42,11 +41,11 @@ it('can get all vehicles', function () {
 
 it('can get vehicle by id', function () {
     $vehicle = ModelsVehicle::factory()->create([
-        'manufacturer' => 'Fiat',
-        'color' => 'Preto',
-        'model' => 'Uno',
-        'license_plate' => 'DEF-1028',
-        'entry_times' => new DateTime(),
+        'manufacturer'    => 'Fiat',
+        'color'           => 'Preto',
+        'model'           => 'Uno',
+        'license_plate'   => 'DEF-1028',
+        'entry_times'     => new DateTime(),
         'departure_times' => null,
     ]);
 
@@ -89,11 +88,11 @@ it('creates a new vehicle', function () {
 
 it('update a vehicle', function () {
     ModelsVehicle::factory()->create([
-        'manufacturer' => 'Fiat',
-        'color' => 'Preto',
-        'model' => 'Uno',
-        'license_plate' => 'DEF-1028',
-        'entry_times' => new DateTime(),
+        'manufacturer'    => 'Fiat',
+        'color'           => 'Preto',
+        'model'           => 'Uno',
+        'license_plate'   => 'DEF-1028',
+        'entry_times'     => new DateTime(),
         'departure_times' => null,
     ]);
 
@@ -121,11 +120,11 @@ it('update a vehicle', function () {
 
 it('check if there is an vehicle', function () {
     ModelsVehicle::factory()->create([
-        'manufacturer' => 'Fiat',
-        'color' => 'Preto',
-        'model' => 'Uno',
-        'license_plate' => 'DEF-1028',
-        'entry_times' => new DateTime(),
+        'manufacturer'    => 'Fiat',
+        'color'           => 'Preto',
+        'model'           => 'Uno',
+        'license_plate'   => 'DEF-1028',
+        'entry_times'     => new DateTime(),
         'departure_times' => null,
     ]);
 
@@ -139,11 +138,11 @@ it('check if there is an vehicle', function () {
 
 it('check if there is no vehicle', function () {
     ModelsVehicle::factory()->create([
-        'manufacturer' => 'Fiat',
-        'color' => 'Preto',
-        'model' => 'Uno',
-        'license_plate' => 'DEF-1028',
-        'entry_times' => new DateTime(),
+        'manufacturer'    => 'Fiat',
+        'color'           => 'Preto',
+        'model'           => 'Uno',
+        'license_plate'   => 'DEF-1028',
+        'entry_times'     => new DateTime(),
         'departure_times' => null,
     ]);
 

@@ -72,9 +72,8 @@ final class UpdateEmployee
     private function resolveExistEmployeeByEmail(
         Employee $employee,
         UpdateEmployeeInputDto $input
-    ): bool|Notification
-    {
-        if($employee->email->value() === $input->email) {
+    ): bool|Notification {
+        if ($employee->email->value() === $input->email) {
             return false;
         }
 

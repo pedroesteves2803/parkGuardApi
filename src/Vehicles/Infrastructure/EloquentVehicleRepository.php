@@ -78,8 +78,8 @@ final class EloquentVehicleRepository implements IVehicleRepository
         );
     }
 
-    public function update(Vehicle $vehicle): ?Vehicle {
-
+    public function update(Vehicle $vehicle): ?Vehicle
+    {
         $modelsEmployee = ModelsVehicle::find($vehicle->id);
 
         if (is_null($vehicle)) {
@@ -98,13 +98,13 @@ final class EloquentVehicleRepository implements IVehicleRepository
             new Color($vehicle->color),
             new Model($vehicle->model),
             new LicensePlate($vehicle->licensePlate),
-           $vehicle->entryTimes,
+            $vehicle->entryTimes,
             $vehicle->departureTimes
         );
     }
 
-    public function existVehicle(LicensePlate $licensePlate): bool {
-
+    public function existVehicle(LicensePlate $licensePlate): bool
+    {
         $vehicle = ModelsVehicle::where(['license_plate' => $licensePlate, 'departure_times' => null])->exists();
 
         return $vehicle;

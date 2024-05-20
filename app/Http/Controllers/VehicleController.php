@@ -63,8 +63,7 @@ class VehicleController extends Controller
         Request $request,
         int $id,
         UpdateVehicle $updateVehicle
-    )
-    {
+    ) {
         $inputDto = new UpdateVehicleInputDto(
             $id,
             $request->manufacturer,

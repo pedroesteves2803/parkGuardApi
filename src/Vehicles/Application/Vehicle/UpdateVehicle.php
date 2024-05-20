@@ -2,17 +2,12 @@
 
 namespace Src\Vehicles\Application\Vehicle;
 
-use DateTime;
-use Src\Administration\Application\Employee\Dtos\CreateEmployeeOutputDto;
-use Src\Vehicles\Application\Vehicle\Dtos\CreateVehicleInputDto;
-use Src\Vehicles\Application\Vehicle\Dtos\CreateVehicleOutputDto;
 use Src\Shared\Utils\Notification;
 use Src\Vehicles\Application\Vehicle\Dtos\UpdateVehicleInputDto;
 use Src\Vehicles\Application\Vehicle\Dtos\UpdateVehicleOutputDto;
 use Src\Vehicles\Domain\Entities\Vehicle;
 use Src\Vehicles\Domain\Repositories\IVehicleRepository;
 use Src\Vehicles\Domain\ValueObjects\Color;
-use Src\Vehicles\Domain\ValueObjects\DepartureTimes;
 use Src\Vehicles\Domain\ValueObjects\EntryTimes;
 use Src\Vehicles\Domain\ValueObjects\LicensePlate;
 use Src\Vehicles\Domain\ValueObjects\Manufacturer;
@@ -44,7 +39,7 @@ final class UpdateVehicle
                 new Color($input->color),
                 new Model($input->model),
                 new LicensePlate($input->licensePlate),
-                new EntryTimes(new DateTime()),
+                new EntryTimes(new \DateTime()),
                 null
             )
         );

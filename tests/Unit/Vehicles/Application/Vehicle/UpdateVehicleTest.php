@@ -29,7 +29,7 @@ it('can update an existing vehicle with valid input', function () {
         new Model('Corolla'),
         new LicensePlate('ABC-1234'),
         new EntryTimes(new DateTime('2024-05-12 08:00:00')),
-    new DepartureTimes(new DateTime('2024-05-12 17:00:00'))
+        new DepartureTimes(new DateTime('2024-05-12 17:00:00'))
     );
 
     $this->repositoryMock->shouldReceive('getById')->once()->andReturn($vehicle);
@@ -41,7 +41,7 @@ it('can update an existing vehicle with valid input', function () {
         new Model('Corolla'),
         new LicensePlate('ABC-4567'),
         new EntryTimes(new DateTime('2024-05-12 08:00:00')),
-    new DepartureTimes(new DateTime('2024-05-12 17:00:00'))
+        new DepartureTimes(new DateTime('2024-05-12 17:00:00'))
     );
 
     $this->repositoryMock->shouldReceive('update')->once()->andReturn($vehicleUpdate);
@@ -88,6 +88,6 @@ it('returns error notification when trying to update an vehicle with non-existin
         [
             'context' => 'vehicle_not_found',
             'message' => 'Veiculo não encontrado!',
-        ]
+        ],
     ]);
 });
