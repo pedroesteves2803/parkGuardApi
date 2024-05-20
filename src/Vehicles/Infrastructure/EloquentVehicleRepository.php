@@ -4,7 +4,6 @@ namespace Src\Vehicles\Infrastructure;
 
 use App\Models\Vehicle as ModelsVehicle;
 use Illuminate\Support\Collection;
-use Src\Vehicles\Domain\Entities\Vehicle;
 use Src\Vehicles\Domain\Repositories\IVehicleRepository;
 use Src\Vehicles\Domain\ValueObjects\Color;
 use Src\Vehicles\Domain\ValueObjects\DepartureTimes;
@@ -12,6 +11,7 @@ use Src\Vehicles\Domain\ValueObjects\EntryTimes;
 use Src\Vehicles\Domain\ValueObjects\LicensePlate;
 use Src\Vehicles\Domain\ValueObjects\Manufacturer;
 use Src\Vehicles\Domain\ValueObjects\Model;
+use Src\Vehicles\Domain\Entities\Vehicle;
 
 final class EloquentVehicleRepository implements IVehicleRepository
 {
@@ -80,17 +80,17 @@ final class EloquentVehicleRepository implements IVehicleRepository
 
     public function update(Vehicle $vehicle): ?Vehicle
     {
-        $modelsEmployee = ModelsVehicle::find($vehicle->id);
+        $modelsVehicle = ModelsVehicle::find($vehicle->id);
 
         if (is_null($vehicle)) {
             return null;
         }
 
-        $modelsEmployee->manufacturer = $vehicle->manufacturer;
-        $modelsEmployee->color = $vehicle->color;
-        $modelsEmployee->model = $vehicle->model;
-        $modelsEmployee->license_plate = $vehicle->licensePlate;
-        $modelsEmployee->update();
+        $modelsVehicle->manufacturer = $vehicle->manufacturer;
+        $modelsVehicle->color = $vehicle->color;
+        $modelsVehicle->model = $vehicle->model;
+        $modelsVehicle->license_plate = $vehicle->licensePlate;
+        $modelsVehicle->update();
 
         return new Vehicle(
             $vehicle->id,
@@ -108,5 +108,22 @@ final class EloquentVehicleRepository implements IVehicleRepository
         $vehicle = ModelsVehicle::where(['license_plate' => $licensePlate, 'departure_times' => null])->exists();
 
         return $vehicle;
+    }
+
+    public function exit(LicensePlate $licensePlate): Vehicle
+    {
+        $modelsVehicle = ModelsVehicle::where(['license_plate' => $licensePlate, 'departure_times' => null]);
+        $modelsVehicle->departure_times = new \DateTime();
+        $modelsVehicle->update();
+
+        return new Vehicle(
+            $modelsVehicle->id,
+            new Manufacturer($modelsVehicle->manufacturer),
+            new Color($modelsVehicle->color),
+            new Model($modelsVehicle->model),
+            new LicensePlate($modelsVehicle->licensePlate),
+            $modelsVehicle->entryTimes,
+            $modelsVehicle->departureTimes
+        );
     }
 }

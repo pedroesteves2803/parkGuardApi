@@ -106,6 +106,22 @@ it('update a employee', function () {
     expect($createdEmployee->type->value())->toBe($employeeData->type->value());
 });
 
+it('delete a employee', function () {
+    ModelsEmployee::factory()->create([
+        'name'     => 'nome 1',
+        'email'    => 'email1@teste.com',
+        'password' => '$2a$12$NhD.F7UP.twqMtPxDo6A8eri.9ESq027PMYoPBonGkZ7uFGO.LaYe',
+        'type'     => 1,
+    ]);
+
+
+    $repository = new EloquentEmployeeRepository();
+    $repository->delete(1);
+    $deleteEmployee = $repository->getById(1);
+
+    $this->assertNull($deleteEmployee);
+});
+
 it('check if there is an employee', function () {
     ModelsEmployee::factory()->create([
         'name'     => 'nome 1',

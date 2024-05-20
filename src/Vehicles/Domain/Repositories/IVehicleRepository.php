@@ -16,7 +16,7 @@ interface IVehicleRepository
 
     public function update(Vehicle $vehicle): ?Vehicle;
 
-    // public function delete(int $id): void;
+    public function exit(LicensePlate $licensePlate): Vehicle;
 
     public function existVehicle(LicensePlate $licensePlate): bool;
 }
