@@ -3,6 +3,7 @@
 namespace Src\Vehicles\Infrastructure;
 
 use App\Models\Vehicle as ModelsVehicle;
+use DateTime;
 use Illuminate\Support\Collection;
 use Src\Vehicles\Domain\Repositories\IVehicleRepository;
 use Src\Vehicles\Domain\ValueObjects\Color;
@@ -112,8 +113,7 @@ final class EloquentVehicleRepository implements IVehicleRepository
 
     public function exit(LicensePlate $licensePlate): Vehicle
     {
-        $modelsVehicle = ModelsVehicle::where(['license_plate' => $licensePlate, 'departure_times' => null]);
-        $modelsVehicle->departure_times = new \DateTime();
+        $modelsVehicle = ModelsVehicle::where(['license_plate' => $licensePlate->value(), 'departure_times' => null])->first();
         $modelsVehicle->update();
 
         return new Vehicle(
@@ -121,9 +121,13 @@ final class EloquentVehicleRepository implements IVehicleRepository
             new Manufacturer($modelsVehicle->manufacturer),
             new Color($modelsVehicle->color),
             new Model($modelsVehicle->model),
-            new LicensePlate($modelsVehicle->licensePlate),
-            $modelsVehicle->entryTimes,
-            $modelsVehicle->departureTimes
+            new LicensePlate($modelsVehicle->license_plate),
+            new EntryTimes(
+                new DateTime($modelsVehicle->entry_times)
+            ),
+            new DepartureTimes(
+                new DateTime($modelsVehicle->departure_times)
+            )
         );
     }
 }

@@ -153,3 +153,22 @@ it('check if there is no vehicle', function () {
 
     expect($existVehicle)->toBeFalse();
 });
+
+it('add exit to vehicle', function () {
+    ModelsVehicle::factory()->create([
+        'manufacturer'    => 'Fiat',
+        'color'           => 'Preto',
+        'model'           => 'Uno',
+        'license_plate'   => 'DEF-1028',
+        'entry_times'     => new DateTime(),
+        'departure_times' => null,
+    ]);
+
+    $repository = new EloquentVehicleRepository();
+    $vehicle = $repository->exit(
+        new LicensePlate('DEF-1028')
+    );
+
+    $this->assertNotNull($vehicle->departureTimes);
+});
+
