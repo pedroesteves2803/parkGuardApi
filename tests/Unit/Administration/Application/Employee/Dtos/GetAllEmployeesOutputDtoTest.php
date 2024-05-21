@@ -10,12 +10,6 @@ use Src\Administration\Domain\ValueObjects\Type;
 use Src\Shared\Utils\Notification;
 
 it('can create an instance of GetAllEmployeesOutputDto with employees collection and notification', function () {
-    $id = '1';
-    $name = 'John Doe';
-    $email = 'john@example.com';
-    $password = 'Password@123';
-    $type = 1;
-
     $employees = new Collection();
 
     for ($i = 0; $i < 10; ++$i) {
