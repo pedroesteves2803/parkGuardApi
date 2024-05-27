@@ -27,7 +27,7 @@ final class EloquentVehicleRepository implements IVehicleRepository
                 new Color($vehicle->color),
                 new Model($vehicle->model),
                 new LicensePlate($vehicle->license_plate),
-                new EntryTimes(new \DateTime($vehicle->entry_times)),
+                new EntryTimes($vehicle->entry_times),
                 new DepartureTimes($vehicle->departure_times)
             );
         });
@@ -49,7 +49,7 @@ final class EloquentVehicleRepository implements IVehicleRepository
             new Color($vehicle->color),
             new Model($vehicle->model),
             new LicensePlate($vehicle->license_plate),
-            new EntryTimes(new \DateTime($vehicle->entry_times)),
+            new EntryTimes($vehicle->entry_times),
             new DepartureTimes($vehicle->departure_times)
         );
     }
@@ -71,11 +71,11 @@ final class EloquentVehicleRepository implements IVehicleRepository
             new Model($modelsVehicle->model),
             new LicensePlate($modelsVehicle->license_plate),
             new EntryTimes(
-                new \DateTime(
-                    $modelsVehicle->entry_times->format('Y-m-d H:i:s')
-                )
+                    $modelsVehicle->entry_times
             ),
-            $modelsVehicle->departure_times
+            new  DepartureTimes(
+                $modelsVehicle->departure_times
+            )
         );
     }
 
@@ -113,7 +113,12 @@ final class EloquentVehicleRepository implements IVehicleRepository
 
     public function exit(LicensePlate $licensePlate): Vehicle
     {
+        $departureTimes = new DepartureTimes(
+            new DateTime()
+        );
+
         $modelsVehicle = ModelsVehicle::where(['license_plate' => $licensePlate->value(), 'departure_times' => null])->first();
+        $modelsVehicle->departure_times = $departureTimes->value();
         $modelsVehicle->update();
 
         return new Vehicle(
@@ -123,10 +128,10 @@ final class EloquentVehicleRepository implements IVehicleRepository
             new Model($modelsVehicle->model),
             new LicensePlate($modelsVehicle->license_plate),
             new EntryTimes(
-                new DateTime($modelsVehicle->entry_times)
+                $modelsVehicle->entry_times
             ),
             new DepartureTimes(
-                new DateTime($modelsVehicle->departure_times)
+                $modelsVehicle->departure_times
             )
         );
     }

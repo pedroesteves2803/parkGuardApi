@@ -12,4 +12,9 @@ class Vehicle extends Model
     protected $guarded = [
         'id',
     ];
+
+    protected $casts = [
+        'entry_times' => 'datetime',
+        'departure_times' => 'datetime',
+    ];
 }

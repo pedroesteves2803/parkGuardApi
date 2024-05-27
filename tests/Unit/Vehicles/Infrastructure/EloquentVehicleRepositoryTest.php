@@ -83,7 +83,7 @@ it('creates a new vehicle', function () {
     expect($createdVehicle->color->value())->toBe($vehicleData->color->value());
     expect($createdVehicle->model->value())->toBe($vehicleData->model->value());
     expect($createdVehicle->licensePlate->value())->toBe($vehicleData->licensePlate->value());
-    $this->assertNull($createdVehicle->departureTimes);
+    $this->assertNull($createdVehicle->departureTimes->value());
 });
 
 it('update a vehicle', function () {

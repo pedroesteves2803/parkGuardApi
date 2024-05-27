@@ -14,3 +14,4 @@ Route::get('/vehicles', [VehicleController::class, 'index'])->name('vehicle.inde
 Route::post('/vehicle', [VehicleController::class, 'store'])->name('vehicle.store');
 Route::get('/vehicle/{vehicle}', [VehicleController::class, 'show'])->name('vehicle.show');
 Route::patch('/vehicle/{vehicle}', [VehicleController::class, 'update'])->name('vehicle.update');
+Route::post('/vehicle/exit/{vehicle}', [VehicleController::class, 'exit'])->name('vehicle.exit');

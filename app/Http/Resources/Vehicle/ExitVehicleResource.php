@@ -5,7 +5,7 @@ namespace App\Http\Resources\Vehicle;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class GetVehicleByIdResource extends JsonResource
+class ExitVehicleResource extends JsonResource
 {
     public function toArray(Request $request): array
     {
@@ -29,7 +29,7 @@ class GetVehicleByIdResource extends JsonResource
 
     private function getMessage()
     {
-        return empty($this->vehicle) ? null : $this->vehicle->licensePlate.' encontrado!';
+        return empty($this->vehicle) ? null : $this->vehicle->licensePlate.' saiu!';
     }
 
     private function getVehicleDetails()

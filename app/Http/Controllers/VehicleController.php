@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\Vehicle\CreateVehicleResource;
+use App\Http\Resources\Vehicle\ExitVehicleResource;
 use App\Http\Resources\Vehicle\GetAllVehiclesResource;
 use App\Http\Resources\Vehicle\GetVehicleByIdResource;
 use App\Http\Resources\Vehicle\UpdateVehicleResource;
@@ -10,11 +11,14 @@ use App\Models\Vehicle;
 use Illuminate\Http\Request;
 use Src\Vehicles\Application\Vehicle\CreateVehicle;
 use Src\Vehicles\Application\Vehicle\Dtos\CreateVehicleInputDto;
+use Src\Vehicles\Application\Vehicle\Dtos\ExitVehicleInputDto;
 use Src\Vehicles\Application\Vehicle\Dtos\GetVehicleInputDto;
 use Src\Vehicles\Application\Vehicle\Dtos\UpdateVehicleInputDto;
+use Src\Vehicles\Application\Vehicle\ExitVehicle;
 use Src\Vehicles\Application\Vehicle\GetAllVehicles;
 use Src\Vehicles\Application\Vehicle\GetVehicleById;
 use Src\Vehicles\Application\Vehicle\UpdateVehicle;
+use Src\Vehicles\Domain\ValueObjects\LicensePlate;
 
 class VehicleController extends Controller
 {
@@ -77,7 +81,17 @@ class VehicleController extends Controller
         return new UpdateVehicleResource($outputDto);
     }
 
-    public function destroy(Vehicle $vehicle)
+    public function exit(
+        string $licensePlate,
+        ExitVehicle $exitVehicle
+    )
     {
+        $inputDto = new ExitVehicleInputDto(
+            new LicensePlate($licensePlate)
+        );
+
+        $outputDto = $exitVehicle->execute($inputDto);
+
+        return new ExitVehicleResource($outputDto);
     }
 }
