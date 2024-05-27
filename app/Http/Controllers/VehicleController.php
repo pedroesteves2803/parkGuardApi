@@ -7,9 +7,10 @@ use App\Http\Resources\Vehicle\ExitVehicleResource;
 use App\Http\Resources\Vehicle\GetAllVehiclesResource;
 use App\Http\Resources\Vehicle\GetVehicleByIdResource;
 use App\Http\Resources\Vehicle\UpdateVehicleResource;
-use App\Models\Vehicle;
 use Illuminate\Http\Request;
+use Src\Vehicles\Application\Consult\ConsultPendingByLicensePlate;
 use Src\Vehicles\Application\Vehicle\CreateVehicle;
+use Src\Vehicles\Application\Vehicle\Dtos\ConsultVehicleByLicensePlateInputDto;
 use Src\Vehicles\Application\Vehicle\Dtos\CreateVehicleInputDto;
 use Src\Vehicles\Application\Vehicle\Dtos\ExitVehicleInputDto;
 use Src\Vehicles\Application\Vehicle\Dtos\GetVehicleInputDto;
@@ -32,21 +33,26 @@ class VehicleController extends Controller
 
     public function store(
         Request $request,
-        CreateVehicle $createVehicle
+        CreateVehicle $createVehicle,
+        ConsultPendingByLicensePlate $consultVehicleByLicensePlate
     ) {
-        $inputDto = new CreateVehicleInputDto(
-            $request->manufacturer,
-            $request->color,
-            $request->model,
-            $request->licensePlate,
+        $consultInputDto = new ConsultVehicleByLicensePlateInputDto($request->licensePlate);
+
+        $consultOutputDto = $consultVehicleByLicensePlate->execute($consultInputDto);
+
+        $createInputDto = new CreateVehicleInputDto(
+            $consultOutputDto->consult->manufacturer->value(),
+            $consultOutputDto->consult->color->value(),
+            $consultOutputDto->consult->model->value(),
+            $consultOutputDto->consult->licensePlate->value(),
             new \DateTime(),
             null,
         );
 
-        $outputDto = $createVehicle->execute($inputDto);
+        $createOutputDto = $createVehicle->execute($createInputDto);
 
         return new CreateVehicleResource(
-            $outputDto
+            $createOutputDto
         );
     }
 
@@ -84,8 +90,7 @@ class VehicleController extends Controller
     public function exit(
         string $licensePlate,
         ExitVehicle $exitVehicle
-    )
-    {
+    ) {
         $inputDto = new ExitVehicleInputDto(
             new LicensePlate($licensePlate)
         );

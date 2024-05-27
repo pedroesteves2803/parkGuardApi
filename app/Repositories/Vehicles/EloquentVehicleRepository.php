@@ -1,10 +1,14 @@
 <?php
 
-namespace Src\Vehicles\Infrastructure;
+namespace App\Repositories\Vehicles;
 
+use App\Models\Pending as ModelsPending;
 use App\Models\Vehicle as ModelsVehicle;
 use DateTime;
 use Illuminate\Support\Collection;
+use Src\Vehicles\Domain\Entities\Consult;
+use Src\Vehicles\Domain\Entities\Pending;
+use Src\Vehicles\Domain\Entities\Vehicle;
 use Src\Vehicles\Domain\Repositories\IVehicleRepository;
 use Src\Vehicles\Domain\ValueObjects\Color;
 use Src\Vehicles\Domain\ValueObjects\DepartureTimes;
@@ -12,7 +16,6 @@ use Src\Vehicles\Domain\ValueObjects\EntryTimes;
 use Src\Vehicles\Domain\ValueObjects\LicensePlate;
 use Src\Vehicles\Domain\ValueObjects\Manufacturer;
 use Src\Vehicles\Domain\ValueObjects\Model;
-use Src\Vehicles\Domain\Entities\Vehicle;
 
 final class EloquentVehicleRepository implements IVehicleRepository
 {
@@ -71,9 +74,9 @@ final class EloquentVehicleRepository implements IVehicleRepository
             new Model($modelsVehicle->model),
             new LicensePlate($modelsVehicle->license_plate),
             new EntryTimes(
-                    $modelsVehicle->entry_times
+                $modelsVehicle->entry_times
             ),
-            new  DepartureTimes(
+            new DepartureTimes(
                 $modelsVehicle->departure_times
             )
         );
@@ -134,5 +137,21 @@ final class EloquentVehicleRepository implements IVehicleRepository
                 $modelsVehicle->departure_times
             )
         );
+    }
+
+    public function addPending(Vehicle $vehicle): void
+    {
+        $vehicle->consult()->map(function (Consult $consultItem) use ($vehicle) {
+            $pendencies = $consultItem->pendencies();
+
+            $pendencies->consults()->map(function (Pending $pendingItem) use ($vehicle) {
+                $modelsPending = new ModelsPending();
+                $modelsPending->type = $pendingItem->type->value();
+                $modelsPending->description = $pendingItem->description->value();
+                $modelsPending->vehicle_id = $vehicle->id();
+
+            });
+
+        });
     }
 }

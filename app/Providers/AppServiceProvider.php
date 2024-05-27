@@ -2,11 +2,13 @@
 
 namespace App\Providers;
 
+use App\Repositories\Administration\EloquentEmployeeRepository;
+use App\Repositories\Vehicles\ApiConsultVehicleRepository;
+use App\Repositories\Vehicles\EloquentVehicleRepository;
 use Illuminate\Support\ServiceProvider;
 use Src\Administration\Domain\Repositories\IEmployeeRepository;
-use Src\Administration\Infrastructure\EloquentEmployeeRepository;
+use Src\Vehicles\Domain\Repositories\IConsultVehicleRepository;
 use Src\Vehicles\Domain\Repositories\IVehicleRepository;
-use Src\Vehicles\Infrastructure\EloquentVehicleRepository;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -17,6 +19,7 @@ class AppServiceProvider extends ServiceProvider
     {
         app()->bind(IEmployeeRepository::class, EloquentEmployeeRepository::class);
         app()->bind(IVehicleRepository::class, EloquentVehicleRepository::class);
+        app()->bind(IConsultVehicleRepository::class, ApiConsultVehicleRepository::class);
     }
 
     /**

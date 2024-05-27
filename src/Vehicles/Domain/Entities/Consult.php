@@ -6,30 +6,22 @@ use Illuminate\Support\Collection;
 use Src\Shared\Domain\Entities\Entity;
 use Src\Shared\Domain\Entities\IAggregator;
 use Src\Vehicles\Domain\ValueObjects\Color;
-use Src\Vehicles\Domain\ValueObjects\DepartureTimes;
-use Src\Vehicles\Domain\ValueObjects\EntryTimes;
 use Src\Vehicles\Domain\ValueObjects\LicensePlate;
 use Src\Vehicles\Domain\ValueObjects\Manufacturer;
 use Src\Vehicles\Domain\ValueObjects\Model;
 
-class Vehicle extends Entity implements IAggregator
+class Consult extends Entity implements IAggregator
 {
-    private $consult;
+    private $pendencies;
 
     public function __construct(
-        readonly ?int $id,
         readonly ?Manufacturer $manufacturer,
         readonly ?Color $color,
         readonly ?Model $model,
-        readonly LicensePlate $licensePlate,
-        readonly EntryTimes $entryTimes,
-        readonly ?DepartureTimes $departureTimes,
+        readonly ?LicensePlate $licensePlate,
     ) {
-    }
+        $this->pendencies = new Collection();
 
-    public function id(): int
-    {
-        return $this->id;
     }
 
     public function manufacturer(): Manufacturer
@@ -52,23 +44,13 @@ class Vehicle extends Entity implements IAggregator
         return $this->licensePlate;
     }
 
-    public function entryTimes(): EntryTimes
+    public function pendencies(): Collection
     {
-        return $this->entryTimes;
+        return $this->pendencies;
     }
 
-    public function departureTimes(): DepartureTimes
+    public function addPending(Pending $pending): void
     {
-        return $this->departureTimes;
-    }
-
-    public function consult(): Collection
-    {
-        return $this->consult;
-    }
-
-    public function addConsult(Consult $consult): void
-    {
-        $this->consult = $consult;
+        $this->pendencies->push($pending);
     }
 }

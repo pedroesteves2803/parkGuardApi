@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Employee as ModelsEmployee;
+use App\Repositories\Administration\EloquentEmployeeRepository;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Collection;
 use Src\Administration\Domain\Entities\Employee;
@@ -8,29 +9,28 @@ use Src\Administration\Domain\ValueObjects\Email;
 use Src\Administration\Domain\ValueObjects\Name;
 use Src\Administration\Domain\ValueObjects\Password;
 use Src\Administration\Domain\ValueObjects\Type;
-use Src\Administration\Infrastructure\EloquentEmployeeRepository;
 use Tests\TestCase;
 
 uses(TestCase::class, RefreshDatabase::class);
 
 it('can get all employees', function () {
     ModelsEmployee::factory()->create([
-        'name'     => 'nome 1',
-        'email'    => 'email1@teste.com',
+        'name' => 'nome 1',
+        'email' => 'email1@teste.com',
         'password' => '$2a$12$NhD.F7UP.twqMtPxDo6A8eri.9ESq027PMYoPBonGkZ7uFGO.LaYe',
-        'type'     => 1,
+        'type' => 1,
     ]);
     ModelsEmployee::factory()->create([
-        'name'     => 'nome 2',
-        'email'    => 'email2@teste.com',
+        'name' => 'nome 2',
+        'email' => 'email2@teste.com',
         'password' => '$2a$12$NhD.F7UP.twqMtPxDo6A8eri.9ESq027PMYoPBonGkZ7uFGO.LaYe',
-        'type'     => 2,
+        'type' => 2,
     ]);
     ModelsEmployee::factory()->create([
-        'name'     => 'nome 3',
-        'email'    => 'email3@teste.com',
+        'name' => 'nome 3',
+        'email' => 'email3@teste.com',
         'password' => '$2a$12$NhD.F7UP.twqMtPxDo6A8eri.9ESq027PMYoPBonGkZ7uFGO.LaYe',
-        'type'     => 2,
+        'type' => 2,
     ]);
 
     $repository = new EloquentEmployeeRepository();
@@ -42,10 +42,10 @@ it('can get all employees', function () {
 
 it('can get employee by id', function () {
     $employee = ModelsEmployee::factory()->create([
-        'name'     => 'nome 1',
-        'email'    => 'email1@teste.com',
+        'name' => 'nome 1',
+        'email' => 'email1@teste.com',
         'password' => '$2a$12$NhD.F7UP.twqMtPxDo6A8eri.9ESq027PMYoPBonGkZ7uFGO.LaYe',
-        'type'     => 1,
+        'type' => 1,
     ]);
 
     $repository = new EloquentEmployeeRepository();
@@ -82,10 +82,10 @@ it('creates a new employee', function () {
 
 it('update a employee', function () {
     ModelsEmployee::factory()->create([
-        'name'     => 'nome 1',
-        'email'    => 'email1@teste.com',
+        'name' => 'nome 1',
+        'email' => 'email1@teste.com',
         'password' => '$2a$12$NhD.F7UP.twqMtPxDo6A8eri.9ESq027PMYoPBonGkZ7uFGO.LaYe',
-        'type'     => 1,
+        'type' => 1,
     ]);
 
     $employeeData = new Employee(
@@ -108,12 +108,11 @@ it('update a employee', function () {
 
 it('delete a employee', function () {
     ModelsEmployee::factory()->create([
-        'name'     => 'nome 1',
-        'email'    => 'email1@teste.com',
+        'name' => 'nome 1',
+        'email' => 'email1@teste.com',
         'password' => '$2a$12$NhD.F7UP.twqMtPxDo6A8eri.9ESq027PMYoPBonGkZ7uFGO.LaYe',
-        'type'     => 1,
+        'type' => 1,
     ]);
-
 
     $repository = new EloquentEmployeeRepository();
     $repository->delete(1);
@@ -124,10 +123,10 @@ it('delete a employee', function () {
 
 it('check if there is an employee', function () {
     ModelsEmployee::factory()->create([
-        'name'     => 'nome 1',
-        'email'    => 'email1@teste.com',
+        'name' => 'nome 1',
+        'email' => 'email1@teste.com',
         'password' => '$2a$12$NhD.F7UP.twqMtPxDo6A8eri.9ESq027PMYoPBonGkZ7uFGO.LaYe',
-        'type'     => 1,
+        'type' => 1,
     ]);
 
     $repository = new EloquentEmployeeRepository();
@@ -140,10 +139,10 @@ it('check if there is an employee', function () {
 
 it('check if there is no employee', function () {
     ModelsEmployee::factory()->create([
-        'name'     => 'nome 1',
-        'email'    => 'email1@teste.com',
+        'name' => 'nome 1',
+        'email' => 'email1@teste.com',
         'password' => '$2a$12$NhD.F7UP.twqMtPxDo6A8eri.9ESq027PMYoPBonGkZ7uFGO.LaYe',
-        'type'     => 1,
+        'type' => 1,
     ]);
 
     $repository = new EloquentEmployeeRepository();

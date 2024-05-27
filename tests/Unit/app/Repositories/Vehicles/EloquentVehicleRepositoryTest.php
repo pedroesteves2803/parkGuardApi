@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Vehicle as ModelsVehicle;
+use App\Repositories\Vehicles\EloquentVehicleRepository;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Collection;
 use Src\Vehicles\Domain\Entities\Vehicle;
@@ -9,26 +10,25 @@ use Src\Vehicles\Domain\ValueObjects\EntryTimes;
 use Src\Vehicles\Domain\ValueObjects\LicensePlate;
 use Src\Vehicles\Domain\ValueObjects\Manufacturer;
 use Src\Vehicles\Domain\ValueObjects\Model;
-use Src\Vehicles\Infrastructure\EloquentVehicleRepository;
 use Tests\TestCase;
 
 uses(TestCase::class, RefreshDatabase::class);
 
 it('can get all vehicles', function () {
     ModelsVehicle::factory()->create([
-        'manufacturer'    => 'Honda',
-        'color'           => 'Azul',
-        'model'           => 'Civic',
-        'license_plate'   => 'DGF-1798',
-        'entry_times'     => new DateTime(),
+        'manufacturer' => 'Honda',
+        'color' => 'Azul',
+        'model' => 'Civic',
+        'license_plate' => 'DGF1798',
+        'entry_times' => new DateTime(),
         'departure_times' => null,
     ]);
     ModelsVehicle::factory()->create([
-        'manufacturer'    => 'Fiat',
-        'color'           => 'Preto',
-        'model'           => 'Uno',
-        'license_plate'   => 'DEF-1028',
-        'entry_times'     => new DateTime(),
+        'manufacturer' => 'Fiat',
+        'color' => 'Preto',
+        'model' => 'Uno',
+        'license_plate' => 'DEF1028',
+        'entry_times' => new DateTime(),
         'departure_times' => null,
     ]);
 
@@ -41,11 +41,11 @@ it('can get all vehicles', function () {
 
 it('can get vehicle by id', function () {
     $vehicle = ModelsVehicle::factory()->create([
-        'manufacturer'    => 'Fiat',
-        'color'           => 'Preto',
-        'model'           => 'Uno',
-        'license_plate'   => 'DEF-1028',
-        'entry_times'     => new DateTime(),
+        'manufacturer' => 'Fiat',
+        'color' => 'Preto',
+        'model' => 'Uno',
+        'license_plate' => 'DEF1028',
+        'entry_times' => new DateTime(),
         'departure_times' => null,
     ]);
 
@@ -69,7 +69,7 @@ it('creates a new vehicle', function () {
         new Manufacturer('Honda'),
         new Color('Azul'),
         new Model('Civic'),
-        new LicensePlate('DEF-1028'),
+        new LicensePlate('DEF1028'),
         new EntryTimes(new DateTime()),
         null
     );
@@ -88,11 +88,11 @@ it('creates a new vehicle', function () {
 
 it('update a vehicle', function () {
     ModelsVehicle::factory()->create([
-        'manufacturer'    => 'Fiat',
-        'color'           => 'Preto',
-        'model'           => 'Uno',
-        'license_plate'   => 'DEF-1028',
-        'entry_times'     => new DateTime(),
+        'manufacturer' => 'Fiat',
+        'color' => 'Preto',
+        'model' => 'Uno',
+        'license_plate' => 'DEF1028',
+        'entry_times' => new DateTime(),
         'departure_times' => null,
     ]);
 
@@ -101,7 +101,7 @@ it('update a vehicle', function () {
         new Manufacturer('Honda'),
         new Color('Azul'),
         new Model('Civic'),
-        new LicensePlate('DEF-1028'),
+        new LicensePlate('DEF1028'),
         new EntryTimes(new DateTime()),
         null
     );
@@ -120,17 +120,17 @@ it('update a vehicle', function () {
 
 it('check if there is an vehicle', function () {
     ModelsVehicle::factory()->create([
-        'manufacturer'    => 'Fiat',
-        'color'           => 'Preto',
-        'model'           => 'Uno',
-        'license_plate'   => 'DEF-1028',
-        'entry_times'     => new DateTime(),
+        'manufacturer' => 'Fiat',
+        'color' => 'Preto',
+        'model' => 'Uno',
+        'license_plate' => 'DEF1028',
+        'entry_times' => new DateTime(),
         'departure_times' => null,
     ]);
 
     $repository = new EloquentVehicleRepository();
     $existVehicle = $repository->existVehicle(
-        new LicensePlate('DEF-1028')
+        new LicensePlate('DEF1028')
     );
 
     expect($existVehicle)->toBeTrue();
@@ -138,17 +138,17 @@ it('check if there is an vehicle', function () {
 
 it('check if there is no vehicle', function () {
     ModelsVehicle::factory()->create([
-        'manufacturer'    => 'Fiat',
-        'color'           => 'Preto',
-        'model'           => 'Uno',
-        'license_plate'   => 'DEF-1028',
-        'entry_times'     => new DateTime(),
+        'manufacturer' => 'Fiat',
+        'color' => 'Preto',
+        'model' => 'Uno',
+        'license_plate' => 'DEF1028',
+        'entry_times' => new DateTime(),
         'departure_times' => null,
     ]);
 
     $repository = new EloquentVehicleRepository();
     $existVehicle = $repository->existVehicle(
-        new LicensePlate('DEF-1000')
+        new LicensePlate('DEF1000')
     );
 
     expect($existVehicle)->toBeFalse();
@@ -156,19 +156,18 @@ it('check if there is no vehicle', function () {
 
 it('add exit to vehicle', function () {
     ModelsVehicle::factory()->create([
-        'manufacturer'    => 'Fiat',
-        'color'           => 'Preto',
-        'model'           => 'Uno',
-        'license_plate'   => 'DEF-1028',
-        'entry_times'     => new DateTime(),
+        'manufacturer' => 'Fiat',
+        'color' => 'Preto',
+        'model' => 'Uno',
+        'license_plate' => 'DEF1028',
+        'entry_times' => new DateTime(),
         'departure_times' => null,
     ]);
 
     $repository = new EloquentVehicleRepository();
     $vehicle = $repository->exit(
-        new LicensePlate('DEF-1028')
+        new LicensePlate('DEF1028')
     );
 
     $this->assertNotNull($vehicle->departureTimes);
 });
-

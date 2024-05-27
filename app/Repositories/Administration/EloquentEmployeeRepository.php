@@ -1,6 +1,6 @@
 <?php
 
-namespace Src\Administration\Infrastructure;
+namespace App\Repositories\Administration;
 
 use App\Models\Employee as ModelsEmployee;
 use Illuminate\Support\Collection;

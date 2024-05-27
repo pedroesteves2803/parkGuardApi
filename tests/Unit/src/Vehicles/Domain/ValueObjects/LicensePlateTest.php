@@ -24,7 +24,7 @@ it('throws exception for invalid license plate', function () {
 it('creates LicensePlate instance for valid license plate (Brazilian Standard)', function () {
     $licensePlate = new LicensePlate('ABC-1234');
     expect($licensePlate)->toBeInstanceOf(LicensePlate::class);
-    expect($licensePlate->value())->toBe('ABC-1234');
+    expect($licensePlate->value())->toBe('ABC1234');
 });
 
 it('creates LicensePlate instance for valid license plate (Mercosur Standard)', function () {

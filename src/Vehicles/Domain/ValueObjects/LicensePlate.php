@@ -6,13 +6,14 @@ use Src\Shared\Domain\ValueObjects\ValueObject;
 
 final class LicensePlate extends ValueObject
 {
-    private $brazilianStandard = '/^[A-Z]{3}-\d{4}$/';
+    protected $brazilianStandard = '/^[A-Z]{3}\d{4}$/';
 
-    private $mercosurStandard = '/^[A-Z]{3}\d[A-Z]\d{2}$/';
+    protected $mercosurStandard = '/^[A-Z]{3}\d[A-Z]\d{2}$/';
 
     public function __construct(
         private string $value
     ) {
+        $this->value = preg_replace('/[^\p{L}\p{N}\s]/u', '', $value);
         $this->validate();
     }
 
@@ -22,7 +23,7 @@ final class LicensePlate extends ValueObject
             throw new \Exception('LicensePlate cannot be empty.');
         }
 
-        if (!preg_match($this->brazilianStandard, $this->value) && !preg_match($this->mercosurStandard, $this->value)) {
+        if (! preg_match($this->brazilianStandard, $this->value) && ! preg_match($this->mercosurStandard, $this->value)) {
             throw new \Exception('It must be a valid license plate.');
         }
     }
