@@ -4,12 +4,15 @@ use App\Models\Vehicle as ModelsVehicle;
 use App\Repositories\Vehicles\EloquentVehicleRepository;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Collection;
+use Src\Vehicles\Domain\Entities\Pending;
 use Src\Vehicles\Domain\Entities\Vehicle;
 use Src\Vehicles\Domain\ValueObjects\Color;
+use Src\Vehicles\Domain\ValueObjects\Description;
 use Src\Vehicles\Domain\ValueObjects\EntryTimes;
 use Src\Vehicles\Domain\ValueObjects\LicensePlate;
 use Src\Vehicles\Domain\ValueObjects\Manufacturer;
 use Src\Vehicles\Domain\ValueObjects\Model;
+use Src\Vehicles\Domain\ValueObjects\Type;
 use Tests\TestCase;
 
 uses(TestCase::class, RefreshDatabase::class);
@@ -171,3 +174,50 @@ it('add exit to vehicle', function () {
 
     $this->assertNotNull($vehicle->departureTimes);
 });
+
+it('adds pending to vehicle', function () {
+    $modelsVehicle = ModelsVehicle::factory()->create([
+        'manufacturer' => 'Fiat',
+        'color' => 'Preto',
+        'model' => 'Uno',
+        'license_plate' => 'DEF1028',
+        'entry_times' => new DateTime(),
+        'departure_times' => null,
+    ]);
+
+    $pending1 = new Pending(
+        null,
+        new Type('Type 1'),
+        new Description('Description 1')
+    );
+    $pending2 = new Pending(
+        null,
+        new Type('Type 2'),
+        new Description('Description 2')
+    );
+
+    $vehicle = new Vehicle(
+        1,
+        new Manufacturer($modelsVehicle->manufacturer),
+        new Color($modelsVehicle->color),
+        new Model($modelsVehicle->model),
+        new LicensePlate($modelsVehicle->license_plate),
+        new EntryTimes($modelsVehicle->entry_times),
+        null
+    );
+
+    $vehicle->addPending($pending1);
+    $vehicle->addPending($pending2);
+
+    $repository = new EloquentVehicleRepository();
+
+    $pendings = $repository->addPending(
+        $vehicle
+    );
+
+    expect($pendings)->toBeInstanceOf(Collection::class);
+    expect($pendings)->toHaveCount(2);
+    expect($pendings[0]->type()->value())->toBe('Type 1');
+    expect($pendings[1]->description()->value())->toBe('Description 2');
+});
+

@@ -1,6 +1,6 @@
 <?php
 
-namespace Src\Vehicles\Application\Consult;
+namespace Src\Vehicles\Application\Vehicle;
 
 use Src\Shared\Utils\Notification;
 use Src\Vehicles\Application\Vehicle\Dtos\ConsultVehicleByLicensePlateInputDto;

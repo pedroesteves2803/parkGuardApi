@@ -139,19 +139,16 @@ final class EloquentVehicleRepository implements IVehicleRepository
         );
     }
 
-    public function addPending(Vehicle $vehicle): void
+    public function addPending(Vehicle $vehicle): Collection
     {
-        $vehicle->consult()->map(function (Consult $consultItem) use ($vehicle) {
-            $pendencies = $consultItem->pendencies();
-
-            $pendencies->consults()->map(function (Pending $pendingItem) use ($vehicle) {
-                $modelsPending = new ModelsPending();
-                $modelsPending->type = $pendingItem->type->value();
-                $modelsPending->description = $pendingItem->description->value();
-                $modelsPending->vehicle_id = $vehicle->id();
-
-            });
-
+        $vehicle->pendings()->each(function (Pending $pendingItem) use ($vehicle) {
+            $modelsPending = new ModelsPending();
+            $modelsPending->type = $pendingItem->type->value();
+            $modelsPending->description = $pendingItem->description->value();
+            $modelsPending->vehicle_id = $vehicle->id();
+            $modelsPending->save();
         });
+
+        return $vehicle->pendings();
     }
 }

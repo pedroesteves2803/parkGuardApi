@@ -5,64 +5,70 @@ namespace App\Repositories\Vehicles;
 use GuzzleHttp\Client;
 use Src\Vehicles\Domain\Entities\Consult;
 use Src\Vehicles\Domain\Entities\Pending;
+use Src\Vehicles\Domain\Entities\Vehicle;
 use Src\Vehicles\Domain\Repositories\IConsultVehicleRepository;
 use Src\Vehicles\Domain\ValueObjects\Color;
 use Src\Vehicles\Domain\ValueObjects\Description;
+use Src\Vehicles\Domain\ValueObjects\EntryTimes;
 use Src\Vehicles\Domain\ValueObjects\LicensePlate;
 use Src\Vehicles\Domain\ValueObjects\Manufacturer;
 use Src\Vehicles\Domain\ValueObjects\Model;
 use Src\Vehicles\Domain\ValueObjects\Type;
+use Dotenv\Dotenv;
 
-final class ApiConsultVehicleRepository implements IConsultVehicleRepository
+class ApiConsultVehicleRepository implements IConsultVehicleRepository
 {
     private Client $client;
 
-    public function __construct(Client $client)
+    public function __construct()
     {
-        $client = new \GuzzleHttp\Client([
-            'verify' => false,
-        ]);
-
-        $this->client = $client;
-    }
-
-    public function consult(LicensePlate $licensePlate): ?Consult
-    {
-        $headers = [
-            'Authorization' => 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL2NsdXN0ZXIuYXBpZ3JhdGlzLmNvbS9hcGkvdjIvbG9naW4iLCJpYXQiOjE3MTY4NDE5MzgsImV4cCI6MTc0ODM3NzkzOCwibmJmIjoxNzE2ODQxOTM4LCJqdGkiOiJqVFl3Y2c0Uzcwb2JUSnB6Iiwic3ViIjoiODUyMiIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.ZaLDWRwezjU3ChnHAfK3uWa3ck50NACtFiHQtho-dtk',
-            'Content-Type' => 'application/json',
-            'DeviceToken' => '7995afa6-0135-4ae2-ba72-d223a7a70618',
+        $options = [
+            'verify' => env('VERIFY_SSL') ?? true,
         ];
 
-        $response = $this->client->request('GET', 'https://cluster.apigratis.com/api/v2/vehicles/dados', [
-            'headers' => $headers,
-            'query' => ['placa' => $licensePlate->value()],
-        ]);
+        $this->client = new Client($options);
+    }
 
-        $vehicleData = json_decode($response->getBody()->getContents(), true);
+    public function consult(LicensePlate $licensePlate): ?Vehicle
+    {
+        $headers = [
+            'Authorization' => env('API_TOKEN'),
+            'Content-Type' => 'application/json',
+            'DeviceToken' => env('DEVICE_TOKEN'),
+        ];
 
-        if ($vehicleData['error'] === true) {
-            return null;
-        }
+        $query = ['placa' => $licensePlate->value()];
 
-        $consult = new Consult(
-            new Manufacturer($vehicleData['response']['MARCA']),
-            new Color($vehicleData['response']['cor']),
-            new Model($vehicleData['response']['MODELO']),
-            new LicensePlate($vehicleData['response']['placa']),
-        );
+        // try {
+            $response = $this->client->request('POST', env('API_URL'), [
+                'headers' => $headers,
+                'query' => $query,
+            ]);
 
-        for ($i = 0; $i < 4; $i++) {
-            $consult->addPending(
-                new Pending(
-                    null,
-                    new Type('Tipo'.$i),
-                    new Description($vehicleData['response']['extra']['restricao'.$i + 1]['restricao'])
-                )
-            );
-        }
+            $vehicleData = json_decode($response->getBody()->getContents(), true);
 
-        return $consult;
+            if (isset($vehicleData['error']) && $vehicleData['error']) {
+                return null;
+            }
 
+            $manufacturer = new Manufacturer($vehicleData['response']['MARCA']) ?? null;
+            $color = new Color($vehicleData['response']['cor']) ?? null;
+            $model = new Model($vehicleData['response']['MODELO'])?? null;
+            $licensePlate = new LicensePlate($vehicleData['response']['placa'])?? null;
+            $entryTimes = new EntryTimes(new \DateTime());
+
+            $vehicle = new Vehicle(null, $manufacturer, $color, $model, $licensePlate, $entryTimes, null);
+
+            for ($i = 1; $i <= 4; $i++) {
+                $restricao = $vehicleData['response']['extra']['restricao' . $i]['restricao'] ?? '';
+                $type = new Type('Tipo' . $i);
+                $description = new Description($restricao);
+                $vehicle->addPending(new Pending(null, $type, $description));
+            }
+
+            return $vehicle;
+        // } catch (\Exception $e) {
+        //     return null;
+        // }
     }
 }

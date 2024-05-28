@@ -20,5 +20,5 @@ interface IVehicleRepository
 
     public function existVehicle(LicensePlate $licensePlate): bool;
 
-    public function addPending(Vehicle $vehicle): void;
+    public function addPending(Vehicle $vehicle): Collection;
 }

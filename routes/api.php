@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\VehicleController;
+use App\Models\Pending;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/employees', [EmployeeController::class, 'index'])->name('employee.index');
@@ -15,3 +16,8 @@ Route::post('/vehicle', [VehicleController::class, 'store'])->name('vehicle.stor
 Route::get('/vehicle/{vehicle}', [VehicleController::class, 'show'])->name('vehicle.show');
 Route::patch('/vehicle/{vehicle}', [VehicleController::class, 'update'])->name('vehicle.update');
 Route::post('/vehicle/exit/{vehicle}', [VehicleController::class, 'exit'])->name('vehicle.exit');
+
+
+Route::get('/teste', function(){
+    dd(Pending::all());
+});

@@ -26,11 +26,12 @@ final class AddPending
         if ($existVehicle instanceof Notification) {
 
             return new AddPendingOutputDto(
+                null,
                 $this->notification
             );
         }
 
-        $input->vehicle->consult()->addPending(
+        $input->vehicle->addPending(
             new Pending(
                 null,
                 new Type($input->type),
@@ -38,11 +39,12 @@ final class AddPending
             )
         );
 
-        $this->iVehicleRepository->addPending(
+        $pendings = $this->iVehicleRepository->addPending(
             $input->vehicle
         );
 
         return new AddPendingOutputDto(
+            $pendings,
             $this->notification
         );
     }

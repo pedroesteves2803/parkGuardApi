@@ -9,6 +9,8 @@ class Pending extends Model
 {
     use HasFactory;
 
+    protected $table = 'pendencies';
+
     protected $guarded = [
         'id',
     ];

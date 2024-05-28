@@ -8,8 +8,10 @@ use App\Http\Resources\Vehicle\GetAllVehiclesResource;
 use App\Http\Resources\Vehicle\GetVehicleByIdResource;
 use App\Http\Resources\Vehicle\UpdateVehicleResource;
 use Illuminate\Http\Request;
-use Src\Vehicles\Application\Consult\ConsultPendingByLicensePlate;
+use Src\Vehicles\Application\Vehicle\AddPending;
+use Src\Vehicles\Application\Vehicle\ConsultPendingByLicensePlate;
 use Src\Vehicles\Application\Vehicle\CreateVehicle;
+use Src\Vehicles\Application\Vehicle\Dtos\AddPendingInputDto;
 use Src\Vehicles\Application\Vehicle\Dtos\ConsultVehicleByLicensePlateInputDto;
 use Src\Vehicles\Application\Vehicle\Dtos\CreateVehicleInputDto;
 use Src\Vehicles\Application\Vehicle\Dtos\ExitVehicleInputDto;
@@ -34,19 +36,9 @@ class VehicleController extends Controller
     public function store(
         Request $request,
         CreateVehicle $createVehicle,
-        ConsultPendingByLicensePlate $consultVehicleByLicensePlate
     ) {
-        $consultInputDto = new ConsultVehicleByLicensePlateInputDto($request->licensePlate);
-
-        $consultOutputDto = $consultVehicleByLicensePlate->execute($consultInputDto);
-
         $createInputDto = new CreateVehicleInputDto(
-            $consultOutputDto->consult->manufacturer->value(),
-            $consultOutputDto->consult->color->value(),
-            $consultOutputDto->consult->model->value(),
-            $consultOutputDto->consult->licensePlate->value(),
-            new \DateTime(),
-            null,
+            $request->licensePlate,
         );
 
         $createOutputDto = $createVehicle->execute($createInputDto);

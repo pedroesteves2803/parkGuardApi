@@ -1,10 +1,13 @@
 <?php
 
 use Src\Shared\Utils\Notification;
+use Src\Vehicles\Application\Vehicle\AddPending;
+use Src\Vehicles\Application\Vehicle\ConsultPendingByLicensePlate;
 use Src\Vehicles\Application\Vehicle\CreateVehicle;
 use Src\Vehicles\Application\Vehicle\Dtos\CreateVehicleInputDto;
 use Src\Vehicles\Application\Vehicle\Dtos\CreateVehicleOutputDto;
 use Src\Vehicles\Domain\Entities\Vehicle;
+use Src\Vehicles\Domain\Repositories\IConsultVehicleRepository;
 use Src\Vehicles\Domain\Repositories\IVehicleRepository;
 use Src\Vehicles\Domain\ValueObjects\Color;
 use Src\Vehicles\Domain\ValueObjects\DepartureTimes;
@@ -14,14 +17,15 @@ use Src\Vehicles\Domain\ValueObjects\Manufacturer;
 use Src\Vehicles\Domain\ValueObjects\Model;
 
 beforeEach(function () {
-    $this->repositoryMock = mock(IVehicleRepository::class);
+    $this->repositoryVehicleMock = mock(IVehicleRepository::class);
+    $this->repositoryConsultMock = mock(IConsultVehicleRepository::class);
 });
 
-it('successfully creates an vehicle', function () {
+it('successfully creates a vehicle', function () {
     $notification = new Notification();
 
-    $this->repositoryMock->shouldReceive('existVehicle')->once()->andReturnFalse();
-    $this->repositoryMock->shouldReceive('create')->once()->andReturn(
+    $this->repositoryVehicleMock->shouldReceive('existVehicle')->once()->andReturnFalse();
+    $this->repositoryConsultMock->shouldReceive('consult')->once()->andReturn(
         new Vehicle(
             null,
             new Manufacturer('Toyota'),
@@ -33,15 +37,27 @@ it('successfully creates an vehicle', function () {
         )
     );
 
-    $createVehicle = new CreateVehicle($this->repositoryMock, $notification);
+    $this->repositoryVehicleMock->shouldReceive('create')->once()->andReturn(
+        new Vehicle(
+            null,
+            new Manufacturer('Toyota'),
+            new Color('Azul'),
+            new Model('Corolla'),
+            new LicensePlate('ABC-1234'),
+            new EntryTimes(new DateTime('2024-05-12 08:00:00')),
+            new DepartureTimes(new DateTime('2024-05-12 17:00:00'))
+        )
+    );
+
+    $createVehicle = new CreateVehicle(
+        $this->repositoryVehicleMock,
+        new ConsultPendingByLicensePlate($this->repositoryConsultMock, $notification),
+        new AddPending($this->repositoryVehicleMock, $notification),
+        $notification
+    );
 
     $inputDto = new CreateVehicleInputDto(
-        'Toyota',
-        'Azul',
-        'Corolla',
         'ABC-1234',
-        new DateTime('2024-05-12 08:00:00'),
-        new DateTime('2024-05-12 17:00:00')
     );
 
     $outputDto = $createVehicle->execute($inputDto);
@@ -51,20 +67,33 @@ it('successfully creates an vehicle', function () {
     expect($outputDto->notification->getErrors())->toBeEmpty();
 });
 
-it('fails to create an employee with existing email', function () {
+it('fails to create a vehicle with existing license plate', function () {
     $notification = new Notification();
 
-    $this->repositoryMock->shouldReceive('existVehicle')->once()->andReturnTrue();
-    $createVehicle = new CreateVehicle($this->repositoryMock, $notification);
+    $this->repositoryConsultMock->shouldReceive('consult')->once()->andReturn(
+        new Vehicle(
+            null,
+            new Manufacturer('Toyota'),
+            new Color('Azul'),
+            new Model('Corolla'),
+            new LicensePlate('ABC-1234'),
+            new EntryTimes(new DateTime('2024-05-12 08:00:00')),
+            new DepartureTimes(new DateTime('2024-05-12 17:00:00'))
+        )
+    );
+    $this->repositoryVehicleMock->shouldReceive('existVehicle')->once()->andReturnTrue();
+
+    $createVehicle = new CreateVehicle(
+        $this->repositoryVehicleMock,
+        new ConsultPendingByLicensePlate($this->repositoryConsultMock, $notification),
+        new AddPending($this->repositoryVehicleMock, $notification),
+        $notification
+    );
 
     $inputDto = new CreateVehicleInputDto(
-        'Toyota',
-        'Azul',
-        'Corolla',
         'ABC-1234',
-        new DateTime('2024-05-12 08:00:00'),
-        new DateTime('2024-05-12 17:00:00')
     );
+
     $outputDto = $createVehicle->execute($inputDto);
 
     expect($outputDto)->toBeInstanceOf(CreateVehicleOutputDto::class);
@@ -72,7 +101,8 @@ it('fails to create an employee with existing email', function () {
     expect($outputDto->notification->getErrors())->toBe([
         [
             'context' => 'license_plate_already_exists',
-            'message' => 'Placa já cadastrado!',
+            'message' => 'Placa já cadastrada!',
         ],
     ]);
 });
+
