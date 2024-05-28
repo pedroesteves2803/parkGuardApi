@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Collection;
 use Src\Shared\Utils\Notification;
 use Src\Vehicles\Application\Vehicle\AddPending;
 use Src\Vehicles\Application\Vehicle\ConsultPendingByLicensePlate;
@@ -7,6 +8,7 @@ use Src\Vehicles\Application\Vehicle\CreateVehicle;
 use Src\Vehicles\Application\Vehicle\Dtos\CreateVehicleInputDto;
 use Src\Vehicles\Application\Vehicle\Dtos\CreateVehicleOutputDto;
 use Src\Vehicles\Domain\Entities\Vehicle;
+use Src\Vehicles\Domain\Repositories\Dtos\IConsultVehicleRepositoryOutputDto;
 use Src\Vehicles\Domain\Repositories\IConsultVehicleRepository;
 use Src\Vehicles\Domain\Repositories\IVehicleRepository;
 use Src\Vehicles\Domain\ValueObjects\Color;
@@ -26,14 +28,12 @@ it('successfully creates a vehicle', function () {
 
     $this->repositoryVehicleMock->shouldReceive('existVehicle')->once()->andReturnFalse();
     $this->repositoryConsultMock->shouldReceive('consult')->once()->andReturn(
-        new Vehicle(
-            null,
-            new Manufacturer('Toyota'),
-            new Color('Azul'),
-            new Model('Corolla'),
-            new LicensePlate('ABC-1234'),
-            new EntryTimes(new DateTime('2024-05-12 08:00:00')),
-            new DepartureTimes(new DateTime('2024-05-12 17:00:00'))
+        new IConsultVehicleRepositoryOutputDto(
+            'Toyota',
+            'Azul',
+            'Corolla',
+            'ABC-1234',
+            collect([])
         )
     );
 
@@ -70,17 +70,6 @@ it('successfully creates a vehicle', function () {
 it('fails to create a vehicle with existing license plate', function () {
     $notification = new Notification();
 
-    $this->repositoryConsultMock->shouldReceive('consult')->once()->andReturn(
-        new Vehicle(
-            null,
-            new Manufacturer('Toyota'),
-            new Color('Azul'),
-            new Model('Corolla'),
-            new LicensePlate('ABC-1234'),
-            new EntryTimes(new DateTime('2024-05-12 08:00:00')),
-            new DepartureTimes(new DateTime('2024-05-12 17:00:00'))
-        )
-    );
     $this->repositoryVehicleMock->shouldReceive('existVehicle')->once()->andReturnTrue();
 
     $createVehicle = new CreateVehicle(

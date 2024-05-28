@@ -2,7 +2,7 @@
 
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\VehicleController;
-use App\Models\Pending;
+use App\Models\Vehicle;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/employees', [EmployeeController::class, 'index'])->name('employee.index');
@@ -18,6 +18,8 @@ Route::patch('/vehicle/{vehicle}', [VehicleController::class, 'update'])->name('
 Route::post('/vehicle/exit/{vehicle}', [VehicleController::class, 'exit'])->name('vehicle.exit');
 
 
-Route::get('/teste', function(){
-    dd(Pending::all());
+Route::get('/teste/{id}', function($id){
+    $vehicle = Vehicle::where('id', $id)->with('pendings')->first();
+
+    dd($vehicle);
 });

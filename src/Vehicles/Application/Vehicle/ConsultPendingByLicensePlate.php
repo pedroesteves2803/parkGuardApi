@@ -2,6 +2,7 @@
 
 namespace Src\Vehicles\Application\Vehicle;
 
+use Illuminate\Support\Collection;
 use Src\Shared\Utils\Notification;
 use Src\Vehicles\Application\Vehicle\Dtos\ConsultVehicleByLicensePlateInputDto;
 use Src\Vehicles\Application\Vehicle\Dtos\ConsultVehicleByLicensePlateOutputDto;
@@ -18,34 +19,24 @@ final class ConsultPendingByLicensePlate
 
     public function execute(ConsultVehicleByLicensePlateInputDto $input): ConsultVehicleByLicensePlateOutputDto
     {
-        $vehicleData = $this->resolveConsultVehicle($input->licensePlate);
-
-        if ($vehicleData instanceof Notification) {
-            return new ConsultVehicleByLicensePlateOutputDto(
-                null,
-                $this->notification
-            );
-        }
+        $outputResolveConsultVehicle = $this->resolveConsultVehicle($input->licensePlate);
 
         return new ConsultVehicleByLicensePlateOutputDto(
-            $vehicleData,
+            $outputResolveConsultVehicle->manufacturer,
+            $outputResolveConsultVehicle->color,
+            $outputResolveConsultVehicle->model,
+            $outputResolveConsultVehicle->licensePlate,
+            $outputResolveConsultVehicle->pendings,
             $this->notification
         );
     }
 
     public function resolveConsultVehicle(string $licensePlate)
     {
-        $vehicleData = $this->iConsultVehicleRepository->consult(
+        $outputResolveConsultVehicle = $this->iConsultVehicleRepository->consult(
             new LicensePlate($licensePlate)
         );
 
-        if (! $vehicleData) {
-            return $this->notification->addError([
-                'context' => 'vehicle_data_not_found',
-                'message' => 'Dados do veiculo não encontrado!',
-            ]);
-        }
-
-        return $vehicleData;
+        return $outputResolveConsultVehicle;
     }
 }

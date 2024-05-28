@@ -3,6 +3,7 @@
 namespace App\Repositories\Vehicles;
 
 use GuzzleHttp\Client;
+use Illuminate\Support\Collection;
 use Src\Vehicles\Domain\Entities\Consult;
 use Src\Vehicles\Domain\Entities\Pending;
 use Src\Vehicles\Domain\Entities\Vehicle;
@@ -15,6 +16,7 @@ use Src\Vehicles\Domain\ValueObjects\Manufacturer;
 use Src\Vehicles\Domain\ValueObjects\Model;
 use Src\Vehicles\Domain\ValueObjects\Type;
 use Dotenv\Dotenv;
+use Src\Vehicles\Domain\Repositories\Dtos\IConsultVehicleRepositoryOutputDto;
 
 class ApiConsultVehicleRepository implements IConsultVehicleRepository
 {
@@ -29,7 +31,7 @@ class ApiConsultVehicleRepository implements IConsultVehicleRepository
         $this->client = new Client($options);
     }
 
-    public function consult(LicensePlate $licensePlate): ?Vehicle
+    public function consult(LicensePlate $licensePlate): IConsultVehicleRepositoryOutputDto
     {
         $headers = [
             'Authorization' => env('API_TOKEN'),
@@ -39,7 +41,7 @@ class ApiConsultVehicleRepository implements IConsultVehicleRepository
 
         $query = ['placa' => $licensePlate->value()];
 
-        // try {
+        try {
             $response = $this->client->request('POST', env('API_URL'), [
                 'headers' => $headers,
                 'query' => $query,
@@ -48,27 +50,49 @@ class ApiConsultVehicleRepository implements IConsultVehicleRepository
             $vehicleData = json_decode($response->getBody()->getContents(), true);
 
             if (isset($vehicleData['error']) && $vehicleData['error']) {
-                return null;
+                return $this->getEmptyVehicleData($licensePlate);
             }
 
-            $manufacturer = new Manufacturer($vehicleData['response']['MARCA']) ?? null;
-            $color = new Color($vehicleData['response']['cor']) ?? null;
-            $model = new Model($vehicleData['response']['MODELO'])?? null;
-            $licensePlate = new LicensePlate($vehicleData['response']['placa'])?? null;
-            $entryTimes = new EntryTimes(new \DateTime());
+            $pendings = new Collection();
 
-            $vehicle = new Vehicle(null, $manufacturer, $color, $model, $licensePlate, $entryTimes, null);
+            $manufacturer = $vehicleData['response']['MARCA'] ?? null;
+            $color = $vehicleData['response']['cor'] ?? null;
+            $model = $vehicleData['response']['MODELO'] ?? null;
+            $licensePlate = $vehicleData['response']['placa'] ?? null;
 
             for ($i = 1; $i <= 4; $i++) {
-                $restricao = $vehicleData['response']['extra']['restricao' . $i]['restricao'] ?? '';
-                $type = new Type('Tipo' . $i);
-                $description = new Description($restricao);
-                $vehicle->addPending(new Pending(null, $type, $description));
+                $pending = $vehicleData['response']['extra']['restricao' . $i]['restricao'] ?? '';
+                $type = 'Tipo' . $i;
+                $description = $pending;
+
+                $pendings->push(new Pending(
+                    null,
+                    new Type($type),
+                    new Description($description)
+                    )
+                );
             }
 
-            return $vehicle;
-        // } catch (\Exception $e) {
-        //     return null;
-        // }
+            return new IConsultVehicleRepositoryOutputDto(
+                $manufacturer,
+                $color,
+                $model,
+                $licensePlate,
+                $pendings,
+            );
+        } catch (\Exception $e) {
+            return $this->getEmptyVehicleData($licensePlate);
+        }
+    }
+
+    private function getEmptyVehicleData($licensePlate): IConsultVehicleRepositoryOutputDto
+    {
+        return new IConsultVehicleRepositoryOutputDto(
+            null,
+            null,
+            null,
+            $licensePlate,
+            New Collection(),
+        );
     }
 }

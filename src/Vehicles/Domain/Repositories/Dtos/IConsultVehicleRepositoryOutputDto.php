@@ -1,13 +1,11 @@
 <?php
 
-namespace Src\Vehicles\Application\Vehicle\Dtos;
+namespace Src\Vehicles\Domain\Repositories\Dtos;
 
 use Illuminate\Support\Collection;
 use Src\Shared\Utils\Notification;
-use Src\Vehicles\Domain\Entities\Consult;
-use Src\Vehicles\Domain\Entities\Vehicle;
 
-final class ConsultVehicleByLicensePlateOutputDto
+final class IConsultVehicleRepositoryOutputDto
 {
     public function __construct(
         readonly ?string $manufacturer,
@@ -15,7 +13,6 @@ final class ConsultVehicleByLicensePlateOutputDto
         readonly ?string $model,
         readonly ?string $licensePlate,
         readonly Collection $pendings,
-        readonly Notification $notification
     ) {
     }
 }

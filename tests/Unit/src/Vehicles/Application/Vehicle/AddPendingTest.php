@@ -58,8 +58,6 @@ it('successfully adds a pending to a vehicle', function () {
 
     $inputDto = new AddPendingInputDto(
         $vehicle,
-        'Type 1',
-        'Description 1'
     );
 
     $outputDto = $addPending->execute($inputDto);
@@ -67,9 +65,7 @@ it('successfully adds a pending to a vehicle', function () {
     expect($outputDto)->toBeInstanceOf(AddPendingOutputDto::class);
     expect($outputDto->pendings)->toBeInstanceOf(Collection::class);
     expect($outputDto->notification->getErrors())->toBeEmpty();
-    expect($vehicle->pendings())->toHaveCount(1);
 
-    $pending = $vehicle->pendings()[0];
     expect($pending->type()->value())->toBe('Type 1');
     expect($pending->description()->value())->toBe('Description 1');
 });
@@ -93,8 +89,6 @@ it('fails to add a pending when the vehicle does not exist', function () {
 
     $inputDto = new AddPendingInputDto(
         $vehicle,
-        'Type 1',
-        'Description 1'
     );
 
     $outputDto = $addPending->execute($inputDto);

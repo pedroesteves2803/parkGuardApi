@@ -6,6 +6,7 @@ use App\Models\Pending as ModelsPending;
 use App\Models\Vehicle as ModelsVehicle;
 use DateTime;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Log;
 use Src\Vehicles\Domain\Entities\Consult;
 use Src\Vehicles\Domain\Entities\Pending;
 use Src\Vehicles\Domain\Entities\Vehicle;
@@ -141,7 +142,7 @@ final class EloquentVehicleRepository implements IVehicleRepository
 
     public function addPending(Vehicle $vehicle): Collection
     {
-        $vehicle->pendings()->each(function (Pending $pendingItem) use ($vehicle) {
+        $vehicle->pendings()->map(function (Pending $pendingItem) use ($vehicle) {
             $modelsPending = new ModelsPending();
             $modelsPending->type = $pendingItem->type->value();
             $modelsPending->description = $pendingItem->description->value();

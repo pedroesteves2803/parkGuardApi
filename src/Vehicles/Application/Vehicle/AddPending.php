@@ -5,11 +5,8 @@ namespace Src\Vehicles\Application\Vehicle;
 use Src\Shared\Utils\Notification;
 use Src\Vehicles\Application\Vehicle\Dtos\AddPendingInputDto;
 use Src\Vehicles\Application\Vehicle\Dtos\AddPendingOutputDto;
-use Src\Vehicles\Domain\Entities\Pending;
 use Src\Vehicles\Domain\Repositories\IVehicleRepository;
-use Src\Vehicles\Domain\ValueObjects\Description;
 use Src\Vehicles\Domain\ValueObjects\LicensePlate;
-use Src\Vehicles\Domain\ValueObjects\Type;
 
 final class AddPending
 {
@@ -30,14 +27,6 @@ final class AddPending
                 $this->notification
             );
         }
-
-        $input->vehicle->addPending(
-            new Pending(
-                null,
-                new Type($input->type),
-                new Description($input->description)
-            )
-        );
 
         $pendings = $this->iVehicleRepository->addPending(
             $input->vehicle

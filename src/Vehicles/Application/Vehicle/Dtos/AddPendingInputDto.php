@@ -8,8 +8,6 @@ final class AddPendingInputDto
 {
     public function __construct(
         readonly Vehicle $vehicle,
-        readonly string $type,
-        readonly string $description,
     ) {
     }
 }
