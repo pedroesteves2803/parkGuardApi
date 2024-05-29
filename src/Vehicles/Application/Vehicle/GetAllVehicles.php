@@ -5,7 +5,6 @@ namespace Src\Vehicles\Application\Vehicle;
 use Illuminate\Support\Collection;
 use Src\Shared\Utils\Notification;
 use Src\Vehicles\Application\Vehicle\Dtos\GetAllVehiclesOutputDto;
-use Src\Vehicles\Application\Vehicle\Dtos\GetVehicleOutputDto;
 use Src\Vehicles\Domain\Repositories\IVehicleRepository;
 
 final class GetAllVehicles
@@ -18,30 +17,26 @@ final class GetAllVehicles
 
     public function execute(): GetAllVehiclesOutputDto
     {
-        $vehicles = $this->resolveVehicles();
+        try {
+            $vehicles = $this->getVehicles();
 
-        if ($vehicles instanceof Notification) {
-            return new GetVehicleOutputDto(
-                null,
-                $this->notification
-            );
+            return new GetAllVehiclesOutputDto($vehicles, $this->notification);
+        } catch (\Exception $e) {
+            $this->notification->addError([
+                'context' => 'get_all_vehicle',
+                'message' => $e->getMessage(),
+            ]);
+
+            return new GetAllVehiclesOutputDto(null, $this->notification);
         }
-
-        return new GetAllVehiclesOutputDto(
-            $vehicles,
-            $this->notification
-        );
     }
 
-    private function resolveVehicles(): Collection|Notification
+    private function getVehicles(): Collection
     {
         $vehicles = $this->iVehicleRepository->getAll();
 
         if (is_null($vehicles)) {
-            return $this->notification->addError([
-                'context' => 'vehicles_not_found',
-                'message' => 'Não possui veiculos!',
-            ]);
+            throw new \Exception('Não possui veiculos!');
         }
 
         return $vehicles;

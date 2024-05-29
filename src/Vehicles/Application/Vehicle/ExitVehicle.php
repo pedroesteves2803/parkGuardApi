@@ -18,38 +18,34 @@ final class ExitVehicle
 
     public function execute(ExitVehicleInputDto $input): ExitVehicleOutputDto
     {
-        $existVehicle = $this->resolveExistVehicle($input->licensePlate);
+        try {
 
-        if ($existVehicle instanceof Notification) {
-            return new ExitVehicleOutputDto(
-                null,
-                $this->notification
+            $this->assertVehicleDoesNotExist($input->licensePlate);
+
+            $vehicle = $this->iVehicleRepository->exit(
+                new LicensePlate($input->licensePlate),
             );
+
+            return new ExitVehicleOutputDto($vehicle, $this->notification);
+
+        } catch (\Exception $e) {
+            $this->notification->addError([
+                'context' => 'exit_vehicle',
+                'message' => $e->getMessage(),
+            ]);
+
+            return new ExitVehicleOutputDto(null, $this->notification);
         }
-
-        $vehicle = $this->iVehicleRepository->exit(
-            new LicensePlate($input->licensePlate),
-        );
-
-        return new ExitVehicleOutputDto(
-            $vehicle,
-            $this->notification
-        );
     }
 
-    private function resolveExistVehicle(string $licensePlate): bool|Notification
+    private function assertVehicleDoesNotExist(string $licensePlate): void
     {
         $existVehicle = $this->iVehicleRepository->existVehicle(
             new LicensePlate($licensePlate)
         );
 
-        if (!$existVehicle) {
-            return $this->notification->addError([
-                'context' => 'vehicle_not_found',
-                'message' => 'Veiculo não encontrado!',
-            ]);
+        if (! $existVehicle) {
+            throw new \Exception('Veiculo não encontrado!');
         }
-
-        return $existVehicle;
     }
 }

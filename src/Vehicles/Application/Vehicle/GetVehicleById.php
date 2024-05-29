@@ -18,30 +18,33 @@ final class GetVehicleById
 
     public function execute(GetVehicleInputDto $input): GetVehicleOutputDto
     {
-        $vehicle = $this->resolveVehicleById($input->id);
+        try {
+            $vehicle = $this->getVehicleById($input->id);
 
-        if ($vehicle instanceof Notification) {
-            return new GetVehicleOutputDto(
-                null,
-                $this->notification
-            );
+            if ($vehicle instanceof Notification) {
+                return new GetVehicleOutputDto(
+                    null,
+                    $this->notification
+                );
+            }
+
+            return new GetVehicleOutputDto($vehicle, $this->notification);
+        } catch (\Exception $e) {
+            $this->notification->addError([
+                'context' => 'get_vehicle_by_id',
+                'message' => $e->getMessage(),
+            ]);
+
+            return new GetVehicleOutputDto(null, $this->notification);
         }
-
-        return new GetVehicleOutputDto(
-            $vehicle,
-            $this->notification
-        );
     }
 
-    private function resolveVehicleById(int $id): Vehicle|Notification
+    private function getVehicleById(int $id): Vehicle
     {
         $vehicle = $this->iVehicleRepository->getById($id);
 
         if (is_null($vehicle)) {
-            return $this->notification->addError([
-                'context' => 'vehicle_not_found',
-                'message' => 'Veiculo não encontrado!',
-            ]);
+            throw new \Exception('Veiculo não encontrado!');
         }
 
         return $vehicle;

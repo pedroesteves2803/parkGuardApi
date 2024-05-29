@@ -23,44 +23,38 @@ final class UpdateVehicle
 
     public function execute(UpdateVehicleInputDto $input): UpdateVehicleOutputDto
     {
-        $resolveVehicleById = $this->resolveVehicleById($input->id);
+        try {
+            $this->getVehicleById($input->id);
 
-        if ($resolveVehicleById instanceof Notification) {
-            return new UpdateVehicleOutputDto(
-                null,
-                $this->notification
+            $vehicle = $this->iVehicleRepository->update(
+                new Vehicle(
+                    $input->id,
+                    new Manufacturer($input->manufacturer),
+                    new Color($input->color),
+                    new Model($input->model),
+                    new LicensePlate($input->licensePlate),
+                    new EntryTimes(new \DateTime()),
+                    null
+                )
             );
+
+            return new UpdateVehicleOutputDto($vehicle, $this->notification);
+        } catch (\Exception $e) {
+            $this->notification->addError([
+                'context' => 'update_vehicle',
+                'message' => $e->getMessage(),
+            ]);
+
+            return new UpdateVehicleOutputDto(null, $this->notification);
         }
-
-        $vehicle = $this->iVehicleRepository->update(
-            new Vehicle(
-                $input->id,
-                new Manufacturer($input->manufacturer),
-                new Color($input->color),
-                new Model($input->model),
-                new LicensePlate($input->licensePlate),
-                new EntryTimes(new \DateTime()),
-                null
-            )
-        );
-
-        return new UpdateVehicleOutputDto(
-            $vehicle,
-            $this->notification
-        );
     }
 
-    private function resolveVehicleById(int $id): Vehicle|Notification
+    private function getVehicleById(int $id): void
     {
         $vehicle = $this->iVehicleRepository->getById($id);
 
         if (is_null($vehicle)) {
-            return $this->notification->addError([
-                'context' => 'vehicle_not_found',
-                'message' => 'Veiculo não encontrado!',
-            ]);
+            throw new \Exception('Veiculo não encontrado!');
         }
-
-        return $vehicle;
     }
 }

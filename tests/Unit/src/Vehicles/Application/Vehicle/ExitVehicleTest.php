@@ -66,7 +66,7 @@ it('returns an error notification when attempting to exit a vehicle with a non-e
     expect($outputDto->vehicle)->toBeNull();
     expect($outputDto->notification->getErrors())->toBe([
         [
-            'context' => 'vehicle_not_found',
+            'context' => 'exit_vehicle',
             'message' => 'Veiculo não encontrado!',
         ],
     ]);

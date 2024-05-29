@@ -86,7 +86,7 @@ it('returns error notification when trying to update an vehicle with non-existin
     expect($outputDto->vehicle)->toBeNull();
     expect($outputDto->notification->getErrors())->toBe([
         [
-            'context' => 'vehicle_not_found',
+            'context' => 'update_vehicle',
             'message' => 'Veiculo não encontrado!',
         ],
     ]);

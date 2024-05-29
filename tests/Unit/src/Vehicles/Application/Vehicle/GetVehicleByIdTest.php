@@ -62,7 +62,7 @@ it('returns error notification when trying to retrieve a non-existing vehicle', 
     expect($outputDto->vehicle)->toBeNull();
     expect($outputDto->notification->getErrors())->toBe([
         [
-            'context' => 'vehicle_not_found',
+            'context' => 'get_vehicle_by_id',
             'message' => 'Veiculo não encontrado!',
         ],
     ]);
