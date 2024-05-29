@@ -18,32 +18,28 @@ final class DeleteEmployeeById
 
     public function execute(DeleteEmployeeByIdInputDto $input): DeleteEmployeeByIdOutputDto
     {
-        $employee = $this->resolveCategoryById($input->id);
+        try {
+            $employee = $this->getCategoryById($input->id);
 
-        if ($employee instanceof Notification) {
-            return new DeleteEmployeeByIdOutputDto(
-                null,
-                $this->notification
-            );
+            $this->iEmployeeRepository->delete($employee->id);
+
+            return new DeleteEmployeeByIdOutputDto(null, $this->notification);
+        } catch (\Exception $e) {
+            $this->notification->addError([
+                'context' => 'delete_employee_by_id',
+                'message' => $e->getMessage(),
+            ]);
+
+            return new DeleteEmployeeByIdOutputDto(null, $this->notification);
         }
-
-        $this->iEmployeeRepository->delete($employee->id);
-
-        return new DeleteEmployeeByIdOutputDto(
-            null,
-            $this->notification
-        );
     }
 
-    private function resolveCategoryById(int $id): Employee|Notification
+    private function getCategoryById(int $id): Employee
     {
         $employee = $this->iEmployeeRepository->getById($id);
 
         if (is_null($employee)) {
-            return $this->notification->addError([
-                'context' => 'employee_not_found',
-                'message' => 'Funcionario não encontrado!',
-            ]);
+            throw new \Exception('Funcionario não encontrado!');
         }
 
         return $employee;

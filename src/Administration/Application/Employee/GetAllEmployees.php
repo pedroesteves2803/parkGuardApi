@@ -17,30 +17,26 @@ final class GetAllEmployees
 
     public function execute(): GetAllEmployeesOutputDto
     {
-        $employees = $this->resolveEmployees();
+        try {
+            $employees = $this->getEmployees();
 
-        if ($employees instanceof Notification) {
-            return new GetAllEmployeesOutputDto(
-                null,
-                $this->notification
-            );
+            return new GetAllEmployeesOutputDto($employees, $this->notification);
+        } catch (\Exception $e) {
+            $this->notification->addError([
+                'context' => 'get_all_employees',
+                'message' => $e->getMessage(),
+            ]);
+
+            return new GetAllEmployeesOutputDto(null, $this->notification);
         }
-
-        return new GetAllEmployeesOutputDto(
-            $employees,
-            $this->notification
-        );
     }
 
-    private function resolveEmployees(): Collection|Notification
+    private function getEmployees(): Collection
     {
         $employees = $this->iEmployeeRepository->getAll();
 
         if (is_null($employees)) {
-            return $this->notification->addError([
-                'context' => 'employees_not_found',
-                'message' => 'Não possui funcionarios!',
-            ]);
+            throw new \Exception('Não possui funcionarios!');
         }
 
         return $employees;

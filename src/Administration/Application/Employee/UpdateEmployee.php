@@ -22,59 +22,50 @@ final class UpdateEmployee
 
     public function execute(UpdateEmployeeInputDto $input): UpdateEmployeeOutputDto
     {
-        $employeeById = $this->resolveEmployeeById($input);
-        if ($employeeById instanceof Notification) {
-            return new UpdateEmployeeOutputDto(
-                null,
-                $this->notification
+        try {
+            $employeeById = $this->getEmployeeById($input);
+
+            $this->assertExistEmployeeByEmail($employeeById, $input);
+
+            $employee = $this->iEmployeeRepository->update(
+                new Employee(
+                    $input->id,
+                    new Name($input->name),
+                    new Email($input->email),
+                    new Password($input->password),
+                    new Type($input->type),
+                )
             );
+
+            return new UpdateEmployeeOutputDto($employee, $this->notification);
+
+        } catch (\Exception $e) {
+            $this->notification->addError([
+                'context' => 'update_employee',
+                'message' => $e->getMessage(),
+            ]);
+
+            return new UpdateEmployeeOutputDto(null, $this->notification);
         }
-
-        $existEmployee = $this->resolveExistEmployeeByEmail($employeeById, $input);
-
-        if ($existEmployee instanceof Notification) {
-            return new UpdateEmployeeOutputDto(
-                null,
-                $this->notification
-            );
-        }
-
-        $employee = $this->iEmployeeRepository->update(
-            new Employee(
-                $input->id,
-                new Name($input->name),
-                new Email($input->email),
-                new Password($input->password),
-                new Type($input->type),
-            )
-        );
-
-        return new UpdateEmployeeOutputDto(
-            $employee,
-            $this->notification
-        );
     }
 
-    private function resolveEmployeeById(UpdateEmployeeInputDto $input): Employee|Notification
+    private function getEmployeeById(UpdateEmployeeInputDto $input): Employee
     {
         $employee = $this->iEmployeeRepository->getById($input->id);
 
         if (is_null($employee)) {
-            return $this->notification->addError([
-                'context' => 'employee_not_found',
-                'message' => 'Funcionario não encontrado!',
-            ]);
+            throw new \Exception('Funcionario não encontrado!');
         }
 
         return $employee;
     }
 
-    private function resolveExistEmployeeByEmail(
+    private function assertExistEmployeeByEmail(
         Employee $employee,
         UpdateEmployeeInputDto $input
-    ): bool|Notification {
+    ): void {
         if ($employee->email->value() === $input->email) {
-            return false;
+            return;
         }
 
         $existEmployee = $this->iEmployeeRepository->existByEmail(
@@ -82,12 +73,7 @@ final class UpdateEmployee
         );
 
         if ($existEmployee) {
-            return $this->notification->addError([
-                'context' => 'employee_email_already_exists',
-                'message' => 'Email já cadastrado!',
-            ]);
+            throw new \Exception('Email já cadastrado!');
         }
-
-        return $existEmployee;
     }
 }

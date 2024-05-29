@@ -22,44 +22,38 @@ final class CreateEmployee
 
     public function execute(CreateEmployeeInputDto $input): CreateEmployeeOutputDto
     {
-        $existEmployee = $this->resolveExistCategoryByEmail($input->email);
+        try {
+            $this->assertExistCategoryByEmail($input->email);
 
-        if ($existEmployee instanceof Notification) {
-            return new CreateEmployeeOutputDto(
-                null,
-                $this->notification
+            $employee = $this->iEmployeeRepository->create(
+                new Employee(
+                    null,
+                    new Name($input->name),
+                    new Email($input->email),
+                    new Password($input->password),
+                    new Type($input->type),
+                )
             );
+
+            return new CreateEmployeeOutputDto($employee, $this->notification);
+        } catch (\Exception $e) {
+            $this->notification->addError([
+                'context' => 'create_employee',
+                'message' => $e->getMessage(),
+            ]);
+
+            return new CreateEmployeeOutputDto(null, $this->notification);
         }
-
-        $employee = $this->iEmployeeRepository->create(
-            new Employee(
-                null,
-                new Name($input->name),
-                new Email($input->email),
-                new Password($input->password),
-                new Type($input->type),
-            )
-        );
-
-        return new CreateEmployeeOutputDto(
-            $employee,
-            $this->notification
-        );
     }
 
-    private function resolveExistCategoryByEmail(string $employeeEmail): bool|Notification
+    private function assertExistCategoryByEmail(string $employeeEmail): void
     {
         $existEmployee = $this->iEmployeeRepository->existByEmail(
             new Email($employeeEmail)
         );
 
         if ($existEmployee) {
-            return $this->notification->addError([
-                'context' => 'employee_email_already_exists',
-                'message' => 'Email já cadastrado!',
-            ]);
+            throw new \Exception('Email já cadastrado!');
         }
-
-        return $existEmployee;
     }
 }

@@ -18,30 +18,26 @@ final class GetEmployeeById
 
     public function execute(GetEmployeeByIdInputDto $input): GetEmployeeByIdOutputDto
     {
-        $employee = $this->resolveEmployeeById($input);
+        try {
+            $employee = $this->getEmployeeById($input);
 
-        if ($employee instanceof Notification) {
-            return new GetEmployeeByIdOutputDto(
-                null,
-                $this->notification
-            );
+            return new GetEmployeeByIdOutputDto($employee, $this->notification);
+        } catch (\Exception $e) {
+            $this->notification->addError([
+                'context' => 'get_employee_by_id',
+                'message' => $e->getMessage(),
+            ]);
+
+            return new GetEmployeeByIdOutputDto(null, $this->notification);
         }
-
-        return new GetEmployeeByIdOutputDto(
-            $employee,
-            $this->notification
-        );
     }
 
-    private function resolveEmployeeById(GetEmployeeByIdInputDto $input): Employee|Notification
+    private function getEmployeeById(GetEmployeeByIdInputDto $input): Employee
     {
         $employee = $this->iEmployeeRepository->getById($input->id);
 
         if (is_null($employee)) {
-            return $this->notification->addError([
-                'context' => 'employee_not_found',
-                'message' => 'Funcionario não encontrado!',
-            ]);
+            throw new \Exception('Funcionario não encontrado!');
         }
 
         return $employee;
