@@ -20,7 +20,7 @@ it('can retrieve all employees from the repository', function () {
 
     $employees = new Collection();
 
-    for ($i = 0; $i < 10; ++$i) {
+    for ($i = 0; $i < 10; $i++) {
         $id = $i + 1;
         $name = 'Employee '.($i + 1);
         $email = 'employee'.($i + 1).'@example.com';
@@ -63,7 +63,7 @@ it('returns error notification when there are no employees in the repository', f
     expect($outputDto->employees)->toBeNull();
     expect($outputDto->notification->getErrors())->toBe([
         [
-            'context' => 'employees_not_found',
+            'context' => 'get_all_employees',
             'message' => 'Não possui funcionarios!',
         ],
     ]);

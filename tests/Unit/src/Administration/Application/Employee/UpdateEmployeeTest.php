@@ -124,7 +124,7 @@ it('returns error notification when trying to update an employee with non-existi
     expect($outputDto->employee)->toBeNull();
     expect($outputDto->notification->getErrors())->toBe([
         [
-            'context' => 'employee_not_found',
+            'context' => 'update_employee',
             'message' => 'Funcionario não encontrado!',
         ],
     ]);
@@ -163,7 +163,7 @@ it('returns error notification when trying to update an employee with an already
     expect($outputDto->employee)->toBeNull();
     expect($outputDto->notification->getErrors())->toBe([
         [
-            'context' => 'employee_email_already_exists',
+            'context' => 'update_employee',
             'message' => 'Email já cadastrado!',
         ],
     ]);

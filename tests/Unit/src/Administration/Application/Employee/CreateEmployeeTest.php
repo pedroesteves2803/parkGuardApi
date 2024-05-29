@@ -52,7 +52,7 @@ it('fails to create an employee with existing email', function () {
     expect($outputDto->employee)->toBeNull();
     expect($outputDto->notification->getErrors())->toBe([
         [
-            'context' => 'employee_email_already_exists',
+            'context' => 'create_employee',
             'message' => 'Email já cadastrado!',
         ],
     ]);

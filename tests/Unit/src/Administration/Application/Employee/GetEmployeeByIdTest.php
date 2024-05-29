@@ -58,7 +58,7 @@ it('returns error notification when trying to retrieve a non-existing employee',
     expect($outputDto->employee)->toBeNull();
     expect($outputDto->notification->getErrors())->toBe([
         [
-            'context' => 'employee_not_found',
+            'context' => 'get_employee_by_id',
             'message' => 'Funcionario não encontrado!',
         ],
     ]);

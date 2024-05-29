@@ -61,7 +61,7 @@ it('returns error notification when trying to delete a non-existing employee', f
     expect($outputDto->employee)->toBeNull();
     expect($outputDto->notification->getErrors())->toBe([
         [
-            'context' => 'employee_not_found',
+            'context' => 'delete_employee_by_id',
             'message' => 'Funcionario não encontrado!',
         ],
     ]);
