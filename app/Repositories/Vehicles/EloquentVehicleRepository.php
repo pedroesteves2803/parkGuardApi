@@ -6,8 +6,6 @@ use App\Models\Pending as ModelsPending;
 use App\Models\Vehicle as ModelsVehicle;
 use DateTime;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Log;
-use Src\Vehicles\Domain\Entities\Consult;
 use Src\Vehicles\Domain\Entities\Pending;
 use Src\Vehicles\Domain\Entities\Vehicle;
 use Src\Vehicles\Domain\Repositories\IVehicleRepository;
@@ -68,7 +66,15 @@ final class EloquentVehicleRepository implements IVehicleRepository
         $modelsVehicle->entry_times = $vehicle->entryTimes->value();
         $modelsVehicle->save();
 
-        return new Vehicle(
+        $vehicle->pendings()->map(function (Pending $pendingItem) use ($modelsVehicle) {
+            $modelsPending = new ModelsPending();
+            $modelsPending->type = $pendingItem->type->value();
+            $modelsPending->description = $pendingItem->description->value();
+            $modelsPending->vehicle_id = $modelsVehicle->id;
+            $modelsPending->save();
+        });
+
+        $vehicle = new Vehicle(
             $modelsVehicle->id,
             new Manufacturer($modelsVehicle->manufacturer),
             new Color($modelsVehicle->color),
@@ -81,6 +87,16 @@ final class EloquentVehicleRepository implements IVehicleRepository
                 $modelsVehicle->departure_times
             )
         );
+
+        foreach ($vehicle->pendings() as $pending) {
+            $modelsPending = new ModelsPending();
+            $modelsPending->type = $pending->type->value();
+            $modelsPending->description = $pending->description->value();
+            $modelsPending->vehicle_id = $modelsVehicle->id;
+            $modelsPending->save();
+        }
+
+        return $vehicle;
     }
 
     public function update(Vehicle $vehicle): ?Vehicle
@@ -138,18 +154,5 @@ final class EloquentVehicleRepository implements IVehicleRepository
                 $modelsVehicle->departure_times
             )
         );
-    }
-
-    public function addPending(Vehicle $vehicle): Collection
-    {
-        $vehicle->pendings()->map(function (Pending $pendingItem) use ($vehicle) {
-            $modelsPending = new ModelsPending();
-            $modelsPending->type = $pendingItem->type->value();
-            $modelsPending->description = $pendingItem->description->value();
-            $modelsPending->vehicle_id = $vehicle->id();
-            $modelsPending->save();
-        });
-
-        return $vehicle->pendings();
     }
 }

@@ -3,8 +3,8 @@
 namespace Src\Vehicles\Application\Vehicle;
 
 use DateTime;
+use Illuminate\Support\Facades\Log;
 use Src\Shared\Utils\Notification;
-use Src\Vehicles\Application\Vehicle\Dtos\AddPendingInputDto;
 use Src\Vehicles\Application\Vehicle\Dtos\ConsultVehicleByLicensePlateInputDto;
 use Src\Vehicles\Application\Vehicle\Dtos\ConsultVehicleByLicensePlateOutputDto;
 use Src\Vehicles\Application\Vehicle\Dtos\CreateVehicleInputDto;
@@ -21,102 +21,86 @@ use Src\Vehicles\Domain\ValueObjects\Model;
 final class CreateVehicle
 {
     public function __construct(
-        readonly IVehicleRepository $iVehicleRepository,
-        readonly ConsultPendingByLicensePlate $consultPendingByLicensePlate,
-        readonly AddPending $addPending,
-        readonly Notification $notification,
+        private IVehicleRepository $vehicleRepository,
+        private ConsultPendingByLicensePlate $consultPendingByLicensePlate,
+        private Notification $notification,
     ) {
     }
 
     public function execute(CreateVehicleInputDto $input): CreateVehicleOutputDto
     {
-        $existVehicle = $this->resolveExistVehicle($input->licensePlate);
+        try {
+            $this->assertVehicleDoesNotExist($input->licensePlate);
 
-        if ($existVehicle instanceof Notification) {
-            return new CreateVehicleOutputDto(
-                null,
-                $this->notification
-            );
-        }
+            $consultOutputDto = $this->getPendingsForLicensePlate($input->licensePlate);
 
-        $consultOutputDto = $this->resolveConsultPendingByLicensePlate($input);
+            $vehicleEntity = $this->createVehicleEntity($consultOutputDto);
 
-        if ($consultOutputDto instanceof Notification) {
-            return new CreateVehicleOutputDto(
-                null,
-                $this->notification
-            );
-        }
+            $vehicle = $this->saveVehicle($vehicleEntity);
 
-        $vehicle = $this->iVehicleRepository->create(
-            new Vehicle(
-                null,
-                new Manufacturer($consultOutputDto->manufacturer),
-                new Color($consultOutputDto->color),
-                new Model($consultOutputDto->model),
-                new LicensePlate($consultOutputDto->licensePlate),
-                new EntryTimes(
-                    new DateTime()
-                ),
-                null
-            )
-        );
-
-        $this->resolveAddPendingsToVehicle($vehicle, $consultOutputDto);
-
-        return new CreateVehicleOutputDto(
-            $vehicle,
-            $this->notification
-        );
-    }
-
-    private function resolveExistVehicle(string $licensePlate): bool|Notification
-    {
-        $existVehicle = $this->iVehicleRepository->existVehicle(
-            new LicensePlate($licensePlate)
-        );
-
-        if ($existVehicle) {
-            return $this->notification->addError([
-                'context' => 'license_plate_already_exists',
-                'message' => 'Placa já cadastrada!',
+            return new CreateVehicleOutputDto($vehicle, $this->notification);
+        } catch (\Exception $e) {
+            $this->notification->addError([
+                'context' => 'create_vehicle',
+                'message' => $e->getMessage(),
             ]);
+
+            return new CreateVehicleOutputDto(null, $this->notification);
         }
-
-        return $existVehicle;
     }
 
-    private function resolveAddPendingsToVehicle(Vehicle $vehicle, ConsultVehicleByLicensePlateOutputDto $consultOutputDto): void
+    private function assertVehicleDoesNotExist(string $licensePlate): void
     {
-        $consultOutputDto->pendings->each(function (Pending $pending) use ($vehicle) {
-            $vehicle->addPending(
-                $pending
-            );
-        });
+        $exists = $this->vehicleRepository->existVehicle(new LicensePlate($licensePlate));
 
-        $addPendingInputDto = new AddPendingInputDto(
-            $vehicle,
-        );
-
-        $this->addPending->execute($addPendingInputDto);
+        if ($exists) {
+            throw new \Exception('Placa já cadastrada!');
+        }
     }
 
-    private function resolveConsultPendingByLicensePlate(CreateVehicleInputDto $input): ConsultVehicleByLicensePlateOutputDto|Notification
+    private function getPendingsForLicensePlate(string $licensePlate): ConsultVehicleByLicensePlateOutputDto
     {
-        $consultInputDto = new ConsultVehicleByLicensePlateInputDto($input->licensePlate);
+        $consultInputDto = new ConsultVehicleByLicensePlateInputDto($licensePlate);
+
         $consultOutputDto = $this->consultPendingByLicensePlate->execute($consultInputDto);
 
-        $hasRestriction = $consultOutputDto->pendings->contains(function ($pending) {
-            return $pending->description->value() !== 'SEM RESTRICAO';
-        });
+        // $hasRestriction = ! empty(array_filter($consultOutputDto->pendings, function (Pending $pending) {
+        //     return $pending->description->value() !== 'SEM RESTRICAO';
+        // }));
 
-        if ($hasRestriction) {
-            return $this->notification->addError([
-                'context' => 'license_plate_already_exists',
-                'message' => 'Veiculo com restrição!',
-            ]);
-        }
+        // if ($hasRestriction) {
+        //     // throw new \Exception('Veículo com restrição!');
+        //     // Log::info('veiculo com a placa: '.$consultOutputDto->licensePlate.'com restrição!');
+        // }
 
         return $consultOutputDto;
+    }
+
+    private function createVehicleEntity(ConsultVehicleByLicensePlateOutputDto $consultOutputDto): Vehicle
+    {
+        $vehicle = new Vehicle(
+            null,
+            new Manufacturer($consultOutputDto->manufacturer),
+            new Color($consultOutputDto->color),
+            new Model($consultOutputDto->model),
+            new LicensePlate($consultOutputDto->licensePlate),
+            new EntryTimes(new DateTime()),
+            null
+        );
+
+        foreach ($consultOutputDto->pendings as $pending) {
+            $vehicle->addPending($pending);
+        }
+
+        return $vehicle;
+    }
+
+    private function saveVehicle(Vehicle $vehicle): Vehicle
+    {
+        $vehicle = $this->vehicleRepository->create(
+            $vehicle
+        );
+
+        return $vehicle;
     }
 }

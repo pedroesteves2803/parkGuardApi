@@ -2,9 +2,6 @@
 
 namespace Src\Vehicles\Domain\Repositories\Dtos;
 
-use Illuminate\Support\Collection;
-use Src\Shared\Utils\Notification;
-
 final class IConsultVehicleRepositoryOutputDto
 {
     public function __construct(
@@ -12,7 +9,7 @@ final class IConsultVehicleRepositoryOutputDto
         readonly ?string $color,
         readonly ?string $model,
         readonly ?string $licensePlate,
-        readonly Collection $pendings,
+        readonly array $pendings,
     ) {
     }
 }

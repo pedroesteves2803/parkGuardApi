@@ -14,7 +14,7 @@ final class ConsultVehicleByLicensePlateOutputDto
         readonly ?string $color,
         readonly ?string $model,
         readonly ?string $licensePlate,
-        readonly Collection $pendings,
+        readonly array $pendings,
         readonly Notification $notification
     ) {
     }

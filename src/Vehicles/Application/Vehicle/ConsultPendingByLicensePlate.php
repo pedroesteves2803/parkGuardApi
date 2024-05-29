@@ -2,17 +2,17 @@
 
 namespace Src\Vehicles\Application\Vehicle;
 
-use Illuminate\Support\Collection;
 use Src\Shared\Utils\Notification;
 use Src\Vehicles\Application\Vehicle\Dtos\ConsultVehicleByLicensePlateInputDto;
 use Src\Vehicles\Application\Vehicle\Dtos\ConsultVehicleByLicensePlateOutputDto;
+use Src\Vehicles\Domain\Repositories\Dtos\IConsultVehicleRepositoryOutputDto;
 use Src\Vehicles\Domain\Repositories\IConsultVehicleRepository;
 use Src\Vehicles\Domain\ValueObjects\LicensePlate;
 
 final class ConsultPendingByLicensePlate
 {
     public function __construct(
-        readonly IConsultVehicleRepository $iConsultVehicleRepository,
+        readonly IConsultVehicleRepository $consultVehicleRepository,
         readonly Notification $notification,
     ) {
     }
@@ -31,9 +31,9 @@ final class ConsultPendingByLicensePlate
         );
     }
 
-    public function resolveConsultVehicle(string $licensePlate)
+    public function resolveConsultVehicle(string $licensePlate): IConsultVehicleRepositoryOutputDto
     {
-        $outputResolveConsultVehicle = $this->iConsultVehicleRepository->consult(
+        $outputResolveConsultVehicle = $this->consultVehicleRepository->consult(
             new LicensePlate($licensePlate)
         );
 
