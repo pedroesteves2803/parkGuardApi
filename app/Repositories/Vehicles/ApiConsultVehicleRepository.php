@@ -50,19 +50,20 @@ class ApiConsultVehicleRepository implements IConsultVehicleRepository
             $manufacturer = $vehicleData['response']['MARCA'] ?? null;
             $color = $vehicleData['response']['cor'] ?? null;
             $model = $vehicleData['response']['MODELO'] ?? null;
-            $licensePlate = $vehicleData['response']['placa'] ?? null;
+            $licensePlate = $vehicleData['response']['placa'] ?? $licensePlate->value();
 
             for ($i = 1; $i <= 4; $i++) {
                 $pending = $vehicleData['response']['extra']['restricao'.$i]['restricao'] ?? '';
                 $type = 'Tipo'.$i;
                 $description = $pending;
 
+
                 array_push(
                     $pendings,
                     new Pending(
                         null,
-                        new Type($type),
-                        new Description($description)
+                        is_null($type) ? null : new Type($type),
+                        is_null($description) || $description == "" ? null : new Description($description)
                     )
                 );
             }

@@ -4,11 +4,8 @@
   - Gerencia o registro e as permissões dos administradores e funcionários do sistema.
 
 - **Veículos**:
-  - Entidades: Veículo, Informações do Veículo.
+  - Entidades: Veículo, Pendência.
   - Responsável pelo registro e gerenciamento das informações dos veículos que utilizam o estacionamento.
-
-- **Pendências Legais**:
-  - Entidades: Pendência.
   - Integra-se a uma API governamental ou policial para verificar pendências legais dos veículos e notificar os administradores.
 
 - **Pagamentos**:
@@ -70,6 +67,5 @@
 # Repositórios:
 - **Repositório de Funcionários**: Para acessar e persistir dados dos funcionários.
 - **Repositório de Veículos**: Para acessar e persistir dados dos veículos.
-- **Repositório de Pendências**: Para acessar e persistir dados das pendências legais.
 - **Repositório de Pagamentos**: Para acessar e persistir dados dos pagamentos.
 - **Repositório de Relatórios**: Para acessar e persistir dados dos relatórios.

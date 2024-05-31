@@ -4,10 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Notifications\Notifiable;
 
 class Vehicle extends Model
 {
+    use Notifiable;
     use HasFactory;
 
     protected $guarded = [
@@ -22,5 +23,10 @@ class Vehicle extends Model
     public function pendings()
     {
         return $this->hasMany(Pending::class);
+    }
+
+    public function routeNotificationForVonage($notification): string
+    {
+        return '5511935051520';
     }
 }

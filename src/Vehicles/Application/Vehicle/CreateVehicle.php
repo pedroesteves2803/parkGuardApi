@@ -11,6 +11,7 @@ use Src\Vehicles\Application\Vehicle\Dtos\CreateVehicleInputDto;
 use Src\Vehicles\Application\Vehicle\Dtos\CreateVehicleOutputDto;
 use Src\Vehicles\Domain\Entities\Pending;
 use Src\Vehicles\Domain\Entities\Vehicle;
+use Src\Vehicles\Domain\Services\ISendPendingNotificationService;
 use Src\Vehicles\Domain\Repositories\IVehicleRepository;
 use Src\Vehicles\Domain\ValueObjects\Color;
 use Src\Vehicles\Domain\ValueObjects\EntryTimes;
@@ -23,6 +24,7 @@ final class CreateVehicle
     public function __construct(
         private IVehicleRepository $vehicleRepository,
         private ConsultPendingByLicensePlate $consultPendingByLicensePlate,
+        private ISendPendingNotificationService $sendPendingNotificationService,
         private Notification $notification,
     ) {
     }
@@ -64,14 +66,15 @@ final class CreateVehicle
 
         $consultOutputDto = $this->consultPendingByLicensePlate->execute($consultInputDto);
 
-        // $hasRestriction = ! empty(array_filter($consultOutputDto->pendings, function (Pending $pending) {
-        //     return $pending->description->value() !== 'SEM RESTRICAO';
-        // }));
+        $hasRestriction = ! empty(array_filter($consultOutputDto->pendings, function (Pending $pending) {
+            return !is_null($pending->description) && $pending->description->value() !== 'SEM RESTRICAO';
+        }));
 
-        // if ($hasRestriction) {
-        //     // throw new \Exception('Veículo com restrição!');
-        //     // Log::info('veiculo com a placa: '.$consultOutputDto->licensePlate.'com restrição!');
-        // }
+        if (!$hasRestriction) {
+            $this->sendPendingNotificationService->execute(
+                $this->createVehicleEntity($consultOutputDto)
+            );
+        }
 
         return $consultOutputDto;
     }
@@ -80,9 +83,9 @@ final class CreateVehicle
     {
         $vehicle = new Vehicle(
             null,
-            new Manufacturer($consultOutputDto->manufacturer),
-            new Color($consultOutputDto->color),
-            new Model($consultOutputDto->model),
+            is_null($consultOutputDto->manufacturer) ? $consultOutputDto->manufacturer : new Manufacturer($consultOutputDto->manufacturer),
+            is_null($consultOutputDto->color) ? $consultOutputDto->color : new Color($consultOutputDto->color),
+            is_null($consultOutputDto->model) ? $consultOutputDto->model : new Model($consultOutputDto->model),
             new LicensePlate($consultOutputDto->licensePlate),
             new EntryTimes(new DateTime()),
             null

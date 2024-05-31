@@ -11,10 +11,12 @@ use Src\Vehicles\Domain\Entities\Vehicle;
 use Src\Vehicles\Domain\Repositories\IVehicleRepository;
 use Src\Vehicles\Domain\ValueObjects\Color;
 use Src\Vehicles\Domain\ValueObjects\DepartureTimes;
+use Src\Vehicles\Domain\ValueObjects\Description;
 use Src\Vehicles\Domain\ValueObjects\EntryTimes;
 use Src\Vehicles\Domain\ValueObjects\LicensePlate;
 use Src\Vehicles\Domain\ValueObjects\Manufacturer;
 use Src\Vehicles\Domain\ValueObjects\Model;
+use Src\Vehicles\Domain\ValueObjects\Type;
 
 final class EloquentVehicleRepository implements IVehicleRepository
 {
@@ -56,29 +58,21 @@ final class EloquentVehicleRepository implements IVehicleRepository
         );
     }
 
-    public function create(Vehicle $vehicle): Vehicle
+    public function create(Vehicle $vehicleEntity): Vehicle
     {
         $modelsVehicle = new ModelsVehicle();
-        $modelsVehicle->manufacturer = $vehicle->manufacturer->value();
-        $modelsVehicle->color = $vehicle->color->value();
-        $modelsVehicle->model = $vehicle->model->value();
-        $modelsVehicle->license_plate = $vehicle->licensePlate->value();
-        $modelsVehicle->entry_times = $vehicle->entryTimes->value();
+        $modelsVehicle->manufacturer = is_null($vehicleEntity->manufacturer) ? null : $vehicleEntity->manufacturer->value();
+        $modelsVehicle->color = is_null($vehicleEntity->color) ? null : $vehicleEntity->color->value();
+        $modelsVehicle->model = is_null($vehicleEntity->model) ? null : $vehicleEntity->model->value();
+        $modelsVehicle->license_plate = $vehicleEntity->licensePlate->value();
+        $modelsVehicle->entry_times = $vehicleEntity->entryTimes->value();
         $modelsVehicle->save();
-
-        $vehicle->pendings()->map(function (Pending $pendingItem) use ($modelsVehicle) {
-            $modelsPending = new ModelsPending();
-            $modelsPending->type = $pendingItem->type->value();
-            $modelsPending->description = $pendingItem->description->value();
-            $modelsPending->vehicle_id = $modelsVehicle->id;
-            $modelsPending->save();
-        });
 
         $vehicle = new Vehicle(
             $modelsVehicle->id,
-            new Manufacturer($modelsVehicle->manufacturer),
-            new Color($modelsVehicle->color),
-            new Model($modelsVehicle->model),
+            is_null($modelsVehicle->manufacturer) ? $modelsVehicle->manufacturer : new Manufacturer($modelsVehicle->manufacturer),
+            is_null($modelsVehicle->color) ? $modelsVehicle->color : new Color($modelsVehicle->color),
+            is_null($modelsVehicle->model) ? $modelsVehicle->model : new Model($modelsVehicle->model),
             new LicensePlate($modelsVehicle->license_plate),
             new EntryTimes(
                 $modelsVehicle->entry_times
@@ -88,13 +82,24 @@ final class EloquentVehicleRepository implements IVehicleRepository
             )
         );
 
-        foreach ($vehicle->pendings() as $pending) {
-            $modelsPending = new ModelsPending();
-            $modelsPending->type = $pending->type->value();
-            $modelsPending->description = $pending->description->value();
-            $modelsPending->vehicle_id = $modelsVehicle->id;
-            $modelsPending->save();
-        }
+        $vehicleEntity->pendings()->map(function (Pending $pendingItem) use ($modelsVehicle, $vehicle) {
+            if(!is_null($pendingItem->description)){
+
+                $modelsPending = new ModelsPending();
+                $modelsPending->type = $pendingItem->type->value();
+                $modelsPending->description = $pendingItem->description->value();
+                $modelsPending->vehicle_id = $modelsVehicle->id;
+                $modelsPending->save();
+
+                $vehicle->addPending(
+                    new Pending(
+                        $modelsPending->id,
+                        new Type($modelsPending->type),
+                        new Description($modelsPending->description)
+                    )
+                );
+            }
+        });
 
         return $vehicle;
     }
