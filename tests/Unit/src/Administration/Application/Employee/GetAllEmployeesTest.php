@@ -15,7 +15,7 @@ beforeEach(function () {
     $this->repositoryMock = mock(IEmployeeRepository::class);
 });
 
-it('can retrieve all employees from the repository', function () {
+it('can retrieve all employees', function () {
     $notification = new Notification();
 
     $employees = new Collection();
@@ -50,7 +50,7 @@ it('can retrieve all employees from the repository', function () {
     expect($outputDto->notification->getErrors())->toBeEmpty();
 });
 
-it('returns error notification when there are no employees in the repository', function () {
+it('returns error notification when there are no vehicles', function () {
     $notification = new Notification();
 
     $this->repositoryMock->shouldReceive('getAll')->once()->andReturnNull();
