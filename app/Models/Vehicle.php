@@ -8,12 +8,9 @@ use Illuminate\Notifications\Notifiable;
 
 class Vehicle extends Model
 {
-    use Notifiable;
-    use HasFactory;
+    use Notifiable, HasFactory;
 
-    protected $guarded = [
-        'id',
-    ];
+    protected $guarded = ['id'];
 
     protected $casts = [
         'entry_times' => 'datetime',
