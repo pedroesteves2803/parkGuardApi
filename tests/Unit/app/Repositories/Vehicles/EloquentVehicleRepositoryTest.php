@@ -4,15 +4,12 @@ use App\Models\Vehicle as ModelsVehicle;
 use App\Repositories\Vehicles\EloquentVehicleRepository;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Collection;
-use Src\Vehicles\Domain\Entities\Pending;
 use Src\Vehicles\Domain\Entities\Vehicle;
 use Src\Vehicles\Domain\ValueObjects\Color;
-use Src\Vehicles\Domain\ValueObjects\Description;
 use Src\Vehicles\Domain\ValueObjects\EntryTimes;
 use Src\Vehicles\Domain\ValueObjects\LicensePlate;
 use Src\Vehicles\Domain\ValueObjects\Manufacturer;
 use Src\Vehicles\Domain\ValueObjects\Model;
-use Src\Vehicles\Domain\ValueObjects\Type;
 use Tests\TestCase;
 
 uses(TestCase::class, RefreshDatabase::class);

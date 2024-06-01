@@ -1,5 +1,6 @@
 <?php
 
+use App\Services\SendPendingNotificationService;
 use Src\Shared\Utils\Notification;
 use Src\Vehicles\Application\Vehicle\ConsultPendingByLicensePlate;
 use Src\Vehicles\Application\Vehicle\CreateVehicle;
@@ -71,6 +72,7 @@ it('successfully creates a vehicle', function () {
             $this->repositoryConsultMock,
             new Notification()
         ),
+        new SendPendingNotificationService(),
         new Notification()
     );
 
@@ -93,6 +95,7 @@ it('fails to create a vehicle with existing license plate', function () {
             $this->repositoryConsultMock,
             new Notification()
         ),
+        new SendPendingNotificationService(),
         new Notification()
     );
 
