@@ -1,13 +1,5 @@
 <?php
 
-use Src\Administration\Application\Employee\CreateEmployee;
-use Src\Administration\Application\Employee\Dtos\CreateEmployeeInputDto;
-use Src\Administration\Application\Employee\Dtos\CreateEmployeeOutputDto;
-use Src\Administration\Domain\Entities\Employee;
-use Src\Administration\Domain\ValueObjects\Email;
-use Src\Administration\Domain\ValueObjects\Name;
-use Src\Administration\Domain\ValueObjects\Password;
-use Src\Administration\Domain\ValueObjects\Type;
 use Src\Payments\Application\Payment\CreatePayment;
 use Src\Payments\Application\Payment\Dtos\CreatePaymentInputDto;
 use Src\Payments\Application\Payment\Dtos\CreatePaymentOutputDto;
