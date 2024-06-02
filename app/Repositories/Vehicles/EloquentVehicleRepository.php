@@ -49,12 +49,12 @@ final class EloquentVehicleRepository implements IVehicleRepository
 
         return new Vehicle(
             $vehicle->id,
-            new Manufacturer($vehicle->manufacturer),
-            new Color($vehicle->color),
-            new Model($vehicle->model),
+            is_null($vehicle->manufacturer) ? null : new Manufacturer($vehicle->manufacturer),
+            is_null($vehicle->color) ? null :  new Color($vehicle->color),
+            is_null($vehicle->model) ? null :  new Model($vehicle->model),
             new LicensePlate($vehicle->license_plate),
             new EntryTimes($vehicle->entry_times),
-            new DepartureTimes($vehicle->departure_times)
+            is_null($vehicle->departure_times) ? null : new DepartureTimes($vehicle->departure_times)
         );
     }
 

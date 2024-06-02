@@ -11,7 +11,7 @@ test('validates instance departure times', function () {
 });
 
 it('valid departure time', function () {
-    $departureTime = new \DateTime('2024-05-10 08:00:00');
-    $departureTimes = new DepartureTimes($departureTime);
-    expect($departureTimes->value())->toBe($departureTime);
+    $time = new \DateTime('2024-05-10 08:00:00');
+    $departureTimes = new DepartureTimes($time);
+    expect($departureTimes->value())->toBe($time);
 });

@@ -44,7 +44,7 @@ class UpdateVehicleResource extends JsonResource
             'color'          => $this->vehicle->color->value(),
             'model'          => $this->vehicle->model->value(),
             'licensePlate'   => $this->vehicle->licensePlate->value(),
-            'entryTimes'     => $this->vehicle->entryTimes->value()->format('Y-m-d H:i:s'),
+            'entryTimes'     => $this->vehicle->entryTimes->value()->format('d-m-Y H:i:s'),
             'departureTimes' => !is_null($this->vehicle->departureTimes) ? $this->vehicle->departureTimes->value() : null,
         ];
     }

@@ -7,11 +7,6 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 class CreateVehicleResource extends JsonResource
 {
-    /**
-     * Transform the resource into an array.
-     *
-     * @return array<string, mixed>
-     */
     public function toArray(Request $request): array
     {
         return [
@@ -49,7 +44,7 @@ class CreateVehicleResource extends JsonResource
             'color'          => is_null($this->vehicle->color) ? null : $this->vehicle->color->value(),
             'model'          => is_null($this->vehicle->model) ? null : $this->vehicle->model->value(),
             'licensePlate'   => $this->vehicle->licensePlate->value(),
-            'entryTimes'     => $this->vehicle->entryTimes->value()->format('Y-m-d H:i:s'),
+            'entryTimes'     => $this->vehicle->entryTimes->value()->format('d-m-Y H:i:s'),
             'departureTimes' => is_null($this->vehicle->departureTimes) ? null : $this->vehicle->departureTimes->value(),
         ];
     }

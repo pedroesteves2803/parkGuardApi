@@ -8,8 +8,8 @@ test('validates instance type', function () {
 });
 
 it('validates a valid type', function () {
-    $password = new Type(1);
-    expect($password->value())->toBe(1);
+    $type = new Type(1);
+    expect($type->value())->toBe(1);
 });
 
 it('throws an exception for a type other than 1 or 2.', function () {

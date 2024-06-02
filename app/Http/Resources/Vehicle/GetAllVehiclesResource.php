@@ -45,8 +45,8 @@ class GetAllVehiclesResource extends JsonResource
                 'color'          => $vehicle->color->value(),
                 'model'          => $vehicle->model->value(),
                 'licensePlate'   => $vehicle->licensePlate->value(),
-                'entryTimes'     => $vehicle->entryTimes->value()->format('Y-m-d H:i:s'),
-                'departureTimes' => !is_null($vehicle->departureTimes->value()) ? $vehicle->departureTimes->value()->format('Y-m-d H:i:s') : null,
+                'entryTimes'     => $vehicle->entryTimes->value()->format('d-m-Y H:i:s'),
+                'departureTimes' => !is_null($vehicle->departureTimes->value()) ? $vehicle->departureTimes->value()->format('d-m-Y H:i:s') : null,
             ];
         });
 

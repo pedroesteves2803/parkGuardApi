@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\VehicleController;
 use App\Models\Vehicle;
 use Illuminate\Support\Facades\Route;
@@ -16,6 +17,8 @@ Route::post('/vehicle', [VehicleController::class, 'store'])->name('vehicle.stor
 Route::get('/vehicle/{vehicle}', [VehicleController::class, 'show'])->name('vehicle.show');
 Route::patch('/vehicle/{vehicle}', [VehicleController::class, 'update'])->name('vehicle.update');
 Route::post('/vehicle/exit/{vehicle}', [VehicleController::class, 'exit'])->name('vehicle.exit');
+
+Route::post('/payments', [PaymentController::class, 'store'])->name('payment.create');
 
 
 Route::get('/teste/{id}', function($id){

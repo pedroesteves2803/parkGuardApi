@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('pendencies', function (Blueprint $table) {
+        Schema::create('pendings', function (Blueprint $table) {
             $table->id();
             $table->string('type');
             $table->text('description');
