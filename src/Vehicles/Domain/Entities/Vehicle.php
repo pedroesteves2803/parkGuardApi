@@ -17,48 +17,48 @@ class Vehicle extends Entity implements IAggregator
     private $pendings;
 
     public function __construct(
-        readonly ?int $id,
-        readonly ?Manufacturer $manufacturer,
-        readonly ?Color $color,
-        readonly ?Model $model,
-        readonly LicensePlate $licensePlate,
-        readonly EntryTimes $entryTimes,
-        readonly ?DepartureTimes $departureTimes,
+        readonly private ?int $id,
+        readonly private ?Manufacturer $manufacturer,
+        readonly private ?Color $color,
+        readonly private ?Model $model,
+        readonly private LicensePlate $licensePlate,
+        readonly private EntryTimes $entryTimes,
+        readonly private ?DepartureTimes $departureTimes,
     ) {
         $this->pendings = new Collection();
     }
 
-    public function id(): int
+    public function id(): ?int
     {
         return $this->id;
     }
 
-    public function manufacturer(): Manufacturer
+    public function manufacturer(): ?Manufacturer
     {
         return $this->manufacturer;
     }
 
-    public function color(): Color
+    public function color(): ?Color
     {
         return $this->color;
     }
 
-    public function model(): Model
+    public function model(): ?Model
     {
         return $this->model;
     }
 
-    public function licensePlate(): LicensePlate
+    public function licensePlate(): ?LicensePlate
     {
         return $this->licensePlate;
     }
 
-    public function entryTimes(): EntryTimes
+    public function entryTimes(): ?EntryTimes
     {
         return $this->entryTimes;
     }
 
-    public function departureTimes(): DepartureTimes
+    public function departureTimes(): ?DepartureTimes
     {
         return $this->departureTimes;
     }

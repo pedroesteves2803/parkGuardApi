@@ -24,11 +24,11 @@ final class EloquentPaymentRepository implements IPaymentRepository
     {
        $modelsPayment = new ModelsPayment();
 
-       $modelsPayment->value = $payment->value->value();
-       $modelsPayment->date_time = $payment->dateTime->value();
-       $modelsPayment->payment_method = $payment->paymentMethod->value();
-       $modelsPayment->vehicle_id = $payment->vehicle->id;
-       $modelsPayment->value = $payment->value->value();
+       $modelsPayment->value = $payment->value()->value();
+       $modelsPayment->date_time = $payment->dateTime()->value();
+       $modelsPayment->payment_method = $payment->paymentMethod()->value();
+       $modelsPayment->paid = $payment->paid();
+       $modelsPayment->vehicle_id = $payment->vehicle()->id();
        $modelsPayment->save();
 
        return new Payment(
@@ -36,7 +36,8 @@ final class EloquentPaymentRepository implements IPaymentRepository
         new Value($modelsPayment->value),
         new DateTime($modelsPayment->date_time),
         new PaymentMethod($modelsPayment->payment_method),
-        $payment->vehicle,
+        $modelsPayment->paid,
+        $payment->vehicle(),
        );
     }
 

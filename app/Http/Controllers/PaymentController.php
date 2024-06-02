@@ -28,7 +28,6 @@ class PaymentController extends Controller
     )
     {
         $createPaymentInputDto = new CreatePaymentInputDto(
-            $request->value,
             new DateTime(),
             $request->paymentMethod,
             $request->vehicle_id,

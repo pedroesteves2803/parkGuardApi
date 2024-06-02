@@ -43,6 +43,7 @@ class CreatePaymentResource extends JsonResource
             'value'         => is_null($this->payment->value) ? null : $this->payment->value->value(),
             'dateTime'      => is_null($this->payment->dateTime) ? null : $this->payment->dateTime->value()->format('d-m-Y H:i:s'),
             'paymentMethod' => is_null($this->payment->paymentMethod) ? null : $this->payment->paymentMethod->value(),
+            'paid'          => $this->payment->paid,
             'vehicle_id'    => is_null($this->payment->vehicle) ? null : $this->payment->vehicle->id,
         ];
     }

@@ -40,12 +40,12 @@ class GetVehicleByIdResource extends JsonResource
 
         return [
             'id'             => $this->vehicle->id,
-            'manufacturer'   => $this->vehicle->manufacturer->value(),
-            'color'          => $this->vehicle->color->value(),
-            'model'          => $this->vehicle->model->value(),
+            'manufacturer'   => is_null($this->vehicle->manufacturer) ? null : $this->vehicle->manufacturer->value(),
+            'color'          => is_null($this->vehicle->color) ? null : $this->vehicle->color->value(),
+            'model'          => is_null($this->vehicle->model) ? null : $this->vehicle->model->value(),
             'licensePlate'   => $this->vehicle->licensePlate->value(),
             'entryTimes'     => $this->vehicle->entryTimes->value()->format('d-m-Y H:i:s'),
-            'departureTimes' => !is_null($this->vehicle->departureTimes->value()) ? $this->vehicle->departureTimes->value()->format('d-m-Y H:i:s') : null,
+            'departureTimes' => is_null($this->vehicle->departureTimes) ? null : $this->vehicle->departureTimes->value(),
         ];
     }
 }

@@ -16,6 +16,7 @@ return new class extends Migration
             $table->integer('value');
             $table->dateTime('date_time');
             $table->integer('payment_method');
+            $table->boolean('paid');
             $table->unsignedBigInteger('vehicle_id');
             $table->foreign('vehicle_id')->references('id')->on('vehicles');
             $table->timestamps();

@@ -29,7 +29,7 @@ class CreateVehicleResource extends JsonResource
 
     private function getMessage()
     {
-        return empty($this->vehicle) ? null : $this->vehicle->licensePlate.' registrado!';
+        return empty($this->vehicle) ? null : $this->vehicle->licensePlate().' registrado!';
     }
 
     private function getVehicleDetails()
@@ -39,13 +39,13 @@ class CreateVehicleResource extends JsonResource
         }
 
         return [
-            'id'             => $this->vehicle->id,
-            'manufacturer'   => is_null($this->vehicle->manufacturer) ? null : $this->vehicle->manufacturer->value(),
-            'color'          => is_null($this->vehicle->color) ? null : $this->vehicle->color->value(),
-            'model'          => is_null($this->vehicle->model) ? null : $this->vehicle->model->value(),
-            'licensePlate'   => $this->vehicle->licensePlate->value(),
-            'entryTimes'     => $this->vehicle->entryTimes->value()->format('d-m-Y H:i:s'),
-            'departureTimes' => is_null($this->vehicle->departureTimes) ? null : $this->vehicle->departureTimes->value(),
+            'id'             => $this->vehicle->id(),
+            'manufacturer'   => is_null($this->vehicle->manufacturer()) ? null : $this->vehicle->manufacturer()->value(),
+            'color'          => is_null($this->vehicle->color()) ? null : $this->vehicle->color()->value(),
+            'model'          => is_null($this->vehicle->model()) ? null : $this->vehicle->model()->value(),
+            'licensePlate'   => $this->vehicle->licensePlate()->value(),
+            'entryTimes'     => $this->vehicle->entryTimes()->value()->format('d-m-Y H:i:s'),
+            'departureTimes' => is_null($this->vehicle->departureTimes()) ? null : $this->vehicle->departureTimes()->value(),
         ];
     }
 }

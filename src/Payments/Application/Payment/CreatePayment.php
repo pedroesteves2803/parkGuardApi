@@ -10,15 +10,21 @@ use Src\Payments\Domain\ValueObjects\DateTime;
 use Src\Payments\Domain\ValueObjects\PaymentMethod;
 use Src\Payments\Domain\ValueObjects\Value;
 use Src\Shared\Utils\Notification;
+use Src\Vehicles\Application\Vehicle\Dtos\ExitVehicleInputDto;
 use Src\Vehicles\Application\Vehicle\Dtos\GetVehicleInputDto;
+use Src\Vehicles\Application\Vehicle\ExitVehicle;
 use Src\Vehicles\Application\Vehicle\GetVehicleById;
 use Src\Vehicles\Domain\Entities\Vehicle;
 
 final class CreatePayment
 {
+    private const VALUE_HOUR = 2000;
+    private const MORE_THAN_AN_HOUR = 1000;
+
     public function __construct(
         readonly IPaymentRepository $paymentsRepository,
         readonly GetVehicleById $getVehicleById,
+        readonly ExitVehicle $exitVehicle,
         readonly Notification $notification,
     ) {
     }
@@ -28,12 +34,17 @@ final class CreatePayment
         try {
             $vehicle = $this->getVehicleById($input->vehicle_id);
 
+            $exitVehicle = $this->exitVehicle($vehicle);
+
+            $calculateValue = $this->calculateValue($exitVehicle);
+
             $payment = $this->paymentsRepository->create(
                 new Payment(
                     null,
-                    new Value($input->value),
+                    new Value($calculateValue),
                     new DateTime($input->dateTime),
                     new PaymentMethod($input->paymentMethod),
+                    false,
                     $vehicle
                 )
             );
@@ -41,7 +52,7 @@ final class CreatePayment
             return new CreatePaymentOutputDto($payment, $this->notification);
         } catch (\Exception $e) {
             $this->notification->addError([
-                'context' => 'create_employee',
+                'context' => 'create_payment',
                 'message' => $e->getMessage(),
             ]);
 
@@ -60,5 +71,41 @@ final class CreatePayment
         }
 
         return $getVehicleOutputDto->vehicle;
+    }
+
+    private function exitVehicle(Vehicle $vehicle): Vehicle
+    {
+        $exitVehicleOutputDto = $this->exitVehicle->execute(
+            new ExitVehicleInputDto($vehicle->licensePlate()->value())
+        );
+
+        if (is_null($exitVehicleOutputDto->vehicle)) {
+            throw new \Exception('Veículo não cadastrado!');
+        }
+
+        return $exitVehicleOutputDto->vehicle;
+    }
+
+    private function calculateValue(Vehicle $vehicle): int {
+
+        $entryTimes = $vehicle->entryTimes()->value();
+        $departureTimes = $vehicle->departureTimes()->value();
+
+        $interval = $entryTimes->diff($departureTimes);
+
+        $hours = $interval->h;
+        $minutes = $interval->i;
+
+        if ($minutes > 0) {
+            $hours++;
+        }
+
+        if ($hours <= 1) {
+            $totalToPay = self::VALUE_HOUR;
+        } else {
+            $totalToPay = self::VALUE_HOUR + ($hours - 1) * self::MORE_THAN_AN_HOUR;
+        }
+
+        return $totalToPay;
     }
 }

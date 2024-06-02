@@ -18,8 +18,8 @@ it('validates a valid vehicle', function () {
 
     expect($vehicle->id())->toBe(1);
     expect($vehicle->manufacturer()->value())->toBe('Toyota');
-    expect($vehicle->color->value())->toBe('Azul');
-    expect($vehicle->model->value())->toBe('Corolla');
+    expect($vehicle->color()->value())->toBe('Azul');
+    expect($vehicle->model()->value())->toBe('Corolla');
     expect($vehicle->licensePlate()->value())->toBe('ABC1234');
     expect($vehicle->entryTimes()->value())->toEqual(new DateTime('2024-05-12 08:00:00'));
     expect($vehicle->departureTimes()->value())->toEqual(new DateTime('2024-05-12 17:00:00'));

@@ -4,12 +4,15 @@ use App\Models\Vehicle as ModelsVehicle;
 use App\Repositories\Vehicles\EloquentVehicleRepository;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Collection;
+use Src\Vehicles\Domain\Entities\Pending;
 use Src\Vehicles\Domain\Entities\Vehicle;
 use Src\Vehicles\Domain\ValueObjects\Color;
+use Src\Vehicles\Domain\ValueObjects\Description;
 use Src\Vehicles\Domain\ValueObjects\EntryTimes;
 use Src\Vehicles\Domain\ValueObjects\LicensePlate;
 use Src\Vehicles\Domain\ValueObjects\Manufacturer;
 use Src\Vehicles\Domain\ValueObjects\Model;
+use Src\Vehicles\Domain\ValueObjects\Type;
 use Tests\TestCase;
 
 uses(TestCase::class, RefreshDatabase::class);
@@ -55,12 +58,12 @@ it('can get vehicle by id', function () {
 
     expect($retrievedVehicle)->toBeInstanceOf(Vehicle::class);
 
-    expect($retrievedVehicle->id)->toBe($vehicle->id);
-    expect($retrievedVehicle->manufacturer->value())->toBe($vehicle->manufacturer);
-    expect($retrievedVehicle->color->value())->toBe($vehicle->color);
-    expect($retrievedVehicle->model->value())->toBe($vehicle->model);
-    expect($retrievedVehicle->licensePlate->value())->toBe($vehicle->license_plate);
-    expect($retrievedVehicle->departureTimes->value())->toBe($vehicle->departure_times);
+    expect($retrievedVehicle->id())->toBe($vehicle->id);
+    expect($retrievedVehicle->manufacturer()->value())->toBe($vehicle->manufacturer);
+    expect($retrievedVehicle->color()->value())->toBe($vehicle->color);
+    expect($retrievedVehicle->model()->value())->toBe($vehicle->model);
+    expect($retrievedVehicle->licensePlate()->value())->toBe($vehicle->license_plate);
+    expect($retrievedVehicle->departureTimes())->toBe($vehicle->departure_times);
 });
 
 it('creates a new vehicle', function () {
@@ -74,16 +77,29 @@ it('creates a new vehicle', function () {
         null
     );
 
+    $pending = new Pending(
+                null,
+                new Type('Type 1'),
+                new Description('Description 1')
+    );
+
+    $vehicleData->addPending($pending);
+
     $repository = new EloquentVehicleRepository();
     $createdVehicle = $repository->create($vehicleData);
 
     expect($createdVehicle)->toBeInstanceOf(Vehicle::class);
-    $this->assertNotNull($createdVehicle->id);
-    expect($createdVehicle->manufacturer->value())->toBe($vehicleData->manufacturer->value());
-    expect($createdVehicle->color->value())->toBe($vehicleData->color->value());
-    expect($createdVehicle->model->value())->toBe($vehicleData->model->value());
-    expect($createdVehicle->licensePlate->value())->toBe($vehicleData->licensePlate->value());
-    $this->assertNull($createdVehicle->departureTimes->value());
+    $this->assertNotNull($createdVehicle->id());
+    expect($createdVehicle->manufacturer()->value())->toBe($vehicleData->manufacturer()->value());
+    expect($createdVehicle->color()->value())->toBe($vehicleData->color()->value());
+    expect($createdVehicle->model()->value())->toBe($vehicleData->model()->value());
+    expect($createdVehicle->licensePlate()->value())->toBe($vehicleData->licensePlate()->value());
+    $this->assertNull($createdVehicle->departureTimes()->value());
+
+    expect($createdVehicle->pendings())->toBeInstanceOf(Collection::class);
+    expect($createdVehicle->pendings())->toHaveCount(1);
+    expect($createdVehicle->pendings()[0]->type()->value())->toBe('Type 1');
+    expect($createdVehicle->pendings()[0]->description()->value())->toBe('Description 1');
 });
 
 it('update a vehicle', function () {
@@ -110,12 +126,12 @@ it('update a vehicle', function () {
     $createdVehicle = $repository->update($vehicleData);
 
     expect($createdVehicle)->toBeInstanceOf(Vehicle::class);
-    $this->assertNotNull($createdVehicle->id);
-    expect($createdVehicle->manufacturer->value())->toBe($vehicleData->manufacturer->value());
-    expect($createdVehicle->color->value())->toBe($vehicleData->color->value());
-    expect($createdVehicle->model->value())->toBe($vehicleData->model->value());
-    expect($createdVehicle->licensePlate->value())->toBe($vehicleData->licensePlate->value());
-    $this->assertNull($createdVehicle->departureTimes);
+    $this->assertNotNull($createdVehicle->id());
+    expect($createdVehicle->manufacturer()->value())->toBe($vehicleData->manufacturer()->value());
+    expect($createdVehicle->color()->value())->toBe($vehicleData->color()->value());
+    expect($createdVehicle->model()->value())->toBe($vehicleData->model()->value());
+    expect($createdVehicle->licensePlate()->value())->toBe($vehicleData->licensePlate()->value());
+    $this->assertNull($createdVehicle->departureTimes());
 });
 
 it('check if there is an vehicle', function () {
@@ -169,52 +185,5 @@ it('add exit to vehicle', function () {
         new LicensePlate('DEF1028')
     );
 
-    $this->assertNotNull($vehicle->departureTimes);
+    $this->assertNotNull($vehicle->departureTimes());
 });
-
-// it('adds pending to vehicle', function () {
-//     $modelsVehicle = ModelsVehicle::factory()->create([
-//         'manufacturer' => 'Fiat',
-//         'color' => 'Preto',
-//         'model' => 'Uno',
-//         'license_plate' => 'DEF1028',
-//         'entry_times' => new DateTime(),
-//         'departure_times' => null,
-//     ]);
-
-//     $pending1 = new Pending(
-//         null,
-//         new Type('Type 1'),
-//         new Description('Description 1')
-//     );
-//     $pending2 = new Pending(
-//         null,
-//         new Type('Type 2'),
-//         new Description('Description 2')
-//     );
-
-//     $vehicle = new Vehicle(
-//         1,
-//         new Manufacturer($modelsVehicle->manufacturer),
-//         new Color($modelsVehicle->color),
-//         new Model($modelsVehicle->model),
-//         new LicensePlate($modelsVehicle->license_plate),
-//         new EntryTimes($modelsVehicle->entry_times),
-//         null
-//     );
-
-//     $vehicle->addPending($pending1);
-//     $vehicle->addPending($pending2);
-
-//     $repository = new EloquentVehicleRepository();
-
-//     $pendings = $repository->addPending(
-//         $vehicle
-//     );
-
-//     expect($pendings)->toBeInstanceOf(Collection::class);
-//     expect($pendings)->toHaveCount(2);
-//     expect($pendings[0]->type()->value())->toBe('Type 1');
-//     expect($pendings[1]->description()->value())->toBe('Description 2');
-// });
-

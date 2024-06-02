@@ -1,7 +1,6 @@
 <?php
 
 use GuzzleHttp\Client;
-use GuzzleHttp\Psr7\Response;
 use Src\Vehicles\Domain\Entities\Pending;
 use Src\Vehicles\Domain\Repositories\Dtos\IConsultVehicleRepositoryOutputDto;
 use Src\Vehicles\Domain\ValueObjects\Description;
