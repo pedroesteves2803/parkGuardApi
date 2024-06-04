@@ -54,11 +54,11 @@ it('can get employee by id', function () {
 
     expect($retrievedEmployee)->toBeInstanceOf(Employee::class);
 
-    expect($retrievedEmployee->id)->toBe($employee->id);
-    expect($retrievedEmployee->name->value())->toBe($employee->name);
-    expect($retrievedEmployee->email->value())->toBe($employee->email);
-    expect($retrievedEmployee->password->value())->toBe($employee->password);
-    expect($retrievedEmployee->type->value())->toBe($employee->type);
+    expect($retrievedEmployee->id())->toBe($employee->id);
+    expect($retrievedEmployee->name()->value())->toBe($employee->name);
+    expect($retrievedEmployee->email()->value())->toBe($employee->email);
+    expect($retrievedEmployee->password()->value())->toBe($employee->password);
+    expect($retrievedEmployee->type()->value())->toBe($employee->type);
 });
 
 it('creates a new employee', function () {
@@ -74,10 +74,10 @@ it('creates a new employee', function () {
     $createdEmployee = $repository->create($employeeData);
 
     expect($createdEmployee)->toBeInstanceOf(Employee::class);
-    $this->assertNotNull($createdEmployee->id);
-    expect($createdEmployee->name->value())->toBe($employeeData->name->value());
-    expect($createdEmployee->email->value())->toBe($employeeData->email->value());
-    expect($createdEmployee->type->value())->toBe($employeeData->type->value());
+    $this->assertNotNull($createdEmployee->id());
+    expect($createdEmployee->name()->value())->toBe($employeeData->name()->value());
+    expect($createdEmployee->email()->value())->toBe($employeeData->email()->value());
+    expect($createdEmployee->type()->value())->toBe($employeeData->type()->value());
 });
 
 it('update a employee', function () {
@@ -100,10 +100,10 @@ it('update a employee', function () {
     $createdEmployee = $repository->update($employeeData);
 
     expect($createdEmployee)->toBeInstanceOf(Employee::class);
-    $this->assertNotNull($createdEmployee->id);
-    expect($createdEmployee->name->value())->toBe($employeeData->name->value());
-    expect($createdEmployee->email->value())->toBe($employeeData->email->value());
-    expect($createdEmployee->type->value())->toBe($employeeData->type->value());
+    $this->assertNotNull($createdEmployee->id());
+    expect($createdEmployee->name()->value())->toBe($employeeData->name()->value());
+    expect($createdEmployee->email()->value())->toBe($employeeData->email()->value());
+    expect($createdEmployee->type()->value())->toBe($employeeData->type()->value());
 });
 
 it('delete a employee', function () {

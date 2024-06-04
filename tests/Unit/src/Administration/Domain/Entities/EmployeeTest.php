@@ -14,15 +14,15 @@ test('validates instance employee', function () {
 it('validates a valid employee', function () {
     $employee = createValidEmployee();
     expect($employee->id())->toBe(1);
-    expect($employee->name->value())->toBe('Employee 1');
-    expect($employee->email->value())->toBe('employee@test.com');
-    expect($employee->password->value())->toBe('Password@123');
-    expect($employee->type->value())->toBe(1);
+    expect($employee->name()->value())->toBe('Employee 1');
+    expect($employee->email()->value())->toBe('employee@test.com');
+    expect($employee->password()->value())->toBe('Password@123');
+    expect($employee->type()->value())->toBe(1);
 });
 
 test('test employee object to string conversion', function () {
     $employee = createValidEmployee();
-    $expectedString = "Funcionario ID: $employee->id, Nome: {$employee->name->value()}, Email: {$employee->email->value()}, Tipo: {$employee->type->value()}";
+    $expectedString = "Funcionario ID: {$employee->id()}, Nome: {$employee->name()->value()}, Email: {$employee->email()->value()}, Tipo: {$employee->type()->value()}";
     expect((string) $employee)->toBe($expectedString);
 });
 

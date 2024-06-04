@@ -21,7 +21,7 @@ final class DeleteEmployeeById
         try {
             $employee = $this->getCategoryById($input->id);
 
-            $this->iEmployeeRepository->delete($employee->id);
+            $this->iEmployeeRepository->delete($employee->id());
 
             return new DeleteEmployeeByIdOutputDto(null, $this->notification);
         } catch (\Exception $e) {

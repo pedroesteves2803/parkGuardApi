@@ -64,7 +64,7 @@ final class UpdateEmployee
         Employee $employee,
         UpdateEmployeeInputDto $input
     ): void {
-        if ($employee->email->value() === $input->email) {
+        if ($employee->email()->value() === $input->email) {
             return;
         }
 
