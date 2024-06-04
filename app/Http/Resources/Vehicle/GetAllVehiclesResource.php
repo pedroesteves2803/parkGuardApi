@@ -40,13 +40,13 @@ class GetAllVehiclesResource extends JsonResource
 
         $vehicles = $this->vehicles->map(function ($vehicle) {
             return [
-                'id'             => $vehicle->id,
-                'manufacturer'   => is_null($vehicle->manufacturer) ? null : $vehicle->manufacturer->value(),
-                'color'          => is_null($vehicle->color) ? null : $vehicle->color->value(),
-                'model'          => is_null($vehicle->model) ? null : $vehicle->model->value(),
-                'licensePlate'   => $vehicle->licensePlate->value(),
-                'entryTimes'     => $vehicle->entryTimes->value()->format('d-m-Y H:i:s'),
-                'departureTimes' => is_null($vehicle->departureTimes) ? null : $vehicle->departureTimes->value(),
+                'id'             => $vehicle->id(),
+                'manufacturer'   => is_null($vehicle->manufacturer()) ? null : $vehicle->manufacturer()->value(),
+                'color'          => is_null($vehicle->color()) ? null : $vehicle->color()->value(),
+                'model'          => is_null($vehicle->model()) ? null : $vehicle->model()->value(),
+                'licensePlate'   => $vehicle->licensePlate()->value(),
+                'entryTimes'     => $vehicle->entryTimes()->value()->format('d-m-Y H:i:s'),
+                'departureTimes' => is_null($vehicle->departureTimes()) ? null : $vehicle->departureTimes()->value(),
             ];
         });
 

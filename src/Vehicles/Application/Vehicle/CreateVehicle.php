@@ -3,7 +3,6 @@
 namespace Src\Vehicles\Application\Vehicle;
 
 use DateTime;
-use Illuminate\Support\Facades\Log;
 use Src\Shared\Utils\Notification;
 use Src\Vehicles\Application\Vehicle\Dtos\ConsultVehicleByLicensePlateInputDto;
 use Src\Vehicles\Application\Vehicle\Dtos\ConsultVehicleByLicensePlateOutputDto;
