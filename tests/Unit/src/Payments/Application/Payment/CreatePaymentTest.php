@@ -26,7 +26,7 @@ beforeEach(function () {
     $this->repositoryVehicleMock = mock(IVehicleRepository::class);
 });
 
-it('successfully creates a pending', function () {
+it('successfully creates a payment', function () {
     $vehicle = new Vehicle(
         null,
         new Manufacturer('Toyota'),
