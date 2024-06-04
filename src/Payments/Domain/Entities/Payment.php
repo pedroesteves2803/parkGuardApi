@@ -2,13 +2,8 @@
 
 namespace Src\Payments\Domain\Entities;
 
-use phpDocumentor\Reflection\Types\Boolean;
-use Src\Administration\Domain\ValueObjects\Email;
-use Src\Administration\Domain\ValueObjects\Name;
-use Src\Administration\Domain\ValueObjects\Password;
-use Src\Administration\Domain\ValueObjects\Type;
-use Src\Payments\Domain\ValueObjects\DateTime;
 use Src\Payments\Domain\ValueObjects\PaymentMethod;
+use Src\Payments\Domain\ValueObjects\RegistrationTime;
 use Src\Payments\Domain\ValueObjects\Value;
 use Src\Shared\Domain\Entities\Entity;
 use Src\Shared\Domain\Entities\IAggregator;
@@ -19,7 +14,7 @@ class Payment extends Entity implements IAggregator
     public function __construct(
         readonly private ?int $id,
         readonly private Value $value,
-        readonly private DateTime $dateTime,
+        readonly private RegistrationTime $registrationTime,
         readonly private PaymentMethod $paymentMethod,
         readonly private bool $paid,
         readonly private Vehicle $vehicle,
@@ -36,9 +31,9 @@ class Payment extends Entity implements IAggregator
         return $this->value;
     }
 
-    public function dateTime(): DateTime
+    public function registrationTime(): RegistrationTime
     {
-        return $this->dateTime;
+        return $this->registrationTime;
     }
 
     public function paid(): bool

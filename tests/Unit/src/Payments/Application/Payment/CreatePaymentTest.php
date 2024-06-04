@@ -6,8 +6,8 @@ use Src\Payments\Application\Payment\Dtos\CreatePaymentInputDto;
 use Src\Payments\Application\Payment\Dtos\CreatePaymentOutputDto;
 use Src\Payments\Domain\Entities\Payment;
 use Src\Payments\Domain\Repositories\IPaymentRepository;
-use Src\Payments\Domain\ValueObjects\DateTime;
 use Src\Payments\Domain\ValueObjects\PaymentMethod;
+use Src\Payments\Domain\ValueObjects\RegistrationTime;
 use Src\Payments\Domain\ValueObjects\Value;
 use Src\Shared\Utils\Notification;
 use Src\Vehicles\Application\Vehicle\ExitVehicle;
@@ -44,7 +44,7 @@ it('successfully creates a pending', function () {
     $expectedPayment = new Payment(
         1,
         new Value(1000),
-        new DateTime(now()),
+        new RegistrationTime(now()),
         new PaymentMethod(1),
         false,
         $vehicle
@@ -158,4 +158,3 @@ it('fails to create a payment with a non-existent vehicle - Vehicle not register
         ],
     ]);
 });
-

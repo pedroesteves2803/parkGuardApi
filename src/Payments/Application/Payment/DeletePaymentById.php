@@ -7,13 +7,10 @@ use Src\Payments\Application\Payment\Dtos\DeletePaymentOutputDto;
 use Src\Payments\Application\Payment\Dtos\GetPaymentByIdInputDto;
 use Src\Payments\Domain\Entities\Payment;
 use Src\Payments\Domain\Repositories\IPaymentRepository;
-
 use Src\Shared\Utils\Notification;
 
-
-final class DeletePayment
+final class DeletePaymentById
 {
-
     public function __construct(
         readonly IPaymentRepository $paymentsRepository,
         readonly GetPaymentById $getPaymentById,
@@ -25,6 +22,8 @@ final class DeletePayment
     {
         try {
             $payment = $this->getPaymentById($input->id);
+
+            $this->checkIfItHasAlreadyBeenPaid($payment);
 
             $payment = $this->paymentsRepository->delete(
                 $payment->id()
@@ -52,5 +51,12 @@ final class DeletePayment
         }
 
         return $getPaymentByIdOutputDto->payment;
+    }
+
+    private function checkIfItHasAlreadyBeenPaid(Payment $payment): void
+    {
+        if ($payment->paid()) {
+            throw new \Exception('Este pagamento não pode ser excluído porque já foi registrado como pago.');
+        }
     }
 }

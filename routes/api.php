@@ -18,10 +18,12 @@ Route::get('/vehicle/{vehicle}', [VehicleController::class, 'show'])->name('vehi
 Route::patch('/vehicle/{vehicle}', [VehicleController::class, 'update'])->name('vehicle.update');
 Route::post('/vehicle/exit/{vehicle}', [VehicleController::class, 'exit'])->name('vehicle.exit');
 
-Route::post('/payments', [PaymentController::class, 'store'])->name('payment.create');
+Route::get('/payments', [PaymentController::class, 'index'])->name('payment.index');
+Route::post('/payment', [PaymentController::class, 'store'])->name('payment.create');
+Route::get('/payment/{payment}', [PaymentController::class, 'show'])->name('payment.show');
+Route::get('/payment/finalize/{payment}', [PaymentController::class, 'finalize'])->name('payment.finalize');
 
-
-Route::get('/teste/{id}', function($id){
+Route::get('/teste/{id}', function ($id) {
     $vehicle = Vehicle::where('id', $id)->with('pendings')->first();
 
     dd($vehicle);

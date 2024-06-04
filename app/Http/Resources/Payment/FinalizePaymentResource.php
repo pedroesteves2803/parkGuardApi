@@ -5,7 +5,7 @@ namespace App\Http\Resources\Payment;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class CreatePaymentResource extends JsonResource
+class FinalizePaymentResource extends JsonResource
 {
     public function toArray(Request $request): array
     {
@@ -29,7 +29,7 @@ class CreatePaymentResource extends JsonResource
 
     private function getMessage()
     {
-        return empty($this->payment) ? null : 'Pagamento com o id: '.$this->payment->id().' registrado!';
+        return empty($this->payment) ? null : 'Pagamento com o id: '.$this->payment->id().' finalizado!';
     }
 
     private function getPaymentDetails()
@@ -41,7 +41,6 @@ class CreatePaymentResource extends JsonResource
         return [
             'id' => $this->payment->id(),
             'value' => is_null($this->payment->value()) ? null : $this->payment->value()->value(),
-            'value_in_reais' => is_null($this->payment->value()) ? null : $this->payment->value()->valueInReais(),
             'dateTime' => is_null($this->payment->registrationTime()) ? null : $this->payment->registrationTime()->value()->format('d-m-Y H:i:s'),
             'paymentMethod' => is_null($this->payment->paymentMethod()) ? null : $this->payment->paymentMethod()->value(),
             'paid' => $this->payment->paid(),

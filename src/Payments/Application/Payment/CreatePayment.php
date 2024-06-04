@@ -6,8 +6,8 @@ use Src\Payments\Application\Payment\Dtos\CreatePaymentInputDto;
 use Src\Payments\Application\Payment\Dtos\CreatePaymentOutputDto;
 use Src\Payments\Domain\Entities\Payment;
 use Src\Payments\Domain\Repositories\IPaymentRepository;
-use Src\Payments\Domain\ValueObjects\DateTime;
 use Src\Payments\Domain\ValueObjects\PaymentMethod;
+use Src\Payments\Domain\ValueObjects\RegistrationTime;
 use Src\Payments\Domain\ValueObjects\Value;
 use Src\Shared\Utils\Notification;
 use Src\Vehicles\Application\Vehicle\Dtos\ExitVehicleInputDto;
@@ -19,6 +19,7 @@ use Src\Vehicles\Domain\Entities\Vehicle;
 final class CreatePayment
 {
     private const VALUE_HOUR = 2000;
+
     private const MORE_THAN_AN_HOUR = 1000;
 
     public function __construct(
@@ -42,7 +43,7 @@ final class CreatePayment
                 new Payment(
                     null,
                     new Value($calculateValue),
-                    new DateTime($input->dateTime),
+                    new RegistrationTime($input->dateTime),
                     new PaymentMethod($input->paymentMethod),
                     false,
                     $vehicle
@@ -86,7 +87,8 @@ final class CreatePayment
         return $exitVehicleOutputDto->vehicle;
     }
 
-    private function calculateValue(Vehicle $vehicle): int {
+    private function calculateValue(Vehicle $vehicle): int
+    {
 
         $entryTimes = $vehicle->entryTimes()->value();
         $departureTimes = $vehicle->departureTimes()->value();

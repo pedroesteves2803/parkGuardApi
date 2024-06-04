@@ -4,7 +4,7 @@ namespace Src\Payments\Domain\ValueObjects;
 
 use Src\Shared\Domain\ValueObjects\ValueObject;
 
-final class DateTime extends ValueObject
+final class RegistrationTime extends ValueObject
 {
     public function __construct(
         private ?\DateTime $value

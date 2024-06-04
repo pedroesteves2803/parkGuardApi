@@ -2,22 +2,11 @@
 
 namespace Src\Payments\Application\Payment;
 
-use Src\Payments\Application\Payment\Dtos\CreatePaymentInputDto;
-use Src\Payments\Application\Payment\Dtos\CreatePaymentOutputDto;
-use Src\Payments\Application\Payment\Dtos\DeletePaymentInputDto;
 use Src\Payments\Application\Payment\Dtos\GetPaymentByIdInputDto;
 use Src\Payments\Application\Payment\Dtos\GetPaymentByIdOutputDto;
 use Src\Payments\Domain\Entities\Payment;
 use Src\Payments\Domain\Repositories\IPaymentRepository;
-use Src\Payments\Domain\ValueObjects\DateTime;
-use Src\Payments\Domain\ValueObjects\PaymentMethod;
-use Src\Payments\Domain\ValueObjects\Value;
 use Src\Shared\Utils\Notification;
-use Src\Vehicles\Application\Vehicle\Dtos\ExitVehicleInputDto;
-use Src\Vehicles\Application\Vehicle\Dtos\GetVehicleInputDto;
-use Src\Vehicles\Application\Vehicle\ExitVehicle;
-use Src\Vehicles\Application\Vehicle\GetVehicleById;
-use Src\Vehicles\Domain\Entities\Vehicle;
 
 final class GetPaymentById
 {

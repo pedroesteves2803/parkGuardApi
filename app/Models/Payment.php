@@ -12,4 +12,9 @@ class Payment extends Model
     protected $guarded = [
         'id',
     ];
+
+    protected $casts = [
+        'registration_time' => 'datetime',
+        'paid' => 'boolean',
+    ];
 }
