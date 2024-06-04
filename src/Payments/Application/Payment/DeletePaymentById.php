@@ -47,7 +47,7 @@ final class DeletePaymentById
         );
 
         if (is_null($getPaymentByIdOutputDto->payment)) {
-            throw new \Exception('pagamento não registrado!');
+            throw new \Exception('Pagamento não registrado!');
         }
 
         return $getPaymentByIdOutputDto->payment;
