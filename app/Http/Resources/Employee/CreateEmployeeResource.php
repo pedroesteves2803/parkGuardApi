@@ -34,7 +34,7 @@ class CreateEmployeeResource extends JsonResource
 
     private function getMessage()
     {
-        return empty($this->employee) ? null : $this->employee->name.' adicionado!';
+        return empty($this->employee) ? null : $this->employee->name().' adicionado!';
     }
 
     private function getEmployeeDetails()
@@ -44,10 +44,10 @@ class CreateEmployeeResource extends JsonResource
         }
 
         return [
-            'id'    => $this->employee->id,
-            'name'  => $this->employee->name->value(),
-            'email' => $this->employee->email->value(),
-            'tipo'  => $this->employee->type->value(),
+            'id'    => $this->employee->id(),
+            'name'  => $this->employee->name()->value(),
+            'email' => $this->employee->email()->value(),
+            'tipo'  => $this->employee->type()->value(),
         ];
     }
 }

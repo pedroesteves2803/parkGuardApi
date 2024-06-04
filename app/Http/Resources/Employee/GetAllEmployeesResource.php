@@ -40,10 +40,10 @@ class GetAllEmployeesResource extends JsonResource
 
         $employees = $this->employees->map(function ($item) {
             return [
-                'id'    => $item->id,
-                'name'  => $item->name->value(),
-                'email' => $item->email->value(),
-                'tipo'  => $item->type->value(),
+                'id'    => $item->id(),
+                'name'  => $item->name()->value(),
+                'email' => $item->email()->value(),
+                'tipo'  => $item->type()->value(),
             ];
         });
 

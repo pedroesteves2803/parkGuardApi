@@ -29,7 +29,7 @@ class UpdateEmployeeResource extends JsonResource
 
     private function getMessage()
     {
-        return empty($this->employee) ? null : $this->employee->name.' atualizado!';
+        return empty($this->employee) ? null : $this->employee->name().' atualizado!';
     }
 
     private function getEmployeeDetails()
@@ -39,10 +39,10 @@ class UpdateEmployeeResource extends JsonResource
         }
 
         return [
-            'id'    => $this->employee->id,
-            'name'  => $this->employee->name->value(),
-            'email' => $this->employee->email->value(),
-            'tipo'  => $this->employee->type->value(),
+            'id'    => $this->employee->id(),
+            'name'  => $this->employee->name()->value(),
+            'email' => $this->employee->email()->value(),
+            'tipo'  => $this->employee->type()->value(),
         ];
     }
 }

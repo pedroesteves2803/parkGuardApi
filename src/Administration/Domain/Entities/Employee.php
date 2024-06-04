@@ -12,20 +12,20 @@ use Src\Shared\Domain\Entities\IAggregator;
 class Employee extends Entity implements IAggregator
 {
     public function __construct(
-        readonly ?int $id,
-        readonly Name $name,
-        readonly Email $email,
-        readonly Password $password,
-        readonly Type $type,
+        readonly private ?int $id,
+        readonly private Name $name,
+        readonly private Email $email,
+        readonly private Password $password,
+        readonly private Type $type,
     ) {
     }
 
-    public function id(): int
+    public function id(): ?int
     {
         return $this->id;
     }
 
-    public function name(): string
+    public function name(): Name
     {
         return $this->name;
     }
@@ -33,6 +33,16 @@ class Employee extends Entity implements IAggregator
     public function email(): Email
     {
         return $this->email;
+    }
+
+    public function password(): Password
+    {
+        return $this->password;
+    }
+
+    public function type(): Type
+    {
+        return $this->type;
     }
 
     public function __toString(): string

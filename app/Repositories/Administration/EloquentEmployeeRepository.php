@@ -50,10 +50,10 @@ final class EloquentEmployeeRepository implements IEmployeeRepository
     public function create(Employee $employee): Employee
     {
         $modelsEmployee = new ModelsEmployee();
-        $modelsEmployee->name = $employee->name->value();
-        $modelsEmployee->email = $employee->email->value();
-        $modelsEmployee->password = bcrypt($employee->password->value());
-        $modelsEmployee->type = $employee->type->value();
+        $modelsEmployee->name = $employee->name()->value();
+        $modelsEmployee->email = $employee->email()->value();
+        $modelsEmployee->password = bcrypt($employee->password()->value());
+        $modelsEmployee->type = $employee->type()->value();
         $modelsEmployee->save();
 
         return new Employee(
@@ -67,15 +67,15 @@ final class EloquentEmployeeRepository implements IEmployeeRepository
 
     public function update(Employee $employee): Employee
     {
-        $modelsEmployee = ModelsEmployee::find($employee->id);
+        $modelsEmployee = ModelsEmployee::find($employee->id());
 
         if (is_null($modelsEmployee)) {
             return null;
         }
 
-        $modelsEmployee->name = $employee->name->value();
-        $modelsEmployee->email = $employee->email->value();
-        $modelsEmployee->type = $employee->type->value();
+        $modelsEmployee->name = $employee->name()->value();
+        $modelsEmployee->email = $employee->email()->value();
+        $modelsEmployee->type = $employee->type()->value();
         $modelsEmployee->update();
 
         return new Employee(
