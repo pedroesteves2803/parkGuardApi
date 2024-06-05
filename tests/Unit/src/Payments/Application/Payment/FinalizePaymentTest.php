@@ -4,6 +4,9 @@ use DateTime as GlobalDateTime;
 use Src\Payments\Application\Payment\DeletePaymentById;
 use Src\Payments\Application\Payment\Dtos\DeletePaymentInputDto;
 use Src\Payments\Application\Payment\Dtos\DeletePaymentOutputDto;
+use Src\Payments\Application\Payment\Dtos\FinalizePaymentInputDto;
+use Src\Payments\Application\Payment\Dtos\FinalizePaymentOutputDto;
+use Src\Payments\Application\Payment\FinalizePayment;
 use Src\Payments\Application\Payment\GetPaymentById;
 use Src\Payments\Domain\Entities\Payment;
 use Src\Payments\Domain\Repositories\IPaymentRepository;
@@ -23,7 +26,7 @@ beforeEach(function () {
     $this->repositoryPaymentMock = mock(IPaymentRepository::class);
 });
 
-it('successfully deletes a payment', function () {
+it('successfully finalize a payment', function () {
     $vehicle = new Vehicle(
         null,
         new Manufacturer('Toyota'),
@@ -45,12 +48,23 @@ it('successfully deletes a payment', function () {
 
     $this->repositoryPaymentMock->shouldReceive('getById')->once()->andReturn($payment);
 
-    $this->repositoryPaymentMock
-        ->shouldReceive('delete')
-        ->once()
-        ->andReturn();
+    $payment = new Payment(
+        1,
+        new Value(1000),
+        new RegistrationTime(now()),
+        new PaymentMethod(1),
+        true,
+        $vehicle
+    );
 
-    $deletePaymentById = new DeletePaymentById(
+    $this->repositoryPaymentMock
+    ->shouldReceive('finalize')
+    ->once()
+    ->andReturn(
+        $payment
+    );
+
+    $finalizePayment = new FinalizePayment(
         $this->repositoryPaymentMock,
         new GetPaymentById(
             $this->repositoryPaymentMock,
@@ -59,22 +73,21 @@ it('successfully deletes a payment', function () {
         new Notification()
     );
 
-    $inputDto = new DeletePaymentInputDto(
+    $inputDto = new FinalizePaymentInputDto(
         1,
     );
 
-    $outputDto = $deletePaymentById->execute($inputDto);
+    $outputDto = $finalizePayment->execute($inputDto);
 
-    expect($outputDto)->toBeInstanceOf(DeletePaymentOutputDto::class);
-    expect($outputDto->payment)->toBeNull();
+    expect($outputDto)->toBeInstanceOf(FinalizePaymentOutputDto::class);
+    expect($outputDto->payment)->toBe($payment);
     expect($outputDto->notification->getErrors())->toBeEmpty();
 });
 
-it('cannot delete a non-existent payment', function () {
-
+it('fails to finalize non-existent payment', function () {
     $this->repositoryPaymentMock->shouldReceive('getById')->once()->andReturnNull();
 
-    $deletePaymentById = new DeletePaymentById(
+    $finalizePayment = new FinalizePayment(
         $this->repositoryPaymentMock,
         new GetPaymentById(
             $this->repositoryPaymentMock,
@@ -83,24 +96,23 @@ it('cannot delete a non-existent payment', function () {
         new Notification()
     );
 
-    $inputDto = new DeletePaymentInputDto(
+    $inputDto = new FinalizePaymentInputDto(
         1,
     );
 
-    $outputDto = $deletePaymentById->execute($inputDto);
+    $outputDto = $finalizePayment->execute($inputDto);
 
-    expect($outputDto)->toBeInstanceOf(DeletePaymentOutputDto::class);
+    expect($outputDto)->toBeInstanceOf(FinalizePaymentOutputDto::class);
     expect($outputDto->payment)->toBeNull();
     expect($outputDto->notification->getErrors())->toBe([
         [
-            'context' => 'delete_payment',
-            'message' => 'Pagamento não registrado!',
+            'context' => 'finalize_payment',
+            'message' => 'Pagamento não cadastrado!',
         ],
     ]);
 });
 
-it('cannot delete a payment that has already been paid', function () {
-
+it('fails to delete payment already finalized', function () {
     $vehicle = new Vehicle(
         null,
         new Manufacturer('Toyota'),
@@ -116,13 +128,27 @@ it('cannot delete a payment that has already been paid', function () {
         new Value(1000),
         new RegistrationTime(now()),
         new PaymentMethod(1),
-        true,
+        false,
         $vehicle
     );
 
     $this->repositoryPaymentMock->shouldReceive('getById')->once()->andReturn($payment);
 
-    $deletePaymentById = new DeletePaymentById(
+    $payment = new Payment(
+        1,
+        new Value(1000),
+        new RegistrationTime(now()),
+        new PaymentMethod(1),
+        true,
+        $vehicle
+    );
+
+    $this->repositoryPaymentMock
+        ->shouldReceive('finalize')
+        ->once()
+        ->andReturnNull();
+
+    $finalizePayment = new FinalizePayment(
         $this->repositoryPaymentMock,
         new GetPaymentById(
             $this->repositoryPaymentMock,
@@ -131,18 +157,18 @@ it('cannot delete a payment that has already been paid', function () {
         new Notification()
     );
 
-    $inputDto = new DeletePaymentInputDto(
+    $inputDto = new FinalizePaymentInputDto(
         1,
     );
 
-    $outputDto = $deletePaymentById->execute($inputDto);
+    $outputDto = $finalizePayment->execute($inputDto);
 
-    expect($outputDto)->toBeInstanceOf(DeletePaymentOutputDto::class);
+    expect($outputDto)->toBeInstanceOf(FinalizePaymentOutputDto::class);
     expect($outputDto->payment)->toBeNull();
     expect($outputDto->notification->getErrors())->toBe([
         [
-            'context' => 'delete_payment',
-            'message' => 'Este pagamento não pode ser excluído porque já foi registrado como pago.',
+            'context' => 'finalize_payment',
+            'message' => 'Pagamento já foi finalizado!',
         ],
     ]);
 });

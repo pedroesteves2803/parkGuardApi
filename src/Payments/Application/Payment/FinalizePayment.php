@@ -56,7 +56,7 @@ final class FinalizePayment
         );
 
         if (is_null($payment)) {
-            throw new \Exception('Pagamento não ja foi finalizado!');
+            throw new \Exception('Pagamento já foi finalizado!');
         }
 
         return $payment;
