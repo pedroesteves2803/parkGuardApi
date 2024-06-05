@@ -18,8 +18,28 @@ use Src\Administration\Application\Employee\GetAllEmployees;
 use Src\Administration\Application\Employee\GetEmployeeById;
 use Src\Administration\Application\Employee\UpdateEmployee;
 
+/**
+ * Class EmployeeController.
+ *
+ * @OA\Tag(
+ *     name="Employee",
+ *     description="Endpoints de funcionários"
+ * )
+ */
 class EmployeeController extends Controller
 {
+    /**
+     * @OA\Get(
+     *     path="/api/employees",
+     *     summary="Get all employees",
+     *     tags={"Employee"},
+     *     @OA\Response(
+     *         response=200,
+     *         description="A list of employees",
+     *         @OA\JsonContent(ref="#/components/schemas/GetAllEmployeesResource")
+     *     )
+     * )
+     */
     public function index(
         GetAllEmployees $getAllEmployees
     ) {

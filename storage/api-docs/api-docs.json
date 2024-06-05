@@ -1,0 +1,87 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Estacionamento API",
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/api/employees": {
+            "get": {
+                "tags": [
+                    "Employee"
+                ],
+                "summary": "Get all employees",
+                "operationId": "7fc06f144c1cd7925c5c391a6609f02d",
+                "responses": {
+                    "200": {
+                        "description": "A list of employees",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GetAllEmployeesResource"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "GetAllEmployeesResource": {
+                "title": "Get All Employees Resource",
+                "description": "Resource for returning a list of employees",
+                "properties": {
+                    "status": {
+                        "description": "Indicates if the request was successful or not",
+                        "type": "boolean"
+                    },
+                    "errors": {
+                        "description": "List of errors (if any)",
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "message": {
+                        "description": "Message indicating the status of the response",
+                        "type": "string"
+                    },
+                    "employees": {
+                        "description": "List of employees",
+                        "type": "array",
+                        "items": {
+                            "properties": {
+                                "id": {
+                                    "description": "Employee ID",
+                                    "type": "integer"
+                                },
+                                "name": {
+                                    "description": "Employee name",
+                                    "type": "string"
+                                },
+                                "email": {
+                                    "description": "Employee email",
+                                    "type": "string"
+                                },
+                                "tipo": {
+                                    "description": "Employee type",
+                                    "type": "integer"
+                                }
+                            },
+                            "type": "object"
+                        }
+                    }
+                },
+                "type": "object"
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Employee",
+            "description": "Endpoints de funcionários"
+        }
+    ]
+}

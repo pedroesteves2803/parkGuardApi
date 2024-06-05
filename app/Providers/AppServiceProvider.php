@@ -26,6 +26,8 @@ class AppServiceProvider extends ServiceProvider
         app()->bind(IConsultVehicleRepository::class, ApiConsultVehicleRepository::class);
         app()->bind(ISendPendingNotificationService::class, SendPendingNotificationService::class);
         app()->bind(IPaymentRepository::class, EloquentPaymentRepository::class);
+
+        $this->app->register(\L5Swagger\L5SwaggerServiceProvider::class);
     }
 
     /**
