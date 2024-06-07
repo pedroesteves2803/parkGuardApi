@@ -33,7 +33,6 @@ class EmployeeController extends Controller
      *     path="/api/employees",
      *     summary="Get all employees",
      *     tags={"Employee"},
-     *     security={{"bearerAuth":{}}},
      *     @OA\Response(
      *         response=200,
      *         description="A list of employees",
