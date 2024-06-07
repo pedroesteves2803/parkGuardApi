@@ -25,10 +25,613 @@
                     }
                 }
             }
+        },
+        "/api/employee": {
+            "post": {
+                "tags": [
+                    "Employee"
+                ],
+                "summary": "Create employee",
+                "operationId": "6a4f1e0943433f32bb808e136da78430",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "description": "Name of the employee",
+                                        "type": "string"
+                                    },
+                                    "email": {
+                                        "description": "Email address of the employee",
+                                        "type": "string",
+                                        "format": "email"
+                                    },
+                                    "password": {
+                                        "description": "Password for the employee account",
+                                        "type": "string"
+                                    },
+                                    "type": {
+                                        "description": "Type of employee",
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Employees",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CreateEmployeeResource"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/employee/{id}": {
+            "get": {
+                "tags": [
+                    "Employee"
+                ],
+                "summary": "Get employee by ID",
+                "operationId": "7002cd80d065e00fc43b1794ed7b4d4f",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the employee to retrieve",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Employee details",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GetEmployeeByIdResource"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Employee not found"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Employee"
+                ],
+                "summary": "Update employee",
+                "operationId": "b1f58be54bff0320d2f19085bf535278",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the employee to update",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "description": "Name of the employee",
+                                        "type": "string"
+                                    },
+                                    "email": {
+                                        "description": "Email address of the employee",
+                                        "type": "string",
+                                        "format": "email"
+                                    },
+                                    "password": {
+                                        "description": "Password for the employee account",
+                                        "type": "string"
+                                    },
+                                    "type": {
+                                        "description": "Type of employee",
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Updated employee details",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UpdateEmployeeResource"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Employee not found"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Employee"
+                ],
+                "summary": "Delete employee",
+                "operationId": "3d61663792ac65f6dbcbf97c9e90e7e2",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the employee to delete",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Deleted employee details",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/DeleteEmployeeByIdResource"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Employee not found"
+                    }
+                }
+            }
+        },
+        "/api/payments": {
+            "get": {
+                "tags": [
+                    "Payment"
+                ],
+                "summary": "Get all payments",
+                "operationId": "826dc6b24dd704607aa018a59207dd96",
+                "responses": {
+                    "200": {
+                        "description": "A list of payments",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GetAllPaymentsResource"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/payment": {
+            "post": {
+                "tags": [
+                    "Payment"
+                ],
+                "summary": "Create payment",
+                "operationId": "8bd089442f313f34b467e2625ff83655",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "paymentMethod": {
+                                        "description": "Method of the payment",
+                                        "type": "string"
+                                    },
+                                    "vehicle_id": {
+                                        "description": "ID of the vehicle associated with the payment",
+                                        "type": "integer"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Payment created",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CreatePaymentResource"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/payment/{id}": {
+            "get": {
+                "tags": [
+                    "Payment"
+                ],
+                "summary": "Get payment by ID",
+                "operationId": "5ec820dc5a59156a714c50a583e10016",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the payment to retrieve",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Payment details",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GetPaymentByIdResource"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Payment not found"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Payment"
+                ],
+                "summary": "Delete payment by ID",
+                "operationId": "05cc141cec4b7acba5a54f72f1e511cb",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the payment to delete",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Payment deleted",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/DeletePaymentByIdResource"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Payment not found"
+                    }
+                }
+            }
+        },
+        "/api/payment/{id}/finalize": {
+            "post": {
+                "tags": [
+                    "Payment"
+                ],
+                "summary": "Finalize payment",
+                "operationId": "2021c0ce919a5edf3f22b04097fa38d2",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the payment to finalize",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Payment finalized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/FinalizePaymentResource"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Payment not found"
+                    }
+                }
+            }
+        },
+        "/api/vehicles": {
+            "get": {
+                "tags": [
+                    "Vehicle"
+                ],
+                "summary": "Lista todos os veículos",
+                "operationId": "727634867f59796290a2fff276979198",
+                "responses": {
+                    "200": {
+                        "description": "Lista de veículos",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GetAllVehiclesResource"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/vehicle": {
+            "post": {
+                "tags": [
+                    "Vehicle"
+                ],
+                "summary": "Cria um novo veículo",
+                "operationId": "d923ccc5f5f836fbd8001d15ec79edc1",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "licensePlate": {
+                                        "description": "Placa do veículo",
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Veículo criado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CreateVehicleResource"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/vehicle/{id}": {
+            "get": {
+                "tags": [
+                    "Vehicle"
+                ],
+                "summary": "Obtém um veículo por ID",
+                "operationId": "16eeb91ddf4438d36ac18d4b0e7f8b35",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID do veículo",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Detalhes do veículo",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GetVehicleByIdResource"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Vehicle"
+                ],
+                "summary": "Atualiza os detalhes de um veículo",
+                "operationId": "8227bc3280cf3c2e9717f931148e0211",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID do veículo",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "manufacturer": {
+                                        "description": "Fabricante do veículo",
+                                        "type": "string"
+                                    },
+                                    "color": {
+                                        "description": "Cor do veículo",
+                                        "type": "string"
+                                    },
+                                    "model": {
+                                        "description": "Modelo do veículo",
+                                        "type": "string"
+                                    },
+                                    "licensePlate": {
+                                        "description": "Placa do veículo",
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Veículo atualizado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UpdateVehicleResource"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/vehicle/exit": {
+            "post": {
+                "tags": [
+                    "Vehicle"
+                ],
+                "summary": "Registra a saída de um veículo",
+                "operationId": "bd5c59b59919bcedfe59fedb096337fe",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "licensePlate": {
+                                        "description": "Placa do veículo",
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Saída do veículo registrada com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ExitVehicleResource"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
     },
     "components": {
         "schemas": {
+            "CreateEmployeeResource": {
+                "title": "Create Employees Resource",
+                "description": "Resource for returning a create employee",
+                "properties": {
+                    "status": {
+                        "description": "Indicates if the request was successful or not",
+                        "type": "boolean"
+                    },
+                    "errors": {
+                        "description": "List of errors (if any)",
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "message": {
+                        "description": "Message indicating the status of the response",
+                        "type": "string"
+                    },
+                    "employee": {
+                        "description": "Employee",
+                        "type": "array",
+                        "items": {
+                            "properties": {
+                                "id": {
+                                    "description": "Employee ID",
+                                    "type": "integer"
+                                },
+                                "name": {
+                                    "description": "Employee name",
+                                    "type": "string"
+                                },
+                                "email": {
+                                    "description": "Employee email",
+                                    "type": "string"
+                                },
+                                "tipo": {
+                                    "description": "Employee type",
+                                    "type": "integer"
+                                }
+                            },
+                            "type": "object"
+                        }
+                    }
+                },
+                "type": "object"
+            },
+            "DeleteEmployeeByIdResource": {
+                "title": "Delete Employee Response",
+                "description": "Response schema for deleting an employee",
+                "properties": {
+                    "status": {
+                        "description": "Indicates whether the operation was successful",
+                        "type": "boolean"
+                    },
+                    "errors": {
+                        "description": "List of errors, if any",
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "message": {
+                        "description": "Success message if the operation was successful",
+                        "type": "string"
+                    },
+                    "employee": {
+                        "description": "Employee information, which is null in this case",
+                        "type": "null"
+                    }
+                },
+                "type": "object"
+            },
             "GetAllEmployeesResource": {
                 "title": "Get All Employees Resource",
                 "description": "Resource for returning a list of employees",
@@ -75,6 +678,613 @@
                     }
                 },
                 "type": "object"
+            },
+            "GetEmployeeByIdResource": {
+                "title": "Get employee Resource",
+                "description": "Recourse to return an employee",
+                "properties": {
+                    "status": {
+                        "description": "Indicates if the request was successful or not",
+                        "type": "boolean"
+                    },
+                    "errors": {
+                        "description": "List of errors (if any)",
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "message": {
+                        "description": "Message indicating the status of the response",
+                        "type": "string"
+                    },
+                    "employee": {
+                        "description": "Eemployees",
+                        "type": "array",
+                        "items": {
+                            "properties": {
+                                "id": {
+                                    "description": "Employee ID",
+                                    "type": "integer"
+                                },
+                                "name": {
+                                    "description": "Employee name",
+                                    "type": "string"
+                                },
+                                "email": {
+                                    "description": "Employee email",
+                                    "type": "string"
+                                },
+                                "tipo": {
+                                    "description": "Employee type",
+                                    "type": "integer"
+                                }
+                            },
+                            "type": "object"
+                        }
+                    }
+                },
+                "type": "object"
+            },
+            "UpdateEmployeeResource": {
+                "title": "Update Employee Response",
+                "description": "Response schema for updating an employee",
+                "properties": {
+                    "status": {
+                        "description": "Indicates whether the operation was successful",
+                        "type": "boolean"
+                    },
+                    "errors": {
+                        "description": "List of errors, if any",
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "message": {
+                        "description": "Success message if the operation was successful",
+                        "type": "string"
+                    },
+                    "employee": {
+                        "description": "Details of the updated employee",
+                        "properties": {
+                            "id": {
+                                "description": "ID of the employee",
+                                "type": "string"
+                            },
+                            "name": {
+                                "description": "Name of the employee",
+                                "type": "string"
+                            },
+                            "email": {
+                                "description": "Email address of the employee",
+                                "type": "string",
+                                "format": "email"
+                            },
+                            "tipo": {
+                                "description": "Type of employee",
+                                "type": "string"
+                            }
+                        },
+                        "type": "object"
+                    }
+                },
+                "type": "object"
+            },
+            "CreatePaymentResource": {
+                "title": "Create Payment Resource",
+                "description": "Resource returned when a payment is created",
+                "properties": {
+                    "status": {
+                        "description": "Indicates if the operation was successful",
+                        "type": "boolean"
+                    },
+                    "errors": {
+                        "description": "List of errors, if any",
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "message": {
+                        "description": "A message describing the result of the operation",
+                        "type": "string"
+                    },
+                    "payment": {
+                        "properties": {
+                            "id": {
+                                "description": "ID of the payment",
+                                "type": "integer"
+                            },
+                            "value": {
+                                "description": "Value of the payment",
+                                "type": "number",
+                                "format": "float"
+                            },
+                            "value_in_reais": {
+                                "description": "Value of the payment in Brazilian reais",
+                                "type": "number",
+                                "format": "float"
+                            },
+                            "dateTime": {
+                                "description": "Date and time when the payment was registered",
+                                "type": "string",
+                                "format": "date-time"
+                            },
+                            "paymentMethod": {
+                                "description": "Method used for the payment",
+                                "type": "string"
+                            },
+                            "paid": {
+                                "description": "Indicates if the payment has been made",
+                                "type": "boolean"
+                            },
+                            "vehicle_id": {
+                                "description": "ID of the vehicle associated with the payment",
+                                "type": "integer"
+                            }
+                        },
+                        "type": "object"
+                    }
+                },
+                "type": "object"
+            },
+            "DeletePaymentByIdResource": {
+                "title": "Delete Payment By Id Resource",
+                "description": "Resource returned when a payment is deleted",
+                "properties": {
+                    "status": {
+                        "description": "Indicates if the operation was successful",
+                        "type": "boolean"
+                    },
+                    "errors": {
+                        "description": "List of errors, if any",
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "message": {
+                        "description": "A message describing the result of the operation",
+                        "type": "string"
+                    },
+                    "payment": {
+                        "description": "Details of the payment, which is null in this case",
+                        "type": "object",
+                        "nullable": true
+                    }
+                },
+                "type": "object"
+            },
+            "FinalizePaymentResource": {
+                "title": "Finalize Payment Resource",
+                "description": "Resource returned when a payment is finalized",
+                "properties": {
+                    "status": {
+                        "description": "Indicates if the operation was successful",
+                        "type": "boolean"
+                    },
+                    "errors": {
+                        "description": "List of errors, if any",
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "message": {
+                        "description": "A message describing the result of the operation",
+                        "type": "string"
+                    },
+                    "payment": {
+                        "properties": {
+                            "id": {
+                                "description": "ID of the payment",
+                                "type": "integer"
+                            },
+                            "value": {
+                                "description": "Value of the payment",
+                                "type": "number",
+                                "format": "float"
+                            },
+                            "dateTime": {
+                                "description": "Date and time when the payment was registered",
+                                "type": "string",
+                                "format": "date-time"
+                            },
+                            "paymentMethod": {
+                                "description": "Method used for the payment",
+                                "type": "string"
+                            },
+                            "paid": {
+                                "description": "Indicates if the payment has been made",
+                                "type": "boolean"
+                            },
+                            "vehicle_id": {
+                                "description": "ID of the vehicle associated with the payment",
+                                "type": "integer"
+                            }
+                        },
+                        "type": "object"
+                    }
+                },
+                "type": "object"
+            },
+            "GetAllPaymentsResource": {
+                "title": "Get All Payments Resource",
+                "description": "Resource returned when retrieving all payments",
+                "properties": {
+                    "status": {
+                        "description": "Indicates if the operation was successful",
+                        "type": "boolean"
+                    },
+                    "errors": {
+                        "description": "List of errors, if any",
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "message": {
+                        "description": "A message describing the result of the operation",
+                        "type": "string"
+                    },
+                    "payments": {
+                        "description": "List of payments",
+                        "type": "array",
+                        "items": {
+                            "properties": {
+                                "id": {
+                                    "description": "ID of the payment",
+                                    "type": "integer"
+                                },
+                                "value": {
+                                    "description": "Value of the payment",
+                                    "type": "number",
+                                    "format": "float"
+                                },
+                                "dateTime": {
+                                    "description": "Date and time when the payment was registered",
+                                    "type": "string",
+                                    "format": "date-time"
+                                },
+                                "paymentMethod": {
+                                    "description": "Method used for the payment",
+                                    "type": "string"
+                                },
+                                "paid": {
+                                    "description": "Indicates if the payment has been made",
+                                    "type": "boolean"
+                                },
+                                "vehicle_id": {
+                                    "description": "ID of the vehicle associated with the payment",
+                                    "type": "integer"
+                                }
+                            },
+                            "type": "object"
+                        }
+                    }
+                },
+                "type": "object"
+            },
+            "GetPaymentByIdResource": {
+                "title": "Get Payment By ID Resource",
+                "description": "Resource returned when retrieving a payment by its ID",
+                "properties": {
+                    "status": {
+                        "description": "Indicates if the operation was successful",
+                        "type": "boolean"
+                    },
+                    "errors": {
+                        "description": "List of errors, if any",
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "message": {
+                        "description": "A message describing the result of the operation",
+                        "type": "string"
+                    },
+                    "payment": {
+                        "description": "Details of the payment, which is null if not found",
+                        "type": "object",
+                        "nullable": true
+                    }
+                },
+                "type": "object"
+            },
+            "CreateVehicleResource": {
+                "title": "CreateVehicleResource",
+                "description": "Resource representation for the creation of a vehicle.",
+                "properties": {
+                    "status": {
+                        "description": "Status of the operation. True if successful, false otherwise.",
+                        "type": "boolean"
+                    },
+                    "errors": {
+                        "description": "Errors encountered during the operation, if any.",
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "message": {
+                        "description": "Message indicating the success of the operation, if applicable.",
+                        "type": "string"
+                    },
+                    "vehicle": {
+                        "description": "Details of the created vehicle.",
+                        "properties": {
+                            "id": {
+                                "description": "ID of the vehicle",
+                                "type": "integer"
+                            },
+                            "manufacturer": {
+                                "description": "Manufacturer of the vehicle",
+                                "type": "string"
+                            },
+                            "color": {
+                                "description": "Color of the vehicle",
+                                "type": "string"
+                            },
+                            "model": {
+                                "description": "Model of the vehicle",
+                                "type": "string"
+                            },
+                            "licensePlate": {
+                                "description": "License plate of the vehicle",
+                                "type": "string"
+                            },
+                            "entryTimes": {
+                                "description": "Entry time of the vehicle",
+                                "type": "string",
+                                "format": "date-time"
+                            },
+                            "departureTimes": {
+                                "description": "Departure time of the vehicle, if applicable",
+                                "type": "string",
+                                "format": "date-time"
+                            }
+                        },
+                        "type": "object"
+                    }
+                },
+                "type": "object"
+            },
+            "ExitVehicleResource": {
+                "title": "ExitVehicleResource",
+                "description": "Resource representation for exiting a vehicle.",
+                "properties": {
+                    "status": {
+                        "description": "Status of the operation. True if successful, false otherwise.",
+                        "type": "boolean"
+                    },
+                    "errors": {
+                        "description": "Errors encountered during the operation, if any.",
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "message": {
+                        "description": "Message indicating the success of the operation, if applicable.",
+                        "type": "string"
+                    },
+                    "vehicle": {
+                        "description": "Details of the vehicle that exited.",
+                        "properties": {
+                            "id": {
+                                "description": "ID of the vehicle",
+                                "type": "integer"
+                            },
+                            "manufacturer": {
+                                "description": "Manufacturer of the vehicle",
+                                "type": "string"
+                            },
+                            "color": {
+                                "description": "Color of the vehicle",
+                                "type": "string"
+                            },
+                            "model": {
+                                "description": "Model of the vehicle",
+                                "type": "string"
+                            },
+                            "licensePlate": {
+                                "description": "License plate of the vehicle",
+                                "type": "string"
+                            },
+                            "entryTimes": {
+                                "description": "Entry time of the vehicle",
+                                "type": "string",
+                                "format": "date-time"
+                            },
+                            "departureTimes": {
+                                "description": "Departure time of the vehicle, if applicable",
+                                "type": "string",
+                                "format": "date-time"
+                            }
+                        },
+                        "type": "object"
+                    }
+                },
+                "type": "object"
+            },
+            "GetAllVehiclesResource": {
+                "title": "GetAllVehiclesResource",
+                "description": "Resource representation for retrieving all vehicles.",
+                "properties": {
+                    "status": {
+                        "description": "Status of the operation. True if successful, false otherwise.",
+                        "type": "boolean"
+                    },
+                    "errors": {
+                        "description": "Errors encountered during the operation, if any.",
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "message": {
+                        "description": "Message indicating the success of the operation, if applicable.",
+                        "type": "string"
+                    },
+                    "vehicles": {
+                        "description": "List of vehicles found.",
+                        "type": "array",
+                        "items": {
+                            "properties": {
+                                "id": {
+                                    "description": "ID of the vehicle",
+                                    "type": "integer"
+                                },
+                                "manufacturer": {
+                                    "description": "Manufacturer of the vehicle",
+                                    "type": "string"
+                                },
+                                "color": {
+                                    "description": "Color of the vehicle",
+                                    "type": "string"
+                                },
+                                "model": {
+                                    "description": "Model of the vehicle",
+                                    "type": "string"
+                                },
+                                "licensePlate": {
+                                    "description": "License plate of the vehicle",
+                                    "type": "string"
+                                },
+                                "entryTimes": {
+                                    "description": "Entry time of the vehicle",
+                                    "type": "string",
+                                    "format": "date-time"
+                                },
+                                "departureTimes": {
+                                    "description": "Departure time of the vehicle, if applicable",
+                                    "type": "string",
+                                    "format": "date-time"
+                                }
+                            },
+                            "type": "object"
+                        }
+                    }
+                },
+                "type": "object"
+            },
+            "GetVehicleByIdResource": {
+                "title": "GetVehicleByIdResource",
+                "description": "Resource representation for retrieving a vehicle by ID.",
+                "properties": {
+                    "status": {
+                        "description": "Status of the operation. True if successful, false otherwise.",
+                        "type": "boolean"
+                    },
+                    "errors": {
+                        "description": "Errors encountered during the operation, if any.",
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "message": {
+                        "description": "Message indicating the success of the operation, if applicable.",
+                        "type": "string"
+                    },
+                    "vehicle": {
+                        "description": "Details of the found vehicle.",
+                        "properties": {
+                            "id": {
+                                "description": "ID of the vehicle",
+                                "type": "integer"
+                            },
+                            "manufacturer": {
+                                "description": "Manufacturer of the vehicle",
+                                "type": "string"
+                            },
+                            "color": {
+                                "description": "Color of the vehicle",
+                                "type": "string"
+                            },
+                            "model": {
+                                "description": "Model of the vehicle",
+                                "type": "string"
+                            },
+                            "licensePlate": {
+                                "description": "License plate of the vehicle",
+                                "type": "string"
+                            },
+                            "entryTimes": {
+                                "description": "Entry time of the vehicle",
+                                "type": "string",
+                                "format": "date-time"
+                            },
+                            "departureTimes": {
+                                "description": "Departure time of the vehicle, if applicable",
+                                "type": "string",
+                                "format": "date-time"
+                            }
+                        },
+                        "type": "object"
+                    }
+                },
+                "type": "object"
+            },
+            "UpdateVehicleResource": {
+                "title": "UpdateVehicleResource",
+                "description": "Resource representation for updating a vehicle.",
+                "properties": {
+                    "status": {
+                        "description": "Status of the operation. True if successful, false otherwise.",
+                        "type": "boolean"
+                    },
+                    "errors": {
+                        "description": "Errors encountered during the operation, if any.",
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "message": {
+                        "description": "Message indicating the success of the operation, if applicable.",
+                        "type": "string"
+                    },
+                    "vehicle": {
+                        "description": "Details of the updated vehicle.",
+                        "properties": {
+                            "id": {
+                                "description": "ID of the vehicle",
+                                "type": "integer"
+                            },
+                            "manufacturer": {
+                                "description": "Manufacturer of the vehicle",
+                                "type": "string"
+                            },
+                            "color": {
+                                "description": "Color of the vehicle",
+                                "type": "string"
+                            },
+                            "model": {
+                                "description": "Model of the vehicle",
+                                "type": "string"
+                            },
+                            "licensePlate": {
+                                "description": "License plate of the vehicle",
+                                "type": "string"
+                            },
+                            "entryTimes": {
+                                "description": "Entry time of the vehicle",
+                                "type": "string",
+                                "format": "date-time"
+                            },
+                            "departureTimes": {
+                                "description": "Departure time of the vehicle, if applicable",
+                                "type": "string",
+                                "format": "date-time"
+                            }
+                        },
+                        "type": "object"
+                    }
+                },
+                "type": "object"
             }
         }
     },
@@ -82,6 +1292,14 @@
         {
             "name": "Employee",
             "description": "Endpoints de funcionários"
+        },
+        {
+            "name": "Payment",
+            "description": "Endpoints de pagamentos"
+        },
+        {
+            "name": "Vehicle",
+            "description": "Endpoints relacionados a veículos"
         }
     ]
 }

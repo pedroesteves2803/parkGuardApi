@@ -48,6 +48,45 @@ class EmployeeController extends Controller
         return new GetAllEmployeesResource($output);
     }
 
+    /**
+     * @OA\Post(
+     *     path="/api/employee",
+     *     summary="Create employee",
+     *     tags={"Employee"},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(
+     *                 property="name",
+     *                 type="string",
+     *                 description="Name of the employee"
+     *             ),
+     *             @OA\Property(
+     *                 property="email",
+     *                 type="string",
+     *                 format="email",
+     *                 description="Email address of the employee"
+     *             ),
+     *             @OA\Property(
+     *                 property="password",
+     *                 type="string",
+     *                 description="Password for the employee account"
+     *             ),
+     *             @OA\Property(
+     *                 property="type",
+     *                 type="string",
+     *                 description="Type of employee"
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Employees",
+     *         @OA\JsonContent(ref="#/components/schemas/CreateEmployeeResource")
+     *     )
+     * )
+     */
     public function store(
         Request $request,
         CreateEmployee $createEmployee
@@ -66,6 +105,31 @@ class EmployeeController extends Controller
         );
     }
 
+    /**
+     * @OA\Get(
+     *     path="/api/employee/{id}",
+     *     summary="Get employee by ID",
+     *     tags={"Employee"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         description="ID of the employee to retrieve",
+     *         @OA\Schema(
+     *             type="string"
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Employee details",
+     *         @OA\JsonContent(ref="#/components/schemas/GetEmployeeByIdResource")
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Employee not found"
+     *     )
+     * )
+     */
     public function show(
         string $id,
         GetEmployeeById $getEmployeeById
@@ -80,7 +144,56 @@ class EmployeeController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * @OA\Put(
+     *     path="/api/employee/{id}",
+     *     summary="Update employee",
+     *     tags={"Employee"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         description="ID of the employee to update",
+     *         @OA\Schema(
+     *             type="string"
+     *         )
+     *     ),
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(
+     *                 property="name",
+     *                 type="string",
+     *                 description="Name of the employee"
+     *             ),
+     *             @OA\Property(
+     *                 property="email",
+     *                 type="string",
+     *                 format="email",
+     *                 description="Email address of the employee"
+     *             ),
+     *             @OA\Property(
+     *                 property="password",
+     *                 type="string",
+     *                 description="Password for the employee account"
+     *             ),
+     *             @OA\Property(
+     *                 property="type",
+     *                 type="string",
+     *                 description="Type of employee"
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Updated employee details",
+     *         @OA\JsonContent(ref="#/components/schemas/UpdateEmployeeResource")
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Employee not found"
+     *     )
+     * )
      */
     public function update(
         Request $request,
@@ -101,7 +214,29 @@ class EmployeeController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * @OA\Delete(
+     *     path="/api/employee/{id}",
+     *     summary="Delete employee",
+     *     tags={"Employee"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         description="ID of the employee to delete",
+     *         @OA\Schema(
+     *             type="string"
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Deleted employee details",
+     *         @OA\JsonContent(ref="#/components/schemas/DeleteEmployeeByIdResource")
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Employee not found"
+     *     )
+     * )
      */
     public function destroy(
         string $id,

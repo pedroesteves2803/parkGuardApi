@@ -19,8 +19,28 @@ use Src\Payments\Application\Payment\FinalizePayment;
 use Src\Payments\Application\Payment\GetAllPayment;
 use Src\Payments\Application\Payment\GetPaymentById;
 
+/**
+ * Class PaymentController.
+ *
+ * @OA\Tag(
+ *     name="Payment",
+ *     description="Endpoints de pagamentos"
+ * )
+ */
 class PaymentController extends Controller
 {
+    /**
+     * @OA\Get(
+     *     path="/api/payments",
+     *     summary="Get all payments",
+     *     tags={"Payment"},
+     *     @OA\Response(
+     *         response=200,
+     *         description="A list of payments",
+     *         @OA\JsonContent(ref="#/components/schemas/GetAllPaymentsResource")
+     *     )
+     * )
+     */
     public function index(
         GetAllPayment $getAllPayment
     ) {
@@ -29,6 +49,34 @@ class PaymentController extends Controller
         return new GetAllPaymentsResource($output);
     }
 
+    /**
+     * @OA\Post(
+     *     path="/api/payment",
+     *     summary="Create payment",
+     *     tags={"Payment"},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(
+     *                 property="paymentMethod",
+     *                 type="string",
+     *                 description="Method of the payment"
+     *             ),
+     *             @OA\Property(
+     *                 property="vehicle_id",
+     *                 type="integer",
+     *                 description="ID of the vehicle associated with the payment"
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Payment created",
+     *         @OA\JsonContent(ref="#/components/schemas/CreatePaymentResource")
+     *     )
+     * )
+     */
     public function store(
         Request $request,
         CreatePayment $createPayment
@@ -46,6 +94,31 @@ class PaymentController extends Controller
         );
     }
 
+    /**
+     * @OA\Get(
+     *     path="/api/payment/{id}",
+     *     summary="Get payment by ID",
+     *     tags={"Payment"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         description="ID of the payment to retrieve",
+     *         @OA\Schema(
+     *             type="integer"
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Payment details",
+     *         @OA\JsonContent(ref="#/components/schemas/GetPaymentByIdResource")
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Payment not found"
+     *     )
+     * )
+     */
     public function show(
         int $id,
         GetPaymentById $getPaymentById
@@ -61,6 +134,31 @@ class PaymentController extends Controller
         );
     }
 
+    /**
+     * @OA\Post(
+     *     path="/api/payment/{id}/finalize",
+     *     summary="Finalize payment",
+     *     tags={"Payment"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         description="ID of the payment to finalize",
+     *         @OA\Schema(
+     *             type="integer"
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Payment finalized",
+     *         @OA\JsonContent(ref="#/components/schemas/FinalizePaymentResource")
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Payment not found"
+     *     )
+     * )
+     */
     public function finalize(
         int $id,
         FinalizePayment $finalizePayment
@@ -76,6 +174,31 @@ class PaymentController extends Controller
         );
     }
 
+    /**
+     * @OA\Delete(
+     *     path="/api/payment/{id}",
+     *     summary="Delete payment by ID",
+     *     tags={"Payment"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         description="ID of the payment to delete",
+     *         @OA\Schema(
+     *             type="integer"
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Payment deleted",
+     *         @OA\JsonContent(ref="#/components/schemas/DeletePaymentByIdResource")
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Payment not found"
+     *     )
+     * )
+     */
     public function destroy(
         int $id,
         DeletePaymentById $deletePaymentById

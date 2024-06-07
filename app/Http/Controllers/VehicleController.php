@@ -19,8 +19,28 @@ use Src\Vehicles\Application\Vehicle\GetVehicleById;
 use Src\Vehicles\Application\Vehicle\UpdateVehicle;
 use Src\Vehicles\Domain\ValueObjects\LicensePlate;
 
+/**
+ * Class VehicleController
+ *
+ * @OA\Tag(
+ *     name="Vehicle",
+ *     description="Endpoints relacionados a veículos"
+ * )
+ */
 class VehicleController extends Controller
 {
+    /**
+     * @OA\Get(
+     *     path="/api/vehicles",
+     *     summary="Lista todos os veículos",
+     *     tags={"Vehicle"},
+     *     @OA\Response(
+     *         response=200,
+     *         description="Lista de veículos",
+     *         @OA\JsonContent(ref="#/components/schemas/GetAllVehiclesResource")
+     *     )
+     * )
+     */
     public function index(
         GetAllVehicles $getAllVehicles
     ) {
@@ -29,9 +49,32 @@ class VehicleController extends Controller
         return new GetAllVehiclesResource($output);
     }
 
+    /**
+     * @OA\Post(
+     *     path="/api/vehicle",
+     *     summary="Cria um novo veículo",
+     *     tags={"Vehicle"},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(
+     *                 property="licensePlate",
+     *                 type="string",
+     *                 description="Placa do veículo"
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Veículo criado",
+     *         @OA\JsonContent(ref="#/components/schemas/CreateVehicleResource")
+     *     )
+     * )
+     */
     public function store(
         Request $request,
-        CreateVehicle $createVehicle,
+        CreateVehicle $createVehicle
     ) {
         $createInputDto = new CreateVehicleInputDto(
             $request->licensePlate,
@@ -44,6 +87,27 @@ class VehicleController extends Controller
         );
     }
 
+    /**
+     * @OA\Get(
+     *     path="/api/vehicle/{id}",
+     *     summary="Obtém um veículo por ID",
+     *     tags={"Vehicle"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         description="ID do veículo",
+     *         @OA\Schema(
+     *             type="integer"
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Detalhes do veículo",
+     *         @OA\JsonContent(ref="#/components/schemas/GetVehicleByIdResource")
+     *     )
+     * )
+     */
     public function show(
         int $id,
         GetVehicleById $getVehicleById
@@ -57,6 +121,53 @@ class VehicleController extends Controller
         return new GetVehicleByIdResource($outputDto);
     }
 
+    /**
+     * @OA\Put(
+     *     path="/api/vehicle/{id}",
+     *     summary="Atualiza os detalhes de um veículo",
+     *     tags={"Vehicle"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         description="ID do veículo",
+     *         @OA\Schema(
+     *             type="integer"
+     *         )
+     *     ),
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(
+     *                 property="manufacturer",
+     *                 type="string",
+     *                 description="Fabricante do veículo"
+     *             ),
+     *             @OA\Property(
+     *                 property="color",
+     *                 type="string",
+     *                 description="Cor do veículo"
+     *             ),
+     *             @OA\Property(
+     *                 property="model",
+     *                 type="string",
+     *                 description="Modelo do veículo"
+     *             ),
+     *             @OA\Property(
+     *                 property="licensePlate",
+     *                 type="string",
+     *                 description="Placa do veículo"
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Veículo atualizado",
+     *         @OA\JsonContent(ref="#/components/schemas/UpdateVehicleResource")
+     *     )
+     * )
+     */
     public function update(
         Request $request,
         int $id,
@@ -75,6 +186,29 @@ class VehicleController extends Controller
         return new UpdateVehicleResource($outputDto);
     }
 
+    /**
+     * @OA\Post(
+     *     path="/api/vehicle/exit",
+     *     summary="Registra a saída de um veículo",
+     *     tags={"Vehicle"},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(
+     *                 property="licensePlate",
+     *                 type="string",
+     *                 description="Placa do veículo"
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Saída do veículo registrada com sucesso",
+     *         @OA\JsonContent(ref="#/components/schemas/ExitVehicleResource")
+     *     )
+     * )
+     */
     public function exit(
         string $licensePlate,
         ExitVehicle $exitVehicle

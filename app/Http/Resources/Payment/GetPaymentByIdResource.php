@@ -5,6 +5,36 @@ namespace App\Http\Resources\Payment;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
+/**
+ * @OA\Schema(
+ *     schema="GetPaymentByIdResource",
+ *     type="object",
+ *     title="Get Payment By ID Resource",
+ *     description="Resource returned when retrieving a payment by its ID",
+ *     @OA\Property(
+ *         property="status",
+ *         type="boolean",
+ *         description="Indicates if the operation was successful"
+ *     ),
+ *     @OA\Property(
+ *         property="errors",
+ *         type="array",
+ *         @OA\Items(type="string"),
+ *         description="List of errors, if any"
+ *     ),
+ *     @OA\Property(
+ *         property="message",
+ *         type="string",
+ *         description="A message describing the result of the operation"
+ *     ),
+ *     @OA\Property(
+ *         property="payment",
+ *         type="object",
+ *         nullable=true,
+ *         description="Details of the payment, which is null if not found"
+ *     )
+ * )
+ */
 class GetPaymentByIdResource extends JsonResource
 {
     public function toArray(Request $request): array
@@ -19,7 +49,7 @@ class GetPaymentByIdResource extends JsonResource
 
     private function getStatus()
     {
-        return ! $this->notification->hasErrors();
+        return !$this->notification->hasErrors();
     }
 
     private function getErrors()
