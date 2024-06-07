@@ -3,7 +3,6 @@
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\VehicleController;
-use App\Models\Vehicle;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/employees', [EmployeeController::class, 'index'])->name('employee.index');
@@ -22,9 +21,3 @@ Route::get('/payments', [PaymentController::class, 'index'])->name('payment.inde
 Route::post('/payment', [PaymentController::class, 'store'])->name('payment.create');
 Route::get('/payment/{payment}', [PaymentController::class, 'show'])->name('payment.show');
 Route::get('/payment/finalize/{payment}', [PaymentController::class, 'finalize'])->name('payment.finalize');
-
-Route::get('/teste/{id}', function ($id) {
-    $vehicle = Vehicle::where('id', $id)->with('pendings')->first();
-
-    dd($vehicle);
-});

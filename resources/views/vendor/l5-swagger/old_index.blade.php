@@ -26,27 +26,11 @@
             margin: 0;
             background: #fafafa;
         }
-
-        /* Estilizando o campo de entrada do token JWT */
-        #jwt-token {
-            position: fixed;
-            top: 15px;
-            left: 15px;
-            z-index: 9999;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            font-size: 14px;
-            background-color: #fff;
-        }
     </style>
 </head>
 
 <body>
     <div id="swagger-ui"></div>
-
-    <!-- Adiciona o campo de entrada para o token JWT -->
-    <input type="text" id="jwt-token" placeholder="Insira seu token JWT">
 
     <script src="{{ l5_swagger_asset($documentation, 'swagger-ui-bundle.js') }}"></script>
     <script src="{{ l5_swagger_asset($documentation, 'swagger-ui-standalone-preset.js') }}"></script>
@@ -62,11 +46,6 @@
                 oauth2RedirectUrl: "{{ route('l5-swagger.' . $documentation . '.oauth2_callback', [], $useAbsolutePath) }}",
 
                 requestInterceptor: function(request) {
-                    // Adicione o token JWT aos cabeçalhos da solicitação
-                    var jwtToken = window.localStorage.getItem('jwtToken');
-                    if (jwtToken) {
-                        request.headers['Authorization'] = 'Bearer ' + jwtToken;
-                    }
                     request.headers['X-CSRF-TOKEN'] = '{{ csrf_token() }}';
                     return request;
                 },
@@ -96,36 +75,6 @@
                 })
             @endif
         }
-
-        // Adiciona o evento de escuta para atualizar o token JWT no armazenamento local
-        document.addEventListener("DOMContentLoaded", function() {
-            var jwtTokenInput = document.getElementById('jwt-token');
-
-            jwtTokenInput.addEventListener('input', function() {
-                window.localStorage.setItem('jwtToken', jwtTokenInput.value);
-            });
-        });
-
-        // Adiciona o evento de escuta para adicionar o token JWT aos cabeçalhos das solicitações
-        window.addEventListener("fetch", function(event) {
-            var jwtToken = window.localStorage.getItem('jwtToken');
-            var request = event.request;
-
-            // Adicione o token JWT aos cabeçalhos da solicitação
-            if (jwtToken) {
-                var headers = new Headers(request.headers);
-                headers.set('Authorization', 'Bearer ' + jwtToken);
-
-                event.respondWith(
-                    fetch(request.url, {
-                        method: request.method,
-                        headers: headers,
-                        body: request.body,
-                        redirect: request.redirect
-                    })
-                );
-            }
-        });
     </script>
 </body>
 
