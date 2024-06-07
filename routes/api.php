@@ -8,16 +8,16 @@ use Illuminate\Support\Facades\Route;
 Route::get('/employees', [EmployeeController::class, 'index'])->name('employee.index');
 Route::post('/employee', [EmployeeController::class, 'store'])->name('employee.store');
 Route::get('/employee/{employee}', [EmployeeController::class, 'show'])->name('employee.show');
-Route::patch('/employee/{employee}', [EmployeeController::class, 'update'])->name('employee.update');
+Route::put('/employee/{employee}', [EmployeeController::class, 'update'])->name('employee.update');
 Route::delete('/employee/{employee}', [EmployeeController::class, 'destroy'])->name('employee.destroy');
 
 Route::get('/vehicles', [VehicleController::class, 'index'])->name('vehicle.index');
 Route::post('/vehicle', [VehicleController::class, 'store'])->name('vehicle.store');
 Route::get('/vehicle/{vehicle}', [VehicleController::class, 'show'])->name('vehicle.show');
-Route::patch('/vehicle/{vehicle}', [VehicleController::class, 'update'])->name('vehicle.update');
+Route::put('/vehicle/{vehicle}', [VehicleController::class, 'update'])->name('vehicle.update');
 Route::post('/vehicle/exit/{vehicle}', [VehicleController::class, 'exit'])->name('vehicle.exit');
 
 Route::get('/payments', [PaymentController::class, 'index'])->name('payment.index');
 Route::post('/payment', [PaymentController::class, 'store'])->name('payment.create');
 Route::get('/payment/{payment}', [PaymentController::class, 'show'])->name('payment.show');
-Route::get('/payment/finalize/{payment}', [PaymentController::class, 'finalize'])->name('payment.finalize');
+Route::post('/payment/{payment}/finalize', [PaymentController::class, 'finalize'])->name('payment.finalize');
