@@ -13,9 +13,13 @@ use Src\Administration\Application\Employee\DeleteEmployeeById;
 use Src\Administration\Application\Employee\Dtos\CreateEmployeeInputDto;
 use Src\Administration\Application\Employee\Dtos\DeleteEmployeeByIdInputDto;
 use Src\Administration\Application\Employee\Dtos\GetEmployeeByIdInputDto;
+use Src\Administration\Application\Employee\Dtos\LoginEmployeeInputDto;
+use Src\Administration\Application\Employee\Dtos\LogoutEmployeeInputDto;
 use Src\Administration\Application\Employee\Dtos\UpdateEmployeeInputDto;
 use Src\Administration\Application\Employee\GetAllEmployees;
 use Src\Administration\Application\Employee\GetEmployeeById;
+use Src\Administration\Application\Employee\LoginEmployee;
+use Src\Administration\Application\Employee\LogoutEmployee;
 use Src\Administration\Application\Employee\UpdateEmployee;
 
 /**
@@ -249,5 +253,42 @@ class EmployeeController extends Controller
         $output = $deleteEmployeeById->execute($inputDto);
 
         return new DeleteEmployeeByIdResource($output);
+    }
+
+    public function login(
+        Request $request,
+        LoginEmployee $loginEmployee
+    )
+    {
+        $inputDto = new LoginEmployeeInputDto(
+            $request->email,
+            $request->password,
+        );
+
+        $outputDto = $loginEmployee->execute($inputDto);
+
+        if ($outputDto) {
+            return response()->json(['token' => $outputDto->token], 200);
+        } else {
+            return response()->json(['error' => 'Unauthenticated'], 401);
+        }
+    }
+
+    public function logout(
+        Request $request,
+        LogoutEmployee $logoutEmployee
+    )
+    {
+        $inputDto = new LogoutEmployeeInputDto(
+            $request->token,
+        );
+
+        $outputDto = $logoutEmployee->execute($inputDto);
+
+        if ($outputDto) {
+            return response()->json(['token' => $outputDto->token], 200);
+        } else {
+            return response()->json(['error' => 'Unauthenticated'], 401);
+        }
     }
 }
