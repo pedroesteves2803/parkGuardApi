@@ -8,7 +8,7 @@ use Src\Shared\Utils\Notification;
 final class LoginEmployeeOutputDto
 {
     public function __construct(
-        readonly ?string $token,
+        readonly ?Employee $employee,
         readonly Notification $notification
     ) {
     }

@@ -26,6 +26,7 @@ it('can create an instance of GetAllEmployeesOutputDto with employees collection
                 new Email($email),
                 new Password($password),
                 new Type($type),
+                null
             )
         );
     }

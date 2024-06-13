@@ -6,6 +6,7 @@ use App\Http\Resources\Employee\CreateEmployeeResource;
 use App\Http\Resources\Employee\DeleteEmployeeByIdResource;
 use App\Http\Resources\Employee\GetAllEmployeesResource;
 use App\Http\Resources\Employee\GetEmployeeByIdResource;
+use App\Http\Resources\Employee\LoginEmployeeResource;
 use App\Http\Resources\Employee\UpdateEmployeeResource;
 use Illuminate\Http\Request;
 use Src\Administration\Application\Employee\CreateEmployee;
@@ -267,11 +268,7 @@ class EmployeeController extends Controller
 
         $outputDto = $loginEmployee->execute($inputDto);
 
-        if ($outputDto) {
-            return response()->json(['token' => $outputDto->token], 200);
-        } else {
-            return response()->json(['error' => 'Unauthenticated'], 401);
-        }
+        return new LoginEmployeeResource($outputDto);
     }
 
     public function logout(

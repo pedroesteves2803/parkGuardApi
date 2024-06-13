@@ -24,6 +24,7 @@ final class EloquentEmployeeRepository implements IEmployeeRepository
                 new Email($employee->email),
                 new Password($employee->password),
                 new Type($employee->type),
+                null
             );
         });
 
@@ -43,7 +44,8 @@ final class EloquentEmployeeRepository implements IEmployeeRepository
             new Name($employee->name),
             new Email($employee->email),
             new Password($employee->password),
-            new Type($employee->type)
+            new Type($employee->type),
+            null
         );
     }
 
@@ -61,7 +63,8 @@ final class EloquentEmployeeRepository implements IEmployeeRepository
             new Name($modelsEmployee->name),
             new Email($modelsEmployee->email),
             new Password($modelsEmployee->password, true),
-            new Type($modelsEmployee->type)
+            new Type($modelsEmployee->type),
+            null
         );
     }
 
@@ -83,7 +86,8 @@ final class EloquentEmployeeRepository implements IEmployeeRepository
             new Name($modelsEmployee->name),
             new Email($modelsEmployee->email),
             new Password($modelsEmployee->password),
-            new Type($modelsEmployee->type)
+            new Type($modelsEmployee->type),
+            null
         );
     }
 

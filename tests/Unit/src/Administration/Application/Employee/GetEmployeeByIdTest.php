@@ -26,6 +26,7 @@ it('can retrieve an employee by ID from the repository', function () {
         new Email('john@example.com'),
         new Password('Password@123'),
         new Type(1),
+        null
     );
 
     $this->repositoryMock->shouldReceive('getById')->once()->andReturn($employee);

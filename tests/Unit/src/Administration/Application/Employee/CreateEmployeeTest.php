@@ -26,6 +26,7 @@ it('successfully creates an employee', function () {
             new Email('email@test.com'),
             new Password('Password@123'),
             new Type(1),
+            null
         )
     );
 

@@ -21,6 +21,7 @@ it('can create an instance of CreateEmployeeOutputDto with a valid employee', fu
         new Email($email),
         new Password($password),
         new Type($type),
+        null
     );
 
     $notification = new Notification();

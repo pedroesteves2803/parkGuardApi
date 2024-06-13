@@ -32,6 +32,7 @@ final class CreateEmployee
                     new Email($input->email),
                     new Password($input->password),
                     new Type($input->type),
+                    null
                 )
             );
 

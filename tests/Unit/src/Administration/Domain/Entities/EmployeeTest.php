@@ -33,6 +33,7 @@ function createValidEmployee()
         new Name('Employee 1'),
         new Email('employee@test.com'),
         new Password('Password@123'),
-        new Type(1)
+        new Type(1),
+        null
     );
 }

@@ -67,7 +67,8 @@ it('creates a new employee', function () {
         new Name('Nome'),
         new Email('email@test.com'),
         new Password('Password@123'),
-        new Type(1)
+        new Type(1),
+        null
     );
 
     $repository = new EloquentEmployeeRepository();
@@ -93,7 +94,8 @@ it('update a employee', function () {
         new Name('Update'),
         new Email('update@test.com'),
         new Password('Password@123'),
-        new Type(1)
+        new Type(1),
+        null
     );
 
     $repository = new EloquentEmployeeRepository();

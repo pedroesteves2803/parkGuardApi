@@ -22,6 +22,7 @@ it('can update an instance of UpdateEmployeeOutputDto with a valid employee', fu
         new Email($email),
         new Password($password),
         new Type($type),
+        null
     );
 
     $notification = new Notification();

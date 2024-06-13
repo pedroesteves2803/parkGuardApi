@@ -34,6 +34,7 @@ it('can retrieve all employees', function () {
                 new Email($email),
                 new Password($password),
                 new Type($type),
+                null
             )
         );
     }

@@ -17,6 +17,7 @@ class Employee extends Entity implements IAggregator
         readonly private Email $email,
         readonly private Password $password,
         readonly private Type $type,
+        readonly private ?string $token,
     ) {
     }
 
@@ -43,6 +44,11 @@ class Employee extends Entity implements IAggregator
     public function type(): Type
     {
         return $this->type;
+    }
+
+    public function token(): ?string
+    {
+        return $this->token;
     }
 
     public function __toString(): string

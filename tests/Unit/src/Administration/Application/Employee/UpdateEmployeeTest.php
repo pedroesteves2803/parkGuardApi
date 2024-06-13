@@ -26,6 +26,7 @@ it('can update an existing employee with valid input', function () {
         new Email('john@example.com'),
         new Password('Password@123'),
         new Type(1),
+        null
     );
 
     $this->repositoryMock->shouldReceive('getById')->once()->andReturn($employee);
@@ -38,6 +39,7 @@ it('can update an existing employee with valid input', function () {
         new Email('updated@example.com'),
         new Password('NewPassword@456'),
         new Type(2),
+        null
     );
 
     $this->repositoryMock->shouldReceive('update')->once()->andReturn($employeeUpdate);
@@ -70,6 +72,7 @@ it('can update an existing employee with a valid entry and the same email as the
         new Email('john@example.com'),
         new Password('Password@123'),
         new Type(1),
+        null
     );
 
     $this->repositoryMock->shouldReceive('getById')->once()->andReturn($employee);
@@ -80,6 +83,7 @@ it('can update an existing employee with a valid entry and the same email as the
         new Email('john@example.com'),
         new Password('NewPassword@456'),
         new Type(2),
+        null
     );
 
     $this->repositoryMock->shouldReceive('update')->once()->andReturn($employeeUpdate);
@@ -141,6 +145,7 @@ it('returns error notification when trying to update an employee with an already
         new Email('john@example.com'),
         new Password('Password@123'),
         new Type(1),
+        null
     );
 
     $this->repositoryMock->shouldReceive('getById')->once()->andReturn($employee);

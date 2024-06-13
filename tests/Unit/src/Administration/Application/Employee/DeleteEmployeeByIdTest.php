@@ -27,6 +27,7 @@ it('can delete an existing employee by ID', function () {
             new Email('john@example.com'),
             new Password('Password@123'),
             new Type(1),
+            null
         )
     );
 
