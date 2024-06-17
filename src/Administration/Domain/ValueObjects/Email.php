@@ -9,6 +9,7 @@ final class Email extends ValueObject
     public function __construct(
         private string $email
     ) {
+        $this->email = strtolower($email) ;
         $this->validate();
     }
 
