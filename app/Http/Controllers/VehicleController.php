@@ -210,11 +210,11 @@ class VehicleController extends Controller
      * )
      */
     public function exit(
-        string $licensePlate,
+        Request $request,
         ExitVehicle $exitVehicle
     ) {
         $inputDto = new ExitVehicleInputDto(
-            new LicensePlate($licensePlate)
+            new LicensePlate($request->licensePlate)
         );
 
         $outputDto = $exitVehicle->execute($inputDto);

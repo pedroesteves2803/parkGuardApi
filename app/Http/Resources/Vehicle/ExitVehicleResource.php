@@ -99,7 +99,7 @@ class ExitVehicleResource extends JsonResource
         }
 
         return [
-            'id' => $this->vehicle->id,
+            'id' => $this->vehicle->id(),
             'manufacturer' => $this->vehicle->manufacturer() ? $this->vehicle->manufacturer()->value() : null,
             'color' => $this->vehicle->color() ? $this->vehicle->color()->value() : null,
             'model' => $this->vehicle->model() ? $this->vehicle->model()->value() : null,

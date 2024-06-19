@@ -110,6 +110,7 @@ class GetAllVehiclesResource extends JsonResource
                 'licensePlate' => $vehicle->licensePlate()->value(),
                 'entryTimes' => $vehicle->entryTimes()->value()->format('d-m-Y H:i:s'),
                 'departureTimes' => $vehicle->departureTimes() ? $vehicle->departureTimes()->value() : null,
+                'departureTimes' => $vehicle->departureTimes() ? $vehicle->departureTimes()->value() : null,
             ];
         });
 
