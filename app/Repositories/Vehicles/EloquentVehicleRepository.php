@@ -22,7 +22,7 @@ final class EloquentVehicleRepository implements IVehicleRepository
 {
     public function getAll(): ?Collection
     {
-        $vehicles = ModelsVehicle::all();
+        $vehicles = ModelsVehicle::orderBy('id', 'desc')->get();
 
         $vehicles = $vehicles->map(function ($vehicle) {
             return new Vehicle(

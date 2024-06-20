@@ -15,7 +15,7 @@ final class EloquentEmployeeRepository implements IEmployeeRepository
 {
     public function getAll(): ?Collection
     {
-        $employees = ModelsEmployee::all();
+        $employees = ModelsEmployee::orderBy('id', 'desc')->get();
 
         $employees = $employees->map(function ($employee) {
             return new Employee(

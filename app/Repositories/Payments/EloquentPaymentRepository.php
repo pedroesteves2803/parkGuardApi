@@ -22,7 +22,7 @@ final class EloquentPaymentRepository implements IPaymentRepository
 {
     public function getAll(): ?Collection
     {
-        $payments = ModelsPayment::all();
+        $payments = ModelsPayment::orderBy('id', 'desc')->get();
 
         $payments = $payments->map(function ($payment) {
             $modelsVehicle = ModelsVehicle::find($payment->vehicle_id);
