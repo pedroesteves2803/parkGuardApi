@@ -13,7 +13,6 @@ use Src\Administration\Domain\ValueObjects\Type;
 
 class LoginEmployeeService implements ILoginEmployeeService
 {
-
     public function login(Email $email, Password $password): ?Employee
     {
         $credentials = ['email' => $email->value(), 'password' => $password->value()];

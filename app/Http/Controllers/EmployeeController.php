@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Employee\CreateEmployeeRequest;
 use App\Http\Resources\Employee\CreateEmployeeResource;
 use App\Http\Resources\Employee\DeleteEmployeeByIdResource;
 use App\Http\Resources\Employee\GetAllEmployeesResource;
@@ -41,9 +42,11 @@ class EmployeeController extends Controller
      *     summary="Get all employees",
      *     tags={"Employee"},
      *     security={{"bearerAuth":{}}},
+     *
      *     @OA\Response(
      *         response=200,
      *         description="A list of employees",
+     *
      *         @OA\JsonContent(ref="#/components/schemas/GetAllEmployeesResource")
      *     )
      * )
@@ -62,10 +65,13 @@ class EmployeeController extends Controller
      *     summary="Create employee",
      *     tags={"Employee"},
      *     security={{"bearerAuth":{}}},
+     *
      *     @OA\RequestBody(
      *         required=true,
+     *
      *         @OA\JsonContent(
      *             type="object",
+     *
      *             @OA\Property(
      *                 property="name",
      *                 type="string",
@@ -89,15 +95,17 @@ class EmployeeController extends Controller
      *             )
      *         )
      *     ),
+     *
      *     @OA\Response(
      *         response=200,
      *         description="Employees",
+     *
      *         @OA\JsonContent(ref="#/components/schemas/CreateEmployeeResource")
      *     )
      * )
      */
     public function store(
-        Request $request,
+        CreateEmployeeRequest $request,
         CreateEmployee $createEmployee
     ) {
 
@@ -121,20 +129,25 @@ class EmployeeController extends Controller
      *     summary="Get employee by ID",
      *     tags={"Employee"},
      *     security={{"bearerAuth":{}}},
+     *
      *     @OA\Parameter(
      *         name="id",
      *         in="path",
      *         required=true,
      *         description="ID of the employee to retrieve",
+     *
      *         @OA\Schema(
      *             type="string"
      *         )
      *     ),
+     *
      *     @OA\Response(
      *         response=200,
      *         description="Employee details",
+     *
      *         @OA\JsonContent(ref="#/components/schemas/GetEmployeeByIdResource")
      *     ),
+     *
      *     @OA\Response(
      *         response=404,
      *         description="Employee not found"
@@ -160,19 +173,24 @@ class EmployeeController extends Controller
      *     summary="Update employee",
      *     tags={"Employee"},
      *     security={{"bearerAuth":{}}},
+     *
      *     @OA\Parameter(
      *         name="id",
      *         in="path",
      *         required=true,
      *         description="ID of the employee to update",
+     *
      *         @OA\Schema(
      *             type="string"
      *         )
      *     ),
+     *
      *     @OA\RequestBody(
      *         required=true,
+     *
      *         @OA\JsonContent(
      *             type="object",
+     *
      *             @OA\Property(
      *                 property="name",
      *                 type="string",
@@ -196,11 +214,14 @@ class EmployeeController extends Controller
      *             )
      *         )
      *     ),
+     *
      *     @OA\Response(
      *         response=200,
      *         description="Updated employee details",
+     *
      *         @OA\JsonContent(ref="#/components/schemas/UpdateEmployeeResource")
      *     ),
+     *
      *     @OA\Response(
      *         response=404,
      *         description="Employee not found"
@@ -231,20 +252,25 @@ class EmployeeController extends Controller
      *     summary="Delete employee",
      *     tags={"Employee"},
      *     security={{"bearerAuth":{}}},
+     *
      *     @OA\Parameter(
      *         name="id",
      *         in="path",
      *         required=true,
      *         description="ID of the employee to delete",
+     *
      *         @OA\Schema(
      *             type="string"
      *         )
      *     ),
+     *
      *     @OA\Response(
      *         response=200,
      *         description="Deleted employee details",
+     *
      *         @OA\JsonContent(ref="#/components/schemas/DeleteEmployeeByIdResource")
      *     ),
+     *
      *     @OA\Response(
      *         response=404,
      *         description="Employee not found"
@@ -269,10 +295,13 @@ class EmployeeController extends Controller
      *     path="/api/employee/login",
      *     summary="Login employee",
      *     tags={"Employee"},
+     *
      *     @OA\RequestBody(
      *         required=true,
+     *
      *         @OA\JsonContent(
      *             type="object",
+     *
      *             @OA\Property(
      *                 property="email",
      *                 type="string",
@@ -286,11 +315,14 @@ class EmployeeController extends Controller
      *             )
      *         )
      *     ),
+     *
      *     @OA\Response(
      *         response=200,
      *         description="Logged in employee details",
+     *
      *         @OA\JsonContent(ref="#/components/schemas/LoginEmployeeResource")
      *     ),
+     *
      *     @OA\Response(
      *         response=401,
      *         description="Invalid credentials"
@@ -300,8 +332,7 @@ class EmployeeController extends Controller
     public function login(
         Request $request,
         LoginEmployee $loginEmployee
-    )
-    {
+    ) {
         $inputDto = new LoginEmployeeInputDto(
             $request->email,
             $request->password,
@@ -318,10 +349,13 @@ class EmployeeController extends Controller
      *     summary="Logout employee",
      *     tags={"Employee"},
      *     security={{"bearerAuth":{}}},
+     *
      *     @OA\RequestBody(
      *         required=true,
+     *
      *         @OA\JsonContent(
      *             type="object",
+     *
      *             @OA\Property(
      *                 property="token",
      *                 type="string",
@@ -329,21 +363,22 @@ class EmployeeController extends Controller
      *             )
      *         )
      *     ),
+     *
      *     @OA\Response(
      *         response=200,
      *         description="Logged out successfully"
      *     ),
      *     @OA\Response(
      *         response=401,
-     *         description="Unauthenticated"
+     *         description="Unauthenticated",
+     *
      *     )
      * )
      */
     public function logout(
         Request $request,
         LogoutEmployee $logoutEmployee
-    )
-    {
+    ) {
         $inputDto = new LogoutEmployeeInputDto(
             $request->token,
         );
@@ -352,7 +387,6 @@ class EmployeeController extends Controller
 
         if ($outputDto) {
 
-            dd($outputDto);
             return new LogoutEmployeeResource($outputDto);
         } else {
             return new UnauthenticatedResource($outputDto);

@@ -10,6 +10,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
  *     schema="CreateEmployeeResource",
  *     title="Create Employees Resource",
  *     description="Resource for returning a create employee",
+ *
  *     @OA\Property(
  *         property="status",
  *         type="boolean",
@@ -19,8 +20,10 @@ use Illuminate\Http\Resources\Json\JsonResource;
  *         property="errors",
  *         type="array",
  *         description="List of errors (if any)",
+ *
  *         @OA\Items(type="string")
  *     ),
+ *
  *     @OA\Property(
  *         property="message",
  *         type="string",
@@ -30,7 +33,9 @@ use Illuminate\Http\Resources\Json\JsonResource;
  *         property="employee",
  *         type="array",
  *         description="Employee",
+ *
  *         @OA\Items(
+ *
  *             @OA\Property(property="id", type="integer", description="Employee ID"),
  *             @OA\Property(property="name", type="string", description="Employee name"),
  *             @OA\Property(property="email", type="string", description="Employee email"),
@@ -49,16 +54,16 @@ class CreateEmployeeResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'status'   => $this->getStatus(),
-            'errors'   => $this->getErrors(),
-            'message'  => $this->getMessage(),
+            'status' => $this->getStatus(),
+            'errors' => $this->getErrors(),
+            'message' => $this->getMessage(),
             'employee' => $this->getEmployeeDetails(),
         ];
     }
 
     private function getStatus()
     {
-        return !$this->notification->hasErrors();
+        return ! $this->notification->hasErrors();
     }
 
     private function getErrors()
@@ -78,10 +83,10 @@ class CreateEmployeeResource extends JsonResource
         }
 
         return [
-            'id'    => $this->employee->id(),
-            'name'  => $this->employee->name()->value(),
+            'id' => $this->employee->id(),
+            'name' => $this->employee->name()->value(),
             'email' => $this->employee->email()->value(),
-            'tipo'  => $this->employee->type()->value(),
+            'tipo' => $this->employee->type()->value(),
         ];
     }
 }

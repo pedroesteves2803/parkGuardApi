@@ -15,8 +15,7 @@ final class LoginEmployee
     public function __construct(
         readonly ILoginEmployeeService $iLoginEmployeeService,
         readonly Notification $notification,
-    ) {
-    }
+    ) {}
 
     public function execute(LoginEmployeeInputDto $input): LoginEmployeeOutputDto
     {
