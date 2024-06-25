@@ -34,6 +34,7 @@ class VehicleController extends Controller
      *     path="/api/vehicles",
      *     summary="Lista todos os veículos",
      *     tags={"Vehicle"},
+     *     security={{"bearerAuth":{}}},
      *     @OA\Response(
      *         response=200,
      *         description="Lista de veículos",
@@ -54,6 +55,7 @@ class VehicleController extends Controller
      *     path="/api/vehicle",
      *     summary="Cria um novo veículo",
      *     tags={"Vehicle"},
+     *     security={{"bearerAuth":{}}},
      *     @OA\RequestBody(
      *         required=true,
      *         @OA\JsonContent(
@@ -77,14 +79,12 @@ class VehicleController extends Controller
         CreateVehicle $createVehicle
     ) {
         $createInputDto = new CreateVehicleInputDto(
-            $request->licensePlate,
+            $request->licensePlate
         );
 
         $createOutputDto = $createVehicle->execute($createInputDto);
 
-        return new CreateVehicleResource(
-            $createOutputDto
-        );
+        return new CreateVehicleResource($createOutputDto);
     }
 
     /**
@@ -92,6 +92,7 @@ class VehicleController extends Controller
      *     path="/api/vehicle/{id}",
      *     summary="Obtém um veículo por ID",
      *     tags={"Vehicle"},
+     *     security={{"bearerAuth":{}}},
      *     @OA\Parameter(
      *         name="id",
      *         in="path",
@@ -112,9 +113,7 @@ class VehicleController extends Controller
         int $id,
         GetVehicleById $getVehicleById
     ) {
-        $inputDto = new GetVehicleInputDto(
-            $id,
-        );
+        $inputDto = new GetVehicleInputDto($id);
 
         $outputDto = $getVehicleById->execute($inputDto);
 
@@ -126,6 +125,7 @@ class VehicleController extends Controller
      *     path="/api/vehicle/{id}",
      *     summary="Atualiza os detalhes de um veículo",
      *     tags={"Vehicle"},
+     *     security={{"bearerAuth":{}}},
      *     @OA\Parameter(
      *         name="id",
      *         in="path",
@@ -191,6 +191,7 @@ class VehicleController extends Controller
      *     path="/api/vehicle/exit",
      *     summary="Registra a saída de um veículo",
      *     tags={"Vehicle"},
+     *     security={{"bearerAuth":{}}},
      *     @OA\RequestBody(
      *         required=true,
      *         @OA\JsonContent(

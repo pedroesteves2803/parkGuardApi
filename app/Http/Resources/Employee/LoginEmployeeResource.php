@@ -5,9 +5,30 @@ namespace App\Http\Resources\Employee;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
+
+/**
+ *
+ * @OA\Schema(
+ *     schema="LoginEmployeeResource",
+ *     type="object",
+ *     title="LoginEmployeeResource",
+ *     description="Resource para retornar os dados do login de um funcionário",
+ *     @OA\Property(property="status", type="boolean", description="Status do login"),
+ *     @OA\Property(property="errors", type="array", @OA\Items(type="string"), description="Lista de erros"),
+ *     @OA\Property(property="message", type="string", nullable=true, description="Mensagem de sucesso"),
+ *     @OA\Property(
+ *         property="employee",
+ *         type="object",
+ *         @OA\Property(property="id", type="integer", description="ID do funcionário"),
+ *         @OA\Property(property="token", type="string", description="Token de autenticação do funcionário"),
+ *         @OA\Property(property="name", type="string", description="Nome do funcionário"),
+ *         @OA\Property(property="email", type="string", description="Email do funcionário"),
+ *         @OA\Property(property="tipo", type="string", description="Tipo do funcionário")
+ *     )
+ * )
+ */
 class LoginEmployeeResource extends JsonResource
 {
-
     public function toArray(Request $request): array
     {
         return [

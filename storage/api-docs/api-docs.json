@@ -23,7 +23,12 @@
                             }
                         }
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         },
         "/api/employee": {
@@ -54,7 +59,7 @@
                                     },
                                     "type": {
                                         "description": "Type of employee",
-                                        "type": "string"
+                                        "type": "integer"
                                     }
                                 },
                                 "type": "object"
@@ -73,7 +78,12 @@
                             }
                         }
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         },
         "/api/employee/{id}": {
@@ -108,7 +118,12 @@
                     "404": {
                         "description": "Employee not found"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             },
             "put": {
                 "tags": [
@@ -170,7 +185,12 @@
                     "404": {
                         "description": "Employee not found"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             },
             "delete": {
                 "tags": [
@@ -203,7 +223,95 @@
                     "404": {
                         "description": "Employee not found"
                     }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/employee/login": {
+            "post": {
+                "tags": [
+                    "Employee"
+                ],
+                "summary": "Login employee",
+                "operationId": "27a6883919c5b7fbeaafeef58819fd24",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "email": {
+                                        "description": "Email address of the employee",
+                                        "type": "string",
+                                        "format": "email"
+                                    },
+                                    "password": {
+                                        "description": "Password for the employee account",
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Logged in employee details",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/LoginEmployeeResource"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Invalid credentials"
+                    }
                 }
+            }
+        },
+        "/api/employee/logout": {
+            "post": {
+                "tags": [
+                    "Employee"
+                ],
+                "summary": "Logout employee",
+                "operationId": "fd08e58782056cf92be3740d422354bd",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "token": {
+                                        "description": "JWT token of the employee",
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Logged out successfully"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         },
         "/api/payments": {
@@ -224,7 +332,12 @@
                             }
                         }
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         },
         "/api/payment": {
@@ -265,7 +378,12 @@
                             }
                         }
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         },
         "/api/payment/{id}": {
@@ -300,7 +418,12 @@
                     "404": {
                         "description": "Payment not found"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             },
             "delete": {
                 "tags": [
@@ -333,7 +456,12 @@
                     "404": {
                         "description": "Payment not found"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         },
         "/api/payment/{id}/finalize": {
@@ -368,7 +496,12 @@
                     "404": {
                         "description": "Payment not found"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         },
         "/api/vehicles": {
@@ -389,7 +522,12 @@
                             }
                         }
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         },
         "/api/vehicle": {
@@ -426,7 +564,12 @@
                             }
                         }
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         },
         "/api/vehicle/{id}": {
@@ -458,7 +601,12 @@
                             }
                         }
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             },
             "put": {
                 "tags": [
@@ -516,7 +664,12 @@
                             }
                         }
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         },
         "/api/vehicle/exit": {
@@ -553,7 +706,12 @@
                             }
                         }
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         }
     },
@@ -722,6 +880,54 @@
                             },
                             "type": "object"
                         }
+                    }
+                },
+                "type": "object"
+            },
+            "LoginEmployeeResource": {
+                "title": "LoginEmployeeResource",
+                "description": "Resource para retornar os dados do login de um funcionário",
+                "properties": {
+                    "status": {
+                        "description": "Status do login",
+                        "type": "boolean"
+                    },
+                    "errors": {
+                        "description": "Lista de erros",
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "message": {
+                        "description": "Mensagem de sucesso",
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "employee": {
+                        "properties": {
+                            "id": {
+                                "description": "ID do funcionário",
+                                "type": "integer"
+                            },
+                            "token": {
+                                "description": "Token de autenticação do funcionário",
+                                "type": "string"
+                            },
+                            "name": {
+                                "description": "Nome do funcionário",
+                                "type": "string"
+                            },
+                            "email": {
+                                "description": "Email do funcionário",
+                                "type": "string"
+                            },
+                            "tipo": {
+                                "description": "Tipo do funcionário",
+                                "type": "string"
+                            }
+                        },
+                        "type": "object"
                     }
                 },
                 "type": "object"
@@ -1286,6 +1492,14 @@
                 },
                 "type": "object"
             }
+        },
+        "securitySchemes": {
+            "bearerAuth": {
+                "type": "http",
+                "scheme": "bearer",
+                "bearerFormat": "JWT",
+                "description": "Enter JWT token to authenticate"
+            }
         }
     },
     "tags": [
@@ -1300,6 +1514,11 @@
         {
             "name": "Vehicle",
             "description": "Endpoints relacionados a veículos"
+        }
+    ],
+    "security": [
+        {
+            "bearerAuth": []
         }
     ]
 }

@@ -34,6 +34,7 @@ class PaymentController extends Controller
      *     path="/api/payments",
      *     summary="Get all payments",
      *     tags={"Payment"},
+     *     security={{"bearerAuth":{}}},
      *     @OA\Response(
      *         response=200,
      *         description="A list of payments",
@@ -54,6 +55,7 @@ class PaymentController extends Controller
      *     path="/api/payment",
      *     summary="Create payment",
      *     tags={"Payment"},
+     *     security={{"bearerAuth":{}}},
      *     @OA\RequestBody(
      *         required=true,
      *         @OA\JsonContent(
@@ -84,14 +86,12 @@ class PaymentController extends Controller
         $createPaymentInputDto = new CreatePaymentInputDto(
             new DateTime(),
             $request->paymentMethod,
-            $request->vehicle_id,
+            $request->vehicle_id
         );
 
         $createOutputDto = $createPayment->execute($createPaymentInputDto);
 
-        return new CreatePaymentResource(
-            $createOutputDto,
-        );
+        return new CreatePaymentResource($createOutputDto);
     }
 
     /**
@@ -99,6 +99,7 @@ class PaymentController extends Controller
      *     path="/api/payment/{id}",
      *     summary="Get payment by ID",
      *     tags={"Payment"},
+     *     security={{"bearerAuth":{}}},
      *     @OA\Parameter(
      *         name="id",
      *         in="path",
@@ -123,15 +124,11 @@ class PaymentController extends Controller
         int $id,
         GetPaymentById $getPaymentById
     ) {
-        $getPaymentByIdInputDto = new GetPaymentByIdInputDto(
-            $id
-        );
+        $getPaymentByIdInputDto = new GetPaymentByIdInputDto($id);
 
         $getPaymentByIdOutputDto = $getPaymentById->execute($getPaymentByIdInputDto);
 
-        return new GetPaymentByIdResource(
-            $getPaymentByIdOutputDto,
-        );
+        return new GetPaymentByIdResource($getPaymentByIdOutputDto);
     }
 
     /**
@@ -139,6 +136,7 @@ class PaymentController extends Controller
      *     path="/api/payment/{id}/finalize",
      *     summary="Finalize payment",
      *     tags={"Payment"},
+     *     security={{"bearerAuth":{}}},
      *     @OA\Parameter(
      *         name="id",
      *         in="path",
@@ -163,15 +161,11 @@ class PaymentController extends Controller
         int $id,
         FinalizePayment $finalizePayment
     ) {
-        $finalizePaymentInputDto = new FinalizePaymentInputDto(
-            $id
-        );
+        $finalizePaymentInputDto = new FinalizePaymentInputDto($id);
 
         $finalizePaymentOutputDto = $finalizePayment->execute($finalizePaymentInputDto);
 
-        return new FinalizePaymentResource(
-            $finalizePaymentOutputDto,
-        );
+        return new FinalizePaymentResource($finalizePaymentOutputDto);
     }
 
     /**
@@ -179,6 +173,7 @@ class PaymentController extends Controller
      *     path="/api/payment/{id}",
      *     summary="Delete payment by ID",
      *     tags={"Payment"},
+     *     security={{"bearerAuth":{}}},
      *     @OA\Parameter(
      *         name="id",
      *         in="path",
@@ -203,14 +198,10 @@ class PaymentController extends Controller
         int $id,
         DeletePaymentById $deletePaymentById
     ) {
-        $deletePaymentInputDto = new DeletePaymentInputDto(
-            $id
-        );
+        $deletePaymentInputDto = new DeletePaymentInputDto($id);
 
         $deletePaymentOutputDto = $deletePaymentById->execute($deletePaymentInputDto);
 
-        return new DeletePaymentByIdResource(
-            $deletePaymentOutputDto,
-        );
+        return new DeletePaymentByIdResource($deletePaymentOutputDto);
     }
 }
