@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Employee\CreateEmployeeRequest;
+use App\Http\Requests\Employee\CreateOrUpdateEmployeeRequest;
 use App\Http\Resources\Employee\CreateEmployeeResource;
 use App\Http\Resources\Employee\DeleteEmployeeByIdResource;
 use App\Http\Resources\Employee\GetAllEmployeesResource;
@@ -105,7 +106,7 @@ class EmployeeController extends Controller
      * )
      */
     public function store(
-        CreateEmployeeRequest $request,
+        CreateOrUpdateEmployeeRequest $request,
         CreateEmployee $createEmployee
     ) {
 
@@ -229,7 +230,7 @@ class EmployeeController extends Controller
      * )
      */
     public function update(
-        Request $request,
+        CreateOrUpdateEmployeeRequest $request,
         string $id,
         UpdateEmployee $updateEmployee
     ) {
