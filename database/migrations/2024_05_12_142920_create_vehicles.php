@@ -15,7 +15,7 @@ return new class() extends Migration {
             $table->string('manufacturer')->nullable();
             $table->string('color')->nullable();
             $table->string('model')->nullable();
-            $table->string('license_plate')->unique();
+            $table->string('license_plate');
             $table->dateTime('entry_times');
             $table->dateTime('departure_times')->nullable();
             $table->timestamps();
