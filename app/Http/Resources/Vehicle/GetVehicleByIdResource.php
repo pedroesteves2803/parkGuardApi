@@ -105,7 +105,7 @@ class GetVehicleByIdResource extends JsonResource
             'model' => $this->vehicle->model() ? $this->vehicle->model()->value() : null,
             'licensePlate' => $this->vehicle->licensePlate()->value(),
             'entryTimes' => $this->vehicle->entryTimes()->value()->format('d-m-Y H:i:s'),
-            'departureTimes' => $this->vehicle->departureTimes() ? $this->vehicle->departureTimes()->value() : null,
+            'departureTimes' => $this->vehicle->departureTimes()->value() ? $this->vehicle->departureTimes()->value()->format('d-m-Y H:i:s') : null,
         ];
     }
 }

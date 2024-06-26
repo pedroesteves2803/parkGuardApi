@@ -109,8 +109,7 @@ class GetAllVehiclesResource extends JsonResource
                 'model' => $vehicle->model() ? $vehicle->model()->value() : null,
                 'licensePlate' => $vehicle->licensePlate()->value(),
                 'entryTimes' => $vehicle->entryTimes()->value()->format('d-m-Y H:i:s'),
-                'departureTimes' => $vehicle->departureTimes() ? $vehicle->departureTimes()->value() : null,
-                'departureTimes' => $vehicle->departureTimes() ? $vehicle->departureTimes()->value() : null,
+                'departureTimes' => $vehicle->departureTimes()->value() ? $vehicle->departureTimes()->value()->format('d-m-Y H:i:s') : null,
             ];
         });
 
