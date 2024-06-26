@@ -20,7 +20,7 @@ Route::middleware(['jwt.auth'])->group(function () {
     Route::post('/vehicle', [VehicleController::class, 'store'])->name('vehicle.store');
     Route::get('/vehicle/{vehicle}', [VehicleController::class, 'show'])->name('vehicle.show');
     Route::put('/vehicle/{vehicle}', [VehicleController::class, 'update'])->name('vehicle.update');
-    Route::post('/vehicle/exit', [VehicleController::class, 'exit'])->name('vehicle.exit');
+    Route::post('/vehicle/exit', [VehicleController::class, 'exit'])->name('vehicle.exit'); //Se usar pagmento não ira funcionar (so serve par dar said no veiculo)
 
     Route::get('/payments', [PaymentController::class, 'index'])->name('payment.index');
     Route::post('/payment', [PaymentController::class, 'store'])->name('payment.create');
