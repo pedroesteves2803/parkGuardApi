@@ -2,6 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Vehicle\CreateOrUpdateVehicleRequest;
+use App\Http\Requests\Vehicle\CreateVehicleRequest;
+use App\Http\Requests\vehicle\ExitVehicleRequest;
+use App\Http\Requests\Vehicle\UpdateVehicleRequest;
 use App\Http\Resources\Vehicle\CreateVehicleResource;
 use App\Http\Resources\Vehicle\ExitVehicleResource;
 use App\Http\Resources\Vehicle\GetAllVehiclesResource;
@@ -75,7 +79,7 @@ class VehicleController extends Controller
      * )
      */
     public function store(
-        Request $request,
+        CreateVehicleRequest $request,
         CreateVehicle $createVehicle
     ) {
         $createInputDto = new CreateVehicleInputDto(
@@ -169,7 +173,7 @@ class VehicleController extends Controller
      * )
      */
     public function update(
-        Request $request,
+        UpdateVehicleRequest $request,
         int $id,
         UpdateVehicle $updateVehicle
     ) {
@@ -211,7 +215,7 @@ class VehicleController extends Controller
      * )
      */
     public function exit(
-        Request $request,
+        ExitVehicleRequest $request,
         ExitVehicle $exitVehicle
     ) {
         $inputDto = new ExitVehicleInputDto(

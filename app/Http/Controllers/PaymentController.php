@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\payment\CreateOrUpdatePaymentRequest;
+use App\Http\Requests\payment\CreatePaymentRequest;
 use App\Http\Resources\Payment\CreatePaymentResource;
 use App\Http\Resources\Payment\DeletePaymentByIdResource;
 use App\Http\Resources\Payment\FinalizePaymentResource;
@@ -80,7 +82,7 @@ class PaymentController extends Controller
      * )
      */
     public function store(
-        Request $request,
+        CreatePaymentRequest $request,
         CreatePayment $createPayment
     ) {
         $createPaymentInputDto = new CreatePaymentInputDto(

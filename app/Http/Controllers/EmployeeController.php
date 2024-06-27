@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Employee\CreateEmployeeRequest;
 use App\Http\Requests\Employee\CreateOrUpdateEmployeeRequest;
+use App\Http\Requests\employee\LoginEmployeeRequest;
+use App\Http\Requests\employee\LogoutEmployeeRequest;
+use App\Http\Requests\Employee\UpdateEmployeeRequest;
 use App\Http\Resources\Employee\CreateEmployeeResource;
 use App\Http\Resources\Employee\DeleteEmployeeByIdResource;
 use App\Http\Resources\Employee\GetAllEmployeesResource;
@@ -106,7 +109,7 @@ class EmployeeController extends Controller
      * )
      */
     public function store(
-        CreateOrUpdateEmployeeRequest $request,
+        CreateEmployeeRequest $request,
         CreateEmployee $createEmployee
     ) {
 
@@ -230,7 +233,7 @@ class EmployeeController extends Controller
      * )
      */
     public function update(
-        CreateOrUpdateEmployeeRequest $request,
+        UpdateEmployeeRequest $request,
         string $id,
         UpdateEmployee $updateEmployee
     ) {
@@ -331,7 +334,7 @@ class EmployeeController extends Controller
      * )
      */
     public function login(
-        Request $request,
+        LoginEmployeeRequest $request,
         LoginEmployee $loginEmployee
     ) {
         $inputDto = new LoginEmployeeInputDto(
@@ -377,7 +380,7 @@ class EmployeeController extends Controller
      * )
      */
     public function logout(
-        Request $request,
+        LogoutEmployeeRequest $request,
         LogoutEmployee $logoutEmployee
     ) {
         $inputDto = new LogoutEmployeeInputDto(

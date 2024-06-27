@@ -4,7 +4,7 @@ namespace App\Http\Requests\Employee;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class CreateOrUpdateEmployeeRequest extends FormRequest
+class CreateEmployeeRequest extends FormRequest
 {
     public function authorize()
     {
