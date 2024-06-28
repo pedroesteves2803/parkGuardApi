@@ -19,4 +19,6 @@ interface IEmployeeRepository
     public function delete(int $id): void;
 
     public function existByEmail(Email $email): bool;
+
+    public function getByEmail(Email $email): Employee;
 }
