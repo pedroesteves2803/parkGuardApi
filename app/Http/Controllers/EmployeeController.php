@@ -20,10 +20,12 @@ use Src\Administration\Application\Employee\CreateEmployee;
 use Src\Administration\Application\Employee\DeleteEmployeeById;
 use Src\Administration\Application\Employee\Dtos\CreateEmployeeInputDto;
 use Src\Administration\Application\Employee\Dtos\DeleteEmployeeByIdInputDto;
+use Src\Administration\Application\Employee\Dtos\GeneratePasswordResetTokenEmployeeInputDto;
 use Src\Administration\Application\Employee\Dtos\GetEmployeeByIdInputDto;
 use Src\Administration\Application\Employee\Dtos\LoginEmployeeInputDto;
 use Src\Administration\Application\Employee\Dtos\LogoutEmployeeInputDto;
 use Src\Administration\Application\Employee\Dtos\UpdateEmployeeInputDto;
+use Src\Administration\Application\Employee\GeneratePasswordResetTokenEmployee;
 use Src\Administration\Application\Employee\GetAllEmployees;
 use Src\Administration\Application\Employee\GetEmployeeById;
 use Src\Administration\Application\Employee\LoginEmployee;
@@ -395,5 +397,19 @@ class EmployeeController extends Controller
         } else {
             return new UnauthenticatedResource($outputDto);
         }
+    }
+
+    public function passwordReset(
+        Request $request,
+        GeneratePasswordResetTokenEmployee $generatePasswordResetTokenEmployee
+    )
+    {
+        $inputDto = new GeneratePasswordResetTokenEmployeeInputDto(
+            $request->email,
+        );
+
+        $outputDto = $generatePasswordResetTokenEmployee->execute($inputDto);
+
+        dd($outputDto);
     }
 }

@@ -6,6 +6,8 @@ use App\Models\PasswordResetToken as ModelsPasswordResetToken;
 use Src\Administration\Domain\Entities\PasswordResetToken;
 use Src\Administration\Domain\Repositories\IPasswordResetRepository;
 use Src\Administration\Domain\ValueObjects\Email;
+use Src\Administration\Domain\ValueObjects\ExpirationTime;
+use Src\Administration\Domain\ValueObjects\Token;
 
 final class EloquentPasswordResetRepository implements IPasswordResetRepository
 {
@@ -19,20 +21,46 @@ final class EloquentPasswordResetRepository implements IPasswordResetRepository
 
         return new PasswordResetToken(
             new Email($modelsPasswordResetToken->email),
-            $modelsPasswordResetToken->token
+            new Token($modelsPasswordResetToken->token),
+            new ExpirationTime($modelsPasswordResetToken->expiration_date)
         );
     }
+
+    public function getByEmail(Email $email): ?PasswordResetToken
+    {
+        $modelsPasswordResetToken =  ModelsPasswordResetToken::where('email', $email)->first();
+
+        if (is_null($modelsPasswordResetToken)) {
+            return null;
+        }
+
+        return new PasswordResetToken(
+            new Email($modelsPasswordResetToken->email),
+            new Token($modelsPasswordResetToken->token),
+            new ExpirationTime($modelsPasswordResetToken->expiration_date)
+        );
+    }
+
 
     public function create(PasswordResetToken $passwordResetToken): PasswordResetToken
     {
         $modelsPasswordResetToken = new ModelsPasswordResetToken();
 
-        $modelsPasswordResetToken->email = $passwordResetToken->token()->value();
-        $modelsPasswordResetToken->token = $passwordResetToken->email()->value();
+        $modelsPasswordResetToken->email = $passwordResetToken->email()->value();
+        $modelsPasswordResetToken->token = $passwordResetToken->token()->value();
+        $modelsPasswordResetToken->expiration_date = now()->addMinutes(40);
+        $modelsPasswordResetToken->save();
 
+        return new PasswordResetToken(
+            new Email($modelsPasswordResetToken->email),
+            new Token($modelsPasswordResetToken->token),
+            new ExpirationTime($modelsPasswordResetToken->expiration_date)
+        );
     }
 
-    public function delete(int $id): void {
-
+    public function delete(Email $email): void
+    {
+        $modelsPasswordResetToken =  ModelsPasswordResetToken::where('email', $email)->first();
+        $modelsPasswordResetToken->delete();
     }
 }

@@ -19,7 +19,7 @@ final class Token extends ValueObject
         }
     }
 
-    public function value(): int
+    public function value(): string
     {
         return $this->value;
     }

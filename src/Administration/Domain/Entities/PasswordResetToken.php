@@ -13,7 +13,7 @@ class PasswordResetToken extends Entity implements IAggregator
 {
     public function __construct(
         readonly private ?Email $email,
-        readonly private ?Token $token,
+        private ?Token $token,
         readonly private ?ExpirationTime $expirationTime,
     ) {
         $this->token = $this->token ?? $this->generateToken();
@@ -31,6 +31,6 @@ class PasswordResetToken extends Entity implements IAggregator
 
     private function generateToken(): Token
     {
-        return new Token(Str::random(5));
+        return new Token(strtoupper(Str::random(5)));
     }
 }

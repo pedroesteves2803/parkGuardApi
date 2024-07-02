@@ -20,5 +20,5 @@ interface IEmployeeRepository
 
     public function existByEmail(Email $email): bool;
 
-    public function getByEmail(Email $email): Employee;
+    public function getByEmail(Email $email): ?Employee;
 }

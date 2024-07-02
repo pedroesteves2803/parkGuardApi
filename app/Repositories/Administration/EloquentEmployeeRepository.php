@@ -102,8 +102,21 @@ final class EloquentEmployeeRepository implements IEmployeeRepository
         return ModelsEmployee::where('email', $email->value())->exists();
     }
 
-    public function getByEmail(Email $email): Employee
+    public function getByEmail(Email $email): ?Employee
     {
-        return ModelsEmployee::where('email', $email->value())->first();
+        $modelsEmployee =  ModelsEmployee::where('email', $email->value())->first();
+
+        if (is_null($modelsEmployee)) {
+            return null;
+        }
+
+        return new Employee(
+            $modelsEmployee->id,
+            new Name($modelsEmployee->name),
+            new Email($modelsEmployee->email),
+            new Password($modelsEmployee->password),
+            new Type($modelsEmployee->type),
+            null
+        );
     }
 }

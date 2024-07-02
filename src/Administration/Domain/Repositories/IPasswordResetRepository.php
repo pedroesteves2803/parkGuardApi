@@ -13,5 +13,5 @@ interface IPasswordResetRepository
 
     public function create(PasswordResetToken $passwordResetToken): PasswordResetToken;
 
-    public function delete(int $id): void;
+    public function delete(Email $email): void;
 }

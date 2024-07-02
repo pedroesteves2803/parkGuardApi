@@ -10,6 +10,7 @@ use Src\Administration\Domain\Entities\Employee;
 use Src\Administration\Domain\Entities\PasswordResetToken;
 use Src\Administration\Domain\Repositories\IEmployeeRepository;
 use Src\Administration\Domain\Repositories\IPasswordResetRepository;
+use Src\Administration\Domain\Services\ISendPasswordResetTokenService;
 use Src\Administration\Domain\ValueObjects\Email;
 use Src\Administration\Domain\ValueObjects\Name;
 use Src\Administration\Domain\ValueObjects\Password;
@@ -20,6 +21,8 @@ final class GeneratePasswordResetTokenEmployee
 {
     public function __construct(
         readonly IPasswordResetRepository $iPasswordResetRepository,
+        readonly IEmployeeRepository $iEmployeeRepository,
+        readonly ISendPasswordResetTokenService $iSendPasswordResetTokenService,
         readonly Notification $notification,
     ) {
     }
@@ -27,15 +30,18 @@ final class GeneratePasswordResetTokenEmployee
     public function execute(GeneratePasswordResetTokenEmployeeInputDto $input): GeneratePasswordResetTokenEmployeeOutputDto
     {
         try {
+            $this->handlePasswordResetForEmail($input->email);
             $employee = $this->assertGetEmployeeByEmail($input->email);
 
             $passwordResetRepository = $this->iPasswordResetRepository->create(
                 new PasswordResetToken(
-                    new Email($input->email),
+                    $employee->email(),
                     null,
                     null
                 )
             );
+
+            $this->iSendPasswordResetTokenService->execute($passwordResetRepository);
 
             return new GeneratePasswordResetTokenEmployeeOutputDto($passwordResetRepository, $this->notification);
         } catch (\Exception $e) {
@@ -44,18 +50,33 @@ final class GeneratePasswordResetTokenEmployee
                 'message' => $e->getMessage(),
             ]);
 
-            return new CreateEmployeeOutputDto(null, $this->notification);
+            return new GeneratePasswordResetTokenEmployeeOutputDto(null, $this->notification);
         }
     }
 
-    private function assertGetEmployeeByEmail(string $employeeEmail): void
+    private function assertGetEmployeeByEmail(string $employeeEmail): Employee
+    {
+        $employee = $this->iEmployeeRepository->getByEmail(
+            new Email($employeeEmail)
+        );
+
+        if (!$employee) {
+            throw new \Exception('Funcionário não existe!');
+        }
+
+        return $employee;
+    }
+
+    private function handlePasswordResetForEmail(string $employeeEmail): void
     {
         $employee = $this->iPasswordResetRepository->getByEmail(
             new Email($employeeEmail)
         );
 
         if ($employee) {
-            throw new \Exception('Funcionario não existe!');
+            $this->iPasswordResetRepository->delete(
+                new Email($employeeEmail)
+            );
         }
     }
 }
