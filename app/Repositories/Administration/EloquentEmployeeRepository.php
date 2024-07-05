@@ -135,7 +135,7 @@ final class EloquentEmployeeRepository implements IEmployeeRepository
         }
 
         $modelsEmployee = ModelsEmployee::where('email', $passwordResetToken->email()->value())->first();
-        $modelsEmployee->password = $employee->password()->value();
+        $modelsEmployee->password = bcrypt($employee->password()->value());
         $modelsEmployee->update();
 
         return new Employee(
