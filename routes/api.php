@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\Route;
 
 Route::post('/employee/login', [EmployeeController::class, 'login'])->name('employee.login');
 Route::post('/employee/logout', [EmployeeController::class, 'logout'])->name('employee.logout');
+Route::post('/employee/password/reset', [EmployeeController::class, 'passwordResetToken'])->name('employee.password.reset');
+Route::post('/employee/password/update', [EmployeeController::class, 'passwordReset'])->name('employee.password.update');
 
 Route::middleware(['jwt.auth'])->group(function () {
 
@@ -15,8 +17,6 @@ Route::middleware(['jwt.auth'])->group(function () {
     Route::get('/employee/{employee}', [EmployeeController::class, 'show'])->name('employee.show');
     Route::put('/employee/{employee}', [EmployeeController::class, 'update'])->name('employee.update');
     Route::delete('/employee/{employee}', [EmployeeController::class, 'destroy'])->name('employee.destroy');
-    Route::post('/employee/password/reset', [EmployeeController::class, 'passwordResetToken'])->name('employee.password.reset');
-    Route::post('/employee/password/update', [EmployeeController::class, 'passwordReset'])->name('employee.password.update');
 
     Route::get('/vehicles', [VehicleController::class, 'index'])->name('vehicle.index');
     Route::post('/vehicle', [VehicleController::class, 'store'])->name('vehicle.store');
