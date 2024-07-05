@@ -17,13 +17,12 @@ final class CreateEmployee
     public function __construct(
         readonly IEmployeeRepository $iEmployeeRepository,
         readonly Notification $notification,
-    ) {
-    }
+    ) {}
 
     public function execute(CreateEmployeeInputDto $input): CreateEmployeeOutputDto
     {
         try {
-            $this->assertExistCategoryByEmail($input->email);
+            $this->assertExistEmployeeByEmail($input->email);
 
             $employee = $this->iEmployeeRepository->create(
                 new Employee(
@@ -47,7 +46,7 @@ final class CreateEmployee
         }
     }
 
-    private function assertExistCategoryByEmail(string $employeeEmail): void
+    private function assertExistEmployeeByEmail(string $employeeEmail): void
     {
         $existEmployee = $this->iEmployeeRepository->existByEmail(
             new Email($employeeEmail)

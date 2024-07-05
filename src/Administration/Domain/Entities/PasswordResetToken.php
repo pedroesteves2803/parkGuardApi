@@ -38,4 +38,9 @@ class PasswordResetToken extends Entity implements IAggregator
     {
         return new Token(strtoupper(Str::random(5)));
     }
+
+    public function isExpired(): bool
+    {
+        return now()->greaterThan($this->expirationTime->value());
+    }
 }

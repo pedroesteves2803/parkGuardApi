@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Employee\CreateEmployeeRequest;
-use App\Http\Requests\Employee\CreateOrUpdateEmployeeRequest;
 use App\Http\Requests\employee\LoginEmployeeRequest;
 use App\Http\Requests\employee\LogoutEmployeeRequest;
 use App\Http\Requests\Employee\UpdateEmployeeRequest;
@@ -13,6 +12,8 @@ use App\Http\Resources\Employee\GetAllEmployeesResource;
 use App\Http\Resources\Employee\GetEmployeeByIdResource;
 use App\Http\Resources\Employee\LoginEmployeeResource;
 use App\Http\Resources\Employee\LogoutEmployeeResource;
+use App\Http\Resources\Employee\PasswordResetResource;
+use App\Http\Resources\Employee\PasswordResetTokenResource;
 use App\Http\Resources\Employee\UnauthenticatedResource;
 use App\Http\Resources\Employee\UpdateEmployeeResource;
 use Illuminate\Http\Request;
@@ -24,12 +25,14 @@ use Src\Administration\Application\Employee\Dtos\GeneratePasswordResetTokenEmplo
 use Src\Administration\Application\Employee\Dtos\GetEmployeeByIdInputDto;
 use Src\Administration\Application\Employee\Dtos\LoginEmployeeInputDto;
 use Src\Administration\Application\Employee\Dtos\LogoutEmployeeInputDto;
+use Src\Administration\Application\Employee\Dtos\PasswordResetEmployeeInputDto;
 use Src\Administration\Application\Employee\Dtos\UpdateEmployeeInputDto;
 use Src\Administration\Application\Employee\GeneratePasswordResetTokenEmployee;
 use Src\Administration\Application\Employee\GetAllEmployees;
 use Src\Administration\Application\Employee\GetEmployeeById;
 use Src\Administration\Application\Employee\LoginEmployee;
 use Src\Administration\Application\Employee\LogoutEmployee;
+use Src\Administration\Application\Employee\ResetPasswordEmployee;
 use Src\Administration\Application\Employee\UpdateEmployee;
 
 /**
@@ -399,17 +402,31 @@ class EmployeeController extends Controller
         }
     }
 
-    public function passwordReset(
+    public function passwordResetToken(
         Request $request,
         GeneratePasswordResetTokenEmployee $generatePasswordResetTokenEmployee
-    )
-    {
+    ) {
         $inputDto = new GeneratePasswordResetTokenEmployeeInputDto(
             $request->email,
         );
 
         $outputDto = $generatePasswordResetTokenEmployee->execute($inputDto);
 
-        dd($outputDto);
+        return new PasswordResetTokenResource($outputDto);
+    }
+
+    public function passwordReset(
+        Request $request,
+        ResetPasswordEmployee $resetPasswordEmployee
+    ) {
+        $inputDto = new PasswordResetEmployeeInputDto(
+            $request->email,
+            $request->password,
+            $request->token,
+        );
+
+        $outputDto = $resetPasswordEmployee->execute($inputDto);
+
+        return new PasswordResetResource($outputDto);
     }
 }

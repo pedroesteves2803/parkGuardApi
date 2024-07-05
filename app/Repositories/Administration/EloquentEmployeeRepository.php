@@ -3,12 +3,15 @@
 namespace App\Repositories\Administration;
 
 use App\Models\Employee as ModelsEmployee;
+use App\Models\PasswordResetToken as ModelsPasswordResetToken;
 use Illuminate\Support\Collection;
 use Src\Administration\Domain\Entities\Employee;
+use Src\Administration\Domain\Entities\PasswordResetToken;
 use Src\Administration\Domain\Repositories\IEmployeeRepository;
 use Src\Administration\Domain\ValueObjects\Email;
 use Src\Administration\Domain\ValueObjects\Name;
 use Src\Administration\Domain\ValueObjects\Password;
+use Src\Administration\Domain\ValueObjects\Token;
 use Src\Administration\Domain\ValueObjects\Type;
 
 final class EloquentEmployeeRepository implements IEmployeeRepository
@@ -104,11 +107,36 @@ final class EloquentEmployeeRepository implements IEmployeeRepository
 
     public function getByEmail(Email $email): ?Employee
     {
-        $modelsEmployee =  ModelsEmployee::where('email', $email->value())->first();
+        $modelsEmployee = ModelsEmployee::where('email', $email->value())->first();
 
         if (is_null($modelsEmployee)) {
             return null;
         }
+
+        return new Employee(
+            $modelsEmployee->id,
+            new Name($modelsEmployee->name),
+            new Email($modelsEmployee->email),
+            new Password($modelsEmployee->password),
+            new Type($modelsEmployee->type),
+            null
+        );
+    }
+
+    public function updatePassword(PasswordResetToken $passwordResetToken, Employee $employee, Token $token): Employee
+    {
+        $modelsPasswordResetToken = ModelsPasswordResetToken::where([
+            'token' => $token->value(),
+            'email' => $passwordResetToken->email()->value(),
+        ])->first();
+
+        if (! $modelsPasswordResetToken) {
+            return null;
+        }
+
+        $modelsEmployee = ModelsEmployee::where('email', $passwordResetToken->email()->value())->first();
+        $modelsEmployee->password = $employee->password()->value();
+        $modelsEmployee->update();
 
         return new Employee(
             $modelsEmployee->id,

@@ -1,13 +1,17 @@
 <?php
 
 use App\Models\Employee as ModelsEmployee;
+use App\Models\PasswordResetToken as ModelsPasswordResetToken;
 use App\Repositories\Administration\EloquentEmployeeRepository;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Collection;
 use Src\Administration\Domain\Entities\Employee;
+use Src\Administration\Domain\Entities\PasswordResetToken;
 use Src\Administration\Domain\ValueObjects\Email;
+use Src\Administration\Domain\ValueObjects\ExpirationTime;
 use Src\Administration\Domain\ValueObjects\Name;
 use Src\Administration\Domain\ValueObjects\Password;
+use Src\Administration\Domain\ValueObjects\Token;
 use Src\Administration\Domain\ValueObjects\Type;
 use Tests\TestCase;
 
@@ -153,4 +157,42 @@ it('check if there is no employee', function () {
     );
 
     expect($existEmployee)->toBeFalse();
+});
+
+it('update a password', function () {
+    $modelsEmployee = ModelsEmployee::factory()->create([
+        'name' => 'nome 1',
+        'email' => 'email1@teste.com',
+        'password' => '$2a$12$NhD.F7UP.twqMtPxDo6A8eri.9ESq027PMYoPBonGkZ7uFGO.LaYe',
+        'type' => 1,
+    ]);
+
+    $employee = new Employee(
+        null,
+        new Name($modelsEmployee->name),
+        new Email($modelsEmployee->email),
+        new Password($modelsEmployee->password, true),
+        new Type($modelsEmployee->type),
+        null
+    );
+
+    $modelsPasswordResetToken = ModelsPasswordResetToken::factory([
+        'email' => $modelsEmployee->email,
+    ])->create();
+
+    $passwordResetToken = new PasswordResetToken(
+        new Email($modelsPasswordResetToken->email),
+        new Token($modelsPasswordResetToken->token),
+        new ExpirationTime($modelsPasswordResetToken->expirationTime)
+    );
+
+    $repository = new EloquentEmployeeRepository();
+    $updatePassword = $repository->updatePassword($passwordResetToken, $employee, new Token($modelsPasswordResetToken->token));
+
+    expect($updatePassword)->toBeInstanceOf(Employee::class);
+    $this->assertNotNull($updatePassword->id());
+    expect($updatePassword->name()->value())->toBe($employee->name()->value());
+    expect($updatePassword->email()->value())->toBe($employee->email()->value());
+    expect($updatePassword->type()->value())->toBe($employee->type()->value());
+    expect($updatePassword->password()->value())->toBe($employee->password()->value());
 });
