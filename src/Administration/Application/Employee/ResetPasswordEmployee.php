@@ -26,9 +26,9 @@ final class ResetPasswordEmployee
     public function execute(PasswordResetEmployeeInputDto $input): PasswordResetEmployeeOutputDto
     {
         try {
-            $passwordResetToken = $this->getPasswordResetToken($input);
+            $passwordResetToken = $this->getPasswordResetTokenByToken($input);
 
-            $getEmployeeByEmail = $this->getEmployeeByEmail($input);
+            $getEmployeeByEmail = $this->getEmployeeByEmail($passwordResetToken->email());
 
             $employee = new Employee(
                 $getEmployeeByEmail->id(),
@@ -52,9 +52,9 @@ final class ResetPasswordEmployee
         }
     }
 
-    private function getPasswordResetToken(PasswordResetEmployeeInputDto $input): PasswordResetToken
+    private function getPasswordResetTokenByToken(PasswordResetEmployeeInputDto $input): PasswordResetToken
     {
-        $passwordReset = $this->iPasswordResetRepository->getByEmail(new Email($input->email));
+        $passwordReset = $this->iPasswordResetRepository->getByToken(new Token($input->token));
 
         if (is_null($passwordReset)) {
             throw new \Exception('Token não existe!');
@@ -67,9 +67,9 @@ final class ResetPasswordEmployee
         return $passwordReset;
     }
 
-    private function getEmployeeByEmail(PasswordResetEmployeeInputDto $input): Employee
+    private function getEmployeeByEmail(Email $email): Employee
     {
-        $employee = $this->iEmployeeRepository->getByEmail(new Email($input->email));
+        $employee = $this->iEmployeeRepository->getByEmail($email);
 
         if (is_null($employee)) {
             throw new \Exception('Funcionario não encontrado!');

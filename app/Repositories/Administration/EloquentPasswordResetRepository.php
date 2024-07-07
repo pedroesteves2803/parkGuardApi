@@ -41,6 +41,20 @@ final class EloquentPasswordResetRepository implements IPasswordResetRepository
         );
     }
 
+    public function getByToken(Token $token): ?PasswordResetToken
+    {
+        $modelsPasswordResetToken =  ModelsPasswordResetToken::where('token', $token)->first();
+
+        if (is_null($modelsPasswordResetToken)) {
+            return null;
+        }
+
+        return new PasswordResetToken(
+            new Email($modelsPasswordResetToken->email),
+            new Token($modelsPasswordResetToken->token),
+            new ExpirationTime($modelsPasswordResetToken->expiration_date)
+        );
+    }
 
     public function create(PasswordResetToken $passwordResetToken): PasswordResetToken
     {
@@ -63,4 +77,5 @@ final class EloquentPasswordResetRepository implements IPasswordResetRepository
         $modelsPasswordResetToken =  ModelsPasswordResetToken::where('email', $email)->first();
         $modelsPasswordResetToken->delete();
     }
+
 }

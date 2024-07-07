@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Route;
 Route::post('/employee/login', [EmployeeController::class, 'login'])->name('employee.login');
 Route::post('/employee/logout', [EmployeeController::class, 'logout'])->name('employee.logout');
 Route::post('/employee/password/reset', [EmployeeController::class, 'passwordResetToken'])->name('employee.password.reset');
+Route::post('/employee/password/token', [EmployeeController::class, 'passwordReset'])->name('employee.password.token');
 Route::post('/employee/password/update', [EmployeeController::class, 'passwordReset'])->name('employee.password.update');
 
 Route::middleware(['jwt.auth'])->group(function () {
@@ -22,7 +23,7 @@ Route::middleware(['jwt.auth'])->group(function () {
     Route::post('/vehicle', [VehicleController::class, 'store'])->name('vehicle.store');
     Route::get('/vehicle/{vehicle}', [VehicleController::class, 'show'])->name('vehicle.show');
     Route::put('/vehicle/{vehicle}', [VehicleController::class, 'update'])->name('vehicle.update');
-    Route::post('/vehicle/exit', [VehicleController::class, 'exit'])->name('vehicle.exit'); //Se usar pagmento não ira funcionar (so serve par dar said no veiculo)
+    Route::post('/vehicle/exit', [VehicleController::class, 'exit'])->name('vehicle.exit'); //Se usar pagamento não ira funcionar (so serve para dar saida no veiculo)
 
     Route::get('/payments', [PaymentController::class, 'index'])->name('payment.index');
     Route::post('/payment', [PaymentController::class, 'store'])->name('payment.create');

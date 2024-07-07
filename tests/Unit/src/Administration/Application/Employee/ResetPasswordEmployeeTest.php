@@ -34,7 +34,7 @@ it('can reset the password for an employee with valid input', function () {
         null
     );
 
-    $this->repositoryPasswordResetMock->shouldReceive('getByEmail')->once()->andReturn(
+    $this->repositoryPasswordResetMock->shouldReceive('getByToken')->once()->andReturn(
         new PasswordResetToken(
             $employee->email(),
             new Token('token'),
@@ -58,7 +58,6 @@ it('can reset the password for an employee with valid input', function () {
     $resetPasswordEmployee = new ResetPasswordEmployee($this->repositoryPasswordResetMock, $this->repositoryEmployeeMock, $notification);
 
     $inputDto = new PasswordResetEmployeeInputDto(
-        'updated@example.com',
         'NewPassword@456',
         'token',
     );
@@ -73,12 +72,11 @@ it('can reset the password for an employee with valid input', function () {
 it('returns an error notification if the token does not exist', function () {
     $notification = new Notification();
 
-    $this->repositoryPasswordResetMock->shouldReceive('getByEmail')->once()->andReturnNull();
+    $this->repositoryPasswordResetMock->shouldReceive('getByToken')->once()->andReturnNull();
 
     $resetPasswordEmployee = new ResetPasswordEmployee($this->repositoryPasswordResetMock, $this->repositoryEmployeeMock, $notification);
 
     $inputDto = new PasswordResetEmployeeInputDto(
-        'updated@example.com',
         'NewPassword@456',
         'token',
     );
@@ -109,7 +107,7 @@ it('returns an error notification if the employee does not exist', function () {
         null
     );
 
-    $this->repositoryPasswordResetMock->shouldReceive('getByEmail')->once()->andReturn(
+    $this->repositoryPasswordResetMock->shouldReceive('getByToken')->once()->andReturn(
         new PasswordResetToken(
             $employee->email(),
             new Token('token'),
@@ -122,7 +120,6 @@ it('returns an error notification if the employee does not exist', function () {
     $resetPasswordEmployee = new ResetPasswordEmployee($this->repositoryPasswordResetMock, $this->repositoryEmployeeMock, $notification);
 
     $inputDto = new PasswordResetEmployeeInputDto(
-        'updated@example.com',
         'NewPassword@456',
         'token',
     );
@@ -142,7 +139,7 @@ it('returns an error notification if the employee does not exist', function () {
 it('returns an error notification if the token is expired', function () {
     $notification = new Notification();
 
-    $this->repositoryPasswordResetMock->shouldReceive('getByEmail')
+    $this->repositoryPasswordResetMock->shouldReceive('getByToken')
         ->once()
         ->andReturn(
             new PasswordResetToken(
@@ -158,7 +155,6 @@ it('returns an error notification if the token is expired', function () {
     $resetPasswordEmployee = new ResetPasswordEmployee($this->repositoryPasswordResetMock, $this->repositoryEmployeeMock, $notification);
 
     $inputDto = new PasswordResetEmployeeInputDto(
-        'john@example.com',
         'NewPassword@456',
         'token'
     );
@@ -189,7 +185,7 @@ it('throws an exception if the reset token does not match the token in the input
         null
     );
 
-    $this->repositoryPasswordResetMock->shouldReceive('getByEmail')->once()->andReturn(
+    $this->repositoryPasswordResetMock->shouldReceive('getByToken')->once()->andReturn(
         new PasswordResetToken(
             $employee->email(),
             new Token('abcde'),
@@ -202,7 +198,6 @@ it('throws an exception if the reset token does not match the token in the input
     $resetPasswordEmployee = new ResetPasswordEmployee($this->repositoryPasswordResetMock, $this->repositoryEmployeeMock, $notification);
 
     $inputDto = new PasswordResetEmployeeInputDto(
-        'updated@example.com',
         'NewPassword@456',
         'fghij',
     );
@@ -233,7 +228,7 @@ it('throws an exception if the updatePassword method returns null', function () 
         null
     );
 
-    $this->repositoryPasswordResetMock->shouldReceive('getByEmail')->once()->andReturn(
+    $this->repositoryPasswordResetMock->shouldReceive('getByToken')->once()->andReturn(
         new PasswordResetToken(
             $employee->email(),
             new Token('token'),
@@ -248,7 +243,6 @@ it('throws an exception if the updatePassword method returns null', function () 
     $resetPasswordEmployee = new ResetPasswordEmployee($this->repositoryPasswordResetMock, $this->repositoryEmployeeMock, $notification);
 
     $inputDto = new PasswordResetEmployeeInputDto(
-        'updated@example.com',
         'NewPassword@456',
         'token',
     );

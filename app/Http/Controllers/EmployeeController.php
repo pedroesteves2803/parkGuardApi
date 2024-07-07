@@ -420,7 +420,6 @@ class EmployeeController extends Controller
         ResetPasswordEmployee $resetPasswordEmployee
     ) {
         $inputDto = new PasswordResetEmployeeInputDto(
-            $request->email,
             $request->password,
             $request->token,
         );
