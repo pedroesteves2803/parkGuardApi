@@ -21,19 +21,16 @@ it('can get all employees', function () {
     ModelsEmployee::factory()->create([
         'name' => 'nome 1',
         'email' => 'email1@teste.com',
-        'password' => '$2a$12$NhD.F7UP.twqMtPxDo6A8eri.9ESq027PMYoPBonGkZ7uFGO.LaYe',
         'type' => 1,
     ]);
     ModelsEmployee::factory()->create([
         'name' => 'nome 2',
         'email' => 'email2@teste.com',
-        'password' => '$2a$12$NhD.F7UP.twqMtPxDo6A8eri.9ESq027PMYoPBonGkZ7uFGO.LaYe',
         'type' => 2,
     ]);
     ModelsEmployee::factory()->create([
         'name' => 'nome 3',
         'email' => 'email3@teste.com',
-        'password' => '$2a$12$NhD.F7UP.twqMtPxDo6A8eri.9ESq027PMYoPBonGkZ7uFGO.LaYe',
         'type' => 2,
     ]);
 
@@ -48,7 +45,6 @@ it('can get employee by id', function () {
     $employee = ModelsEmployee::factory()->create([
         'name' => 'nome 1',
         'email' => 'email1@teste.com',
-        'password' => '$2a$12$NhD.F7UP.twqMtPxDo6A8eri.9ESq027PMYoPBonGkZ7uFGO.LaYe',
         'type' => 1,
     ]);
 
@@ -89,7 +85,6 @@ it('update a employee', function () {
     ModelsEmployee::factory()->create([
         'name' => 'nome 1',
         'email' => 'email1@teste.com',
-        'password' => '$2a$12$NhD.F7UP.twqMtPxDo6A8eri.9ESq027PMYoPBonGkZ7uFGO.LaYe',
         'type' => 1,
     ]);
 
@@ -116,7 +111,6 @@ it('delete a employee', function () {
     ModelsEmployee::factory()->create([
         'name' => 'nome 1',
         'email' => 'email1@teste.com',
-        'password' => '$2a$12$NhD.F7UP.twqMtPxDo6A8eri.9ESq027PMYoPBonGkZ7uFGO.LaYe',
         'type' => 1,
     ]);
 
@@ -131,7 +125,6 @@ it('check if there is an employee', function () {
     ModelsEmployee::factory()->create([
         'name' => 'nome 1',
         'email' => 'email1@teste.com',
-        'password' => '$2a$12$NhD.F7UP.twqMtPxDo6A8eri.9ESq027PMYoPBonGkZ7uFGO.LaYe',
         'type' => 1,
     ]);
 
@@ -147,7 +140,6 @@ it('check if there is no employee', function () {
     ModelsEmployee::factory()->create([
         'name' => 'nome 1',
         'email' => 'email1@teste.com',
-        'password' => '$2a$12$NhD.F7UP.twqMtPxDo6A8eri.9ESq027PMYoPBonGkZ7uFGO.LaYe',
         'type' => 1,
     ]);
 
@@ -163,7 +155,6 @@ it('update a password', function () {
     $modelsEmployee = ModelsEmployee::factory()->create([
         'name' => 'nome 1',
         'email' => 'email1@teste.com',
-        'password' => '$2a$12$NhD.F7UP.twqMtPxDo6A8eri.9ESq027PMYoPBonGkZ7uFGO.LaYe',
         'type' => 1,
     ]);
 
@@ -171,7 +162,7 @@ it('update a password', function () {
         null,
         new Name($modelsEmployee->name),
         new Email($modelsEmployee->email),
-        new Password($modelsEmployee->password, true),
+        new Password('SenhaAlterada_123'),
         new Type($modelsEmployee->type),
         null
     );
@@ -194,5 +185,4 @@ it('update a password', function () {
     expect($updatePassword->name()->value())->toBe($employee->name()->value());
     expect($updatePassword->email()->value())->toBe($employee->email()->value());
     expect($updatePassword->type()->value())->toBe($employee->type()->value());
-    expect($updatePassword->password()->value())->toBe($employee->password()->value());
 });
