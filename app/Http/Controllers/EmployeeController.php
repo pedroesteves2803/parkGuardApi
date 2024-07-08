@@ -425,8 +425,9 @@ class EmployeeController extends Controller
         verifyTokenPasswordRequest $request,
         VerifyTokenPasswordReset $verifyTokenPasswordReset
     ) {
+
         $inputDto = new VerifyTokenPasswordResetInputDto(
-            $request->token,
+            $request->code,
         );
 
         $outputDto = $verifyTokenPasswordReset->execute($inputDto);
@@ -440,7 +441,7 @@ class EmployeeController extends Controller
     ) {
         $inputDto = new PasswordResetEmployeeInputDto(
             $request->password,
-            $request->token,
+            $request->code,
         );
 
         $outputDto = $resetPasswordEmployee->execute($inputDto);

@@ -14,7 +14,7 @@ class verifyTokenPasswordRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'token' => ['required', 'min:5', 'max:5']
+            'code' => ['required', 'min:5', 'max:5']
         ];
     }
 }
