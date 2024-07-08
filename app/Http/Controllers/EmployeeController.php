@@ -5,7 +5,10 @@ namespace App\Http\Controllers;
 use App\Http\Requests\Employee\CreateEmployeeRequest;
 use App\Http\Requests\employee\LoginEmployeeRequest;
 use App\Http\Requests\employee\LogoutEmployeeRequest;
+use App\Http\Requests\Employee\passwordResetRequest;
+use App\Http\Requests\Employee\passwordResetTokenRequest;
 use App\Http\Requests\Employee\UpdateEmployeeRequest;
+use App\Http\Requests\Employee\verifyTokenPasswordRequest;
 use App\Http\Resources\Employee\CreateEmployeeResource;
 use App\Http\Resources\Employee\DeleteEmployeeByIdResource;
 use App\Http\Resources\Employee\GetAllEmployeesResource;
@@ -16,6 +19,7 @@ use App\Http\Resources\Employee\PasswordResetResource;
 use App\Http\Resources\Employee\PasswordResetTokenResource;
 use App\Http\Resources\Employee\UnauthenticatedResource;
 use App\Http\Resources\Employee\UpdateEmployeeResource;
+use App\Http\Resources\Employee\VerifyTokenPasswordResetResource;
 use Illuminate\Http\Request;
 use Src\Administration\Application\Employee\CreateEmployee;
 use Src\Administration\Application\Employee\DeleteEmployeeById;
@@ -27,6 +31,7 @@ use Src\Administration\Application\Employee\Dtos\LoginEmployeeInputDto;
 use Src\Administration\Application\Employee\Dtos\LogoutEmployeeInputDto;
 use Src\Administration\Application\Employee\Dtos\PasswordResetEmployeeInputDto;
 use Src\Administration\Application\Employee\Dtos\UpdateEmployeeInputDto;
+use Src\Administration\Application\Employee\Dtos\VerifyTokenPasswordResetInputDto;
 use Src\Administration\Application\Employee\GeneratePasswordResetTokenEmployee;
 use Src\Administration\Application\Employee\GetAllEmployees;
 use Src\Administration\Application\Employee\GetEmployeeById;
@@ -34,6 +39,7 @@ use Src\Administration\Application\Employee\LoginEmployee;
 use Src\Administration\Application\Employee\LogoutEmployee;
 use Src\Administration\Application\Employee\ResetPasswordEmployee;
 use Src\Administration\Application\Employee\UpdateEmployee;
+use Src\Administration\Application\Employee\VerifyTokenPasswordReset;
 
 /**
  * Class EmployeeController.
@@ -403,7 +409,7 @@ class EmployeeController extends Controller
     }
 
     public function passwordResetToken(
-        Request $request,
+        passwordResetTokenRequest $request,
         GeneratePasswordResetTokenEmployee $generatePasswordResetTokenEmployee
     ) {
         $inputDto = new GeneratePasswordResetTokenEmployeeInputDto(
@@ -415,8 +421,21 @@ class EmployeeController extends Controller
         return new PasswordResetTokenResource($outputDto);
     }
 
+    public function verifyTokenPasswordReset(
+        verifyTokenPasswordRequest $request,
+        VerifyTokenPasswordReset $verifyTokenPasswordReset
+    ) {
+        $inputDto = new VerifyTokenPasswordResetInputDto(
+            $request->token,
+        );
+
+        $outputDto = $verifyTokenPasswordReset->execute($inputDto);
+
+        return new VerifyTokenPasswordResetResource($outputDto);
+    }
+
     public function passwordReset(
-        Request $request,
+        passwordResetRequest $request,
         ResetPasswordEmployee $resetPasswordEmployee
     ) {
         $inputDto = new PasswordResetEmployeeInputDto(

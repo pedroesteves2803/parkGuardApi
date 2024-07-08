@@ -43,7 +43,7 @@ final class EloquentPasswordResetRepository implements IPasswordResetRepository
 
     public function getByToken(Token $token): ?PasswordResetToken
     {
-        $modelsPasswordResetToken =  ModelsPasswordResetToken::where('token', $token)->first();
+        $modelsPasswordResetToken =  ModelsPasswordResetToken::where('token', $token->value())->first();
 
         if (is_null($modelsPasswordResetToken)) {
             return null;

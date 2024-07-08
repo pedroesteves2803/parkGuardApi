@@ -38,6 +38,20 @@ it('can get password reset token by email', function () {
     expect($retrievedPasswordResetToken->expirationTime())->not()->toBeNull();
 });
 
+it('can get password reset token by token', function () {
+    $passwordResetToken = ModelsPasswordResetToken::factory()->create();
+
+    $repository = new EloquentPasswordResetRepository();
+
+    $retrievedPasswordResetToken = $repository->getByToken(new Token($passwordResetToken->token));
+
+    expect($retrievedPasswordResetToken)->toBeInstanceOf(PasswordResetToken::class);
+
+    expect($retrievedPasswordResetToken->email()->value())->toBe($passwordResetToken->email);
+    expect($retrievedPasswordResetToken->token()->value())->toBe($passwordResetToken->token);
+    expect($retrievedPasswordResetToken->expirationTime())->not()->toBeNull();
+});
+
 it('create a new password reset token', function () {
     $passwordResetTokenData = new PasswordResetToken(
         new Email('email@test.com'),

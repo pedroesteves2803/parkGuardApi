@@ -138,6 +138,8 @@ final class EloquentEmployeeRepository implements IEmployeeRepository
         $modelsEmployee->password = bcrypt($employee->password()->value());
         $modelsEmployee->update();
 
+        $modelsPasswordResetToken->delete();
+
         return new Employee(
             $modelsEmployee->id,
             new Name($modelsEmployee->name),

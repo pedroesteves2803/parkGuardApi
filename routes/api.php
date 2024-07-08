@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Route;
 Route::post('/employee/login', [EmployeeController::class, 'login'])->name('employee.login');
 Route::post('/employee/logout', [EmployeeController::class, 'logout'])->name('employee.logout');
 Route::post('/employee/password/reset', [EmployeeController::class, 'passwordResetToken'])->name('employee.password.reset');
-Route::post('/employee/password/token', [EmployeeController::class, 'passwordReset'])->name('employee.password.token');
+Route::post('/employee/password/token', [EmployeeController::class, 'verifyTokenPasswordReset'])->name('employee.password.token');
 Route::post('/employee/password/update', [EmployeeController::class, 'passwordReset'])->name('employee.password.update');
 
 Route::middleware(['jwt.auth'])->group(function () {
