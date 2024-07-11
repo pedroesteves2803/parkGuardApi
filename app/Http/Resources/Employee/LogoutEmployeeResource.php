@@ -13,7 +13,6 @@ class LogoutEmployeeResource extends JsonResource
             'status'   => $this->getStatus(),
             'errors'   => $this->getErrors(),
             'message'  => $this->getMessage(),
-            'employee' => $this->getEmployeeDetails(),
         ];
     }
 
@@ -29,21 +28,6 @@ class LogoutEmployeeResource extends JsonResource
 
     private function getMessage()
     {
-        return empty($this->employee) ? null : $this->employee->name().' deslogado!';
-    }
-
-    private function getEmployeeDetails()
-    {
-        if (empty($this->employee)) {
-            return [];
-        }
-
-        return [
-            'id'    => $this->employee->id(),
-            'token' => $this->employee->token(),
-            'name'  => $this->employee->name()->value(),
-            'email' => $this->employee->email()->value(),
-            'tipo'  => $this->employee->type()->value(),
-        ];
+        return 'deslogado!';
     }
 }

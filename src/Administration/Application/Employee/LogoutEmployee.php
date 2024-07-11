@@ -17,17 +17,17 @@ final class LogoutEmployee
 
     public function execute(LogoutEmployeeInputDto $input): LogoutEmployeeOutputDto
     {
-        // try {
+        try {
             $this->iLoginEmployeeService->logout($input->token);
 
             return new LogoutEmployeeOutputDto(null, $this->notification);
-        // } catch (\Exception $e) {
-        //     $this->notification->addError([
-        //         'context' => 'logout_employee',
-        //         'message' => $e->getMessage(),
-        //     ]);
+        } catch (\Exception $e) {
+            $this->notification->addError([
+                'context' => 'logout_employee',
+                'message' => $e->getMessage(),
+            ]);
 
-        //     return new LogoutEmployeeOutputDto(null, $this->notification);
-        // }
+            return new LogoutEmployeeOutputDto(null, $this->notification);
+        }
     }
 }

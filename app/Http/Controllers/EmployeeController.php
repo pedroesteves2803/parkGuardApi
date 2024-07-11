@@ -395,13 +395,12 @@ class EmployeeController extends Controller
         LogoutEmployee $logoutEmployee
     ) {
         $inputDto = new LogoutEmployeeInputDto(
-            $request->token,
+            $request->token
         );
 
         $outputDto = $logoutEmployee->execute($inputDto);
 
         if ($outputDto) {
-
             return new LogoutEmployeeResource($outputDto);
         } else {
             return new UnauthenticatedResource($outputDto);

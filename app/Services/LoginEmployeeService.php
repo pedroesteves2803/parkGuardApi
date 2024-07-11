@@ -37,6 +37,6 @@ class LoginEmployeeService implements ILoginEmployeeService
 
     public function logout(string $token): void
     {
-        JWTAuth::invalidate($token);
+        Auth::logout();
     }
 }
