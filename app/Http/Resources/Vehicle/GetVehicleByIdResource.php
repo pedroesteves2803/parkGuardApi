@@ -9,6 +9,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
  * @OA\Schema(
  *     title="GetVehicleByIdResource",
  *     description="Resource representation for retrieving a vehicle by ID.",
+ *
  *     @OA\Property(
  *         property="status",
  *         type="boolean",
@@ -18,8 +19,10 @@ use Illuminate\Http\Resources\Json\JsonResource;
  *         property="errors",
  *         type="array",
  *         description="Errors encountered during the operation, if any.",
+ *
  *         @OA\Items(type="string")
  *     ),
+ *
  *     @OA\Property(
  *         property="message",
  *         type="string",
@@ -45,7 +48,6 @@ class GetVehicleByIdResource extends JsonResource
      * Transform the resource into an array.
      *
      * @param  Request  $request
-     * @return array
      */
     public function toArray($request): array
     {
@@ -59,18 +61,14 @@ class GetVehicleByIdResource extends JsonResource
 
     /**
      * Get the status of the operation.
-     *
-     * @return bool
      */
     private function getStatus(): bool
     {
-        return !$this->notification->hasErrors();
+        return ! $this->notification->hasErrors();
     }
 
     /**
      * Get the errors from the notification.
-     *
-     * @return array|null
      */
     private function getErrors(): ?array
     {
@@ -79,18 +77,14 @@ class GetVehicleByIdResource extends JsonResource
 
     /**
      * Get the message indicating the success of the operation.
-     *
-     * @return string|null
      */
     private function getMessage(): ?string
     {
-        return empty($this->vehicle) ? null : $this->vehicle->licensePlate()->value() . ' encontrado!';
+        return empty($this->vehicle) ? null : $this->vehicle->licensePlate()->value().' encontrado!';
     }
 
     /**
      * Get the details of the found vehicle.
-     *
-     * @return array
      */
     private function getVehicleDetails(): array
     {
@@ -105,7 +99,7 @@ class GetVehicleByIdResource extends JsonResource
             'model' => $this->vehicle->model() ? $this->vehicle->model()->value() : null,
             'licensePlate' => $this->vehicle->licensePlate()->value(),
             'entryTimes' => $this->vehicle->entryTimes()->value()->format('d-m-Y H:i:s'),
-            'departureTimes' => $this->vehicle->departureTimes()->value() ? $this->vehicle->departureTimes()->value()->format('d-m-Y H:i:s') : null,
+            'departureTimes' => $this->vehicle->departureTimes() ? $this->vehicle->departureTimes()->value()->format('d-m-Y H:i:s') : null,
         ];
     }
 }
