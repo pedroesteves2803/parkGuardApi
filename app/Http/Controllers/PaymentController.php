@@ -88,7 +88,7 @@ class PaymentController extends Controller
         $createPaymentInputDto = new CreatePaymentInputDto(
             new DateTime(),
             $request->paymentMethod,
-            $request->vehicle_id
+            $request->vehicleId
         );
 
         $createOutputDto = $createPayment->execute($createPaymentInputDto);

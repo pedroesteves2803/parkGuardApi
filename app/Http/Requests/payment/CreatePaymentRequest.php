@@ -15,7 +15,7 @@ class CreatePaymentRequest extends FormRequest
     {
         return [
             'paymentMethod' => 'required|integer',
-            'vehicle_id' => 'required|integer',
+            'vehicleId' => 'required|integer',
         ];
     }
 }
