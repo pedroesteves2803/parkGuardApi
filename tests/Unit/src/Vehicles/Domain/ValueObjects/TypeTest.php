@@ -17,6 +17,6 @@ it('valid type', function () {
 
 test('throws an exception for an empty type', function () {
     $this->expectException(Exception::class);
-    $this->expectExceptionMessage('Type cannot be empty.');
+    $this->expectExceptionMessage('Tipo não pode estar vazio.');
     new Type('');
 });

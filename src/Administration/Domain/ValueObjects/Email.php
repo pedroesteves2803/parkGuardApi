@@ -9,18 +9,18 @@ final class Email extends ValueObject
     public function __construct(
         private string $email
     ) {
-        $this->email = strtolower($email) ;
+        $this->email = strtolower($email);
         $this->validate();
     }
 
     public function validate()
     {
         if (empty($this->email)) {
-            throw new \Exception('Email cannot be empty.');
+            throw new \Exception('Email não pode estar vazio.');
         }
 
-        if (!filter_var($this->email, FILTER_VALIDATE_EMAIL)) {
-            throw new \Exception('Email not valid.');
+        if (! filter_var($this->email, FILTER_VALIDATE_EMAIL)) {
+            throw new \Exception('Email não válido.');
         }
     }
 

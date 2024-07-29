@@ -14,37 +14,37 @@ it('validates a valid password', function () {
 
 it('throws an exception for an empty password', function () {
     $this->expectException(Exception::class);
-    $this->expectExceptionMessage('Password cannot be empty.');
+    $this->expectExceptionMessage('Senha não pode estar vazio.');
     new Password('');
 });
 
 it('throws an exception for a short password', function () {
     $this->expectException(Exception::class);
-    $this->expectExceptionMessage('The password must be at least 8 characters long.');
+    $this->expectExceptionMessage('Senha deve ter pelo menos 8 caracteres.');
     new Password('Pass@1');
 });
 
 it('throws an exception for a password with no uppercase letter', function () {
     $this->expectException(Exception::class);
-    $this->expectExceptionMessage('The password must contain at least one capital letter.');
+    $this->expectExceptionMessage('Senha deve conter pelo menos uma letra maiúscula.');
     new Password('password@123');
 });
 
 it('throws an exception for a password with no lowercase letter', function () {
     $this->expectException(Exception::class);
-    $this->expectExceptionMessage('The password must contain at least one lowercase letter.');
+    $this->expectExceptionMessage('Senha deve conter pelo menos uma letra minúscula.');
     new Password('PASSWORD@123');
 });
 
 it('throws an exception for a password with no number', function () {
     $this->expectException(Exception::class);
-    $this->expectExceptionMessage('The password must contain at least one number.');
+    $this->expectExceptionMessage('Senha deve conter pelo menos um número.');
     new Password('Password@');
 });
 
 it('throws an exception for a password with no special character', function () {
     $this->expectException(Exception::class);
-    $this->expectExceptionMessage('The password must contain at least one special character.');
+    $this->expectExceptionMessage('Senha deve conter pelo menos um carácter especial.');
     new Password('Password123');
 });
 

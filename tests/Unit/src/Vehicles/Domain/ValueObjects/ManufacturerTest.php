@@ -14,7 +14,7 @@ it('validates a valid manufacturer', function () {
 
 test('throws an exception for an empty manufacturer', function () {
     $this->expectException(Exception::class);
-    $this->expectExceptionMessage('Manufacturer cannot be empty');
+    $this->expectExceptionMessage('Fabricante não pode estar vazio.');
     new Manufacturer('');
 });
 

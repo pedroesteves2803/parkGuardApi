@@ -15,7 +15,7 @@ final class Color extends ValueObject
     public function validate()
     {
         if (empty($this->value)) {
-            throw new \Exception('Color cannot be empty.');
+            throw new \Exception('Cor não pode estar vazia.');
         }
     }
 

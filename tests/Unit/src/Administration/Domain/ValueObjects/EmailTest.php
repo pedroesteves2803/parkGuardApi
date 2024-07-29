@@ -14,13 +14,13 @@ it('validates a valid email', function () {
 
 test('throws an exception for an empty email', function () {
     $this->expectException(Exception::class);
-    $this->expectExceptionMessage('Email cannot be empty.');
+    $this->expectExceptionMessage('Email não pode estar vazio.');
     new Email('');
 });
 
 test('throws an exception for invalid email', function () {
     $this->expectException(Exception::class);
-    $this->expectExceptionMessage('Email not valid.');
+    $this->expectExceptionMessage('Email não válido.');
     new Email('invalid.com');
 });
 

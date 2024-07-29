@@ -14,7 +14,7 @@ it('validates a valid model', function () {
 
 test('throws an exception for an empty model', function () {
     $this->expectException(Exception::class);
-    $this->expectExceptionMessage('Model cannot be empty');
+    $this->expectExceptionMessage('Modelo não pode estar vazio.');
     new Model('');
 });
 

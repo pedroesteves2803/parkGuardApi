@@ -15,7 +15,7 @@ final class PaymentMethod extends ValueObject
     public function validate()
     {
         if ($this->value !== 1 && $this->value !== 2 && $this->value !== 3) {
-            throw new \Exception('Type must be 1, 2 or 3.');
+            throw new \Exception('Tipo deve ser 1, 2 ou 3.');
         }
     }
 

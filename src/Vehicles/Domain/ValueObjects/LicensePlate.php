@@ -20,11 +20,11 @@ final class LicensePlate extends ValueObject
     public function validate()
     {
         if (empty($this->value)) {
-            throw new \Exception('LicensePlate cannot be empty.');
+            throw new \Exception('Placa não pode estar vazia.');
         }
 
         if (! preg_match($this->brazilianStandard, $this->value) && ! preg_match($this->mercosurStandard, $this->value)) {
-            throw new \Exception('It must be a valid license plate.');
+            throw new \Exception('Placa deve ser válida.');
         }
     }
 

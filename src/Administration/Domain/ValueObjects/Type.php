@@ -15,7 +15,7 @@ final class Type extends ValueObject
     public function validate()
     {
         if ($this->value !== 1 && $this->value !== 2) {
-            throw new \Exception('Type must be 1 or 2.');
+            throw new \Exception('Tipo deve ser 1 ou 2.');
         }
     }
 

@@ -12,12 +12,12 @@ test('validates instance license plate', function () {
 it('throws exception for empty license plate', function () {
     expect(function () {
         new LicensePlate('');
-    })->toThrow(\Exception::class, 'LicensePlate cannot be empty.');
+    })->toThrow(\Exception::class, 'Placa não pode estar vazia.');
 });
 
 it('throws exception for invalid license plate', function () {
     $this->expectException(\Exception::class);
-    $this->expectExceptionMessage('It must be a valid license plate.');
+    $this->expectExceptionMessage('Placa deve ser válida.');
     new LicensePlate('INVALID');
 });
 

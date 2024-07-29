@@ -15,7 +15,7 @@ final class Model extends ValueObject
     public function validate()
     {
         if (empty($this->value)) {
-            throw new \Exception('Model cannot be empty.');
+            throw new \Exception('Modelo não pode estar vazio.');
         }
     }
 

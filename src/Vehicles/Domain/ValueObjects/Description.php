@@ -15,7 +15,7 @@ final class Description extends ValueObject
     public function validate()
     {
         if (empty($this->value)) {
-            throw new \Exception('Description cannot be empty.');
+            throw new \Exception('Descrição não pode estar vazia.');
         }
     }
 

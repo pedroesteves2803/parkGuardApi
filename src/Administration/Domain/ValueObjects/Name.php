@@ -15,7 +15,7 @@ final class Name extends ValueObject
     public function validate()
     {
         if (empty($this->name)) {
-            throw new \Exception('Name cannot be empty.');
+            throw new \Exception('Nome não pode estar vazio.');
         }
     }
 

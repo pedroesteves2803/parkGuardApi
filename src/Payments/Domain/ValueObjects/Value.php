@@ -17,7 +17,7 @@ final class Value extends ValueObject
     public function validate()
     {
         if ($this->value < self::MIN_VALUE) {
-            throw new \OutOfRangeException('Value must be at least ' . self::MIN_VALUE . '.');
+            throw new \OutOfRangeException('Valor deve ser pelo menos '.self::MIN_VALUE.'.');
         }
     }
 

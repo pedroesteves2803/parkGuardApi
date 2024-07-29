@@ -14,6 +14,6 @@ it('validates a valid type', function () {
 
 it('throws an exception for a type other than 1 or 2.', function () {
     $this->expectException(Exception::class);
-    $this->expectExceptionMessage('Type must be 1 or 2.');
+    $this->expectExceptionMessage('Tipo deve ser 1 ou 2.');
     new Type(3);
 });

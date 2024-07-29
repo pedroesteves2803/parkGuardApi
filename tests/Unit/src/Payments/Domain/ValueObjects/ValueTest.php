@@ -14,6 +14,6 @@ it('validates a valid value', function () {
 
 test('throws an exception for a value less than 1', function () {
     $this->expectException(Exception::class);
-    $this->expectExceptionMessage('Value must be at least 1.');
+    $this->expectExceptionMessage('Valor deve ser pelo menos 1.');
     new Value(0);
 });

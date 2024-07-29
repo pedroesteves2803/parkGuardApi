@@ -14,7 +14,7 @@ it('validates a valid color', function () {
 
 test('throws an exception for an empty color', function () {
     $this->expectException(Exception::class);
-    $this->expectExceptionMessage('Color cannot be empty.');
+    $this->expectExceptionMessage('Cor não pode estar vazia.');
     new Color('');
 });
 

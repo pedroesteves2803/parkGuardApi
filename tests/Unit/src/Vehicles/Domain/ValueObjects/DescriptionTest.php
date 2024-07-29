@@ -17,6 +17,6 @@ it('valid description', function () {
 
 test('throws an exception for an empty description', function () {
     $this->expectException(Exception::class);
-    $this->expectExceptionMessage('Description cannot be empty.');
+    $this->expectExceptionMessage('Descrição não pode estar vazia.');
     new Description('');
 });

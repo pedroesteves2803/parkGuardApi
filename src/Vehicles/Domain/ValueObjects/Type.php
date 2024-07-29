@@ -15,7 +15,7 @@ final class Type extends ValueObject
     public function validate()
     {
         if (empty($this->value)) {
-            throw new \Exception('Type cannot be empty.');
+            throw new \Exception('Tipo não pode estar vazio.');
         }
     }
 

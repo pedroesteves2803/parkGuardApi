@@ -14,7 +14,7 @@ it('validates a valid name', function () {
 
 test('throws an exception for the empty name', function () {
     $this->expectException(Exception::class);
-    $this->expectExceptionMessage('Name cannot be empty.');
+    $this->expectExceptionMessage('Nome não pode estar vazio.');
     new Name('');
 });
 

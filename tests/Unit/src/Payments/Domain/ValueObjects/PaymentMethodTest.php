@@ -14,6 +14,6 @@ it('validates a valid payment method', function () {
 
 it('throws an exception for a payment method other than 1, 2 or 3.', function () {
     $this->expectException(Exception::class);
-    $this->expectExceptionMessage('Type must be 1, 2 or 3.');
+    $this->expectExceptionMessage('Tipo deve ser 1, 2 ou 3.');
     new PaymentMethod(4);
 });

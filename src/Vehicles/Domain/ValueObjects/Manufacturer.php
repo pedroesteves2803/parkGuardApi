@@ -15,7 +15,7 @@ final class Manufacturer extends ValueObject
     public function validate()
     {
         if (empty($this->value)) {
-            throw new \Exception('Manufacturer cannot be empty.');
+            throw new \Exception('Fabricante não pode estar vazio.');
         }
     }
 
