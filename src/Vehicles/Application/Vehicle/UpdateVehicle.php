@@ -29,9 +29,9 @@ final class UpdateVehicle
             $vehicle = $this->iVehicleRepository->update(
                 new Vehicle(
                     $input->id,
-                    new Manufacturer($input->manufacturer),
-                    new Color($input->color),
-                    new Model($input->model),
+                    !is_null($input->manufacturer) ? new Manufacturer($input->manufacturer) : null,
+                    !is_null($input->color) ? new Color($input->color) : null,
+                    !is_null($input->model) ? new Model($input->model) : null,
                     new LicensePlate($input->licensePlate),
                     new EntryTimes(new \DateTime()),
                     null

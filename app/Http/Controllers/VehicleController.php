@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\Vehicle\CreateOrUpdateVehicleRequest;
 use App\Http\Requests\Vehicle\CreateVehicleRequest;
 use App\Http\Requests\vehicle\ExitVehicleRequest;
 use App\Http\Requests\Vehicle\UpdateVehicleRequest;
@@ -11,7 +10,6 @@ use App\Http\Resources\Vehicle\ExitVehicleResource;
 use App\Http\Resources\Vehicle\GetAllVehiclesResource;
 use App\Http\Resources\Vehicle\GetVehicleByIdResource;
 use App\Http\Resources\Vehicle\UpdateVehicleResource;
-use Illuminate\Http\Request;
 use Src\Vehicles\Application\Vehicle\CreateVehicle;
 use Src\Vehicles\Application\Vehicle\Dtos\CreateVehicleInputDto;
 use Src\Vehicles\Application\Vehicle\Dtos\ExitVehicleInputDto;
@@ -39,9 +37,11 @@ class VehicleController extends Controller
      *     summary="Lista todos os veículos",
      *     tags={"Vehicle"},
      *     security={{"bearerAuth":{}}},
+     *
      *     @OA\Response(
      *         response=200,
      *         description="Lista de veículos",
+     *
      *         @OA\JsonContent(ref="#/components/schemas/GetAllVehiclesResource")
      *     )
      * )
@@ -60,10 +60,13 @@ class VehicleController extends Controller
      *     summary="Cria um novo veículo",
      *     tags={"Vehicle"},
      *     security={{"bearerAuth":{}}},
+     *
      *     @OA\RequestBody(
      *         required=true,
+     *
      *         @OA\JsonContent(
      *             type="object",
+     *
      *             @OA\Property(
      *                 property="licensePlate",
      *                 type="string",
@@ -71,9 +74,11 @@ class VehicleController extends Controller
      *             )
      *         )
      *     ),
+     *
      *     @OA\Response(
      *         response=200,
      *         description="Veículo criado",
+     *
      *         @OA\JsonContent(ref="#/components/schemas/CreateVehicleResource")
      *     )
      * )
@@ -97,18 +102,22 @@ class VehicleController extends Controller
      *     summary="Obtém um veículo por ID",
      *     tags={"Vehicle"},
      *     security={{"bearerAuth":{}}},
+     *
      *     @OA\Parameter(
      *         name="id",
      *         in="path",
      *         required=true,
      *         description="ID do veículo",
+     *
      *         @OA\Schema(
      *             type="integer"
      *         )
      *     ),
+     *
      *     @OA\Response(
      *         response=200,
      *         description="Detalhes do veículo",
+     *
      *         @OA\JsonContent(ref="#/components/schemas/GetVehicleByIdResource")
      *     )
      * )
@@ -130,19 +139,24 @@ class VehicleController extends Controller
      *     summary="Atualiza os detalhes de um veículo",
      *     tags={"Vehicle"},
      *     security={{"bearerAuth":{}}},
+     *
      *     @OA\Parameter(
      *         name="id",
      *         in="path",
      *         required=true,
      *         description="ID do veículo",
+     *
      *         @OA\Schema(
      *             type="integer"
      *         )
      *     ),
+     *
      *     @OA\RequestBody(
      *         required=true,
+     *
      *         @OA\JsonContent(
      *             type="object",
+     *
      *             @OA\Property(
      *                 property="manufacturer",
      *                 type="string",
@@ -165,9 +179,11 @@ class VehicleController extends Controller
      *             )
      *         )
      *     ),
+     *
      *     @OA\Response(
      *         response=200,
      *         description="Veículo atualizado",
+     *
      *         @OA\JsonContent(ref="#/components/schemas/UpdateVehicleResource")
      *     )
      * )
@@ -177,11 +193,12 @@ class VehicleController extends Controller
         int $id,
         UpdateVehicle $updateVehicle
     ) {
+
         $inputDto = new UpdateVehicleInputDto(
             $id,
-            $request->manufacturer,
-            $request->color,
-            $request->model,
+            $request->manufacturer ?? null,
+            $request->color ?? null,
+            $request->model ?? null,
             $request->licensePlate
         );
 
@@ -196,10 +213,13 @@ class VehicleController extends Controller
      *     summary="Registra a saída de um veículo",
      *     tags={"Vehicle"},
      *     security={{"bearerAuth":{}}},
+     *
      *     @OA\RequestBody(
      *         required=true,
+     *
      *         @OA\JsonContent(
      *             type="object",
+     *
      *             @OA\Property(
      *                 property="licensePlate",
      *                 type="string",
@@ -207,9 +227,11 @@ class VehicleController extends Controller
      *             )
      *         )
      *     ),
+     *
      *     @OA\Response(
      *         response=200,
      *         description="Saída do veículo registrada com sucesso",
+     *
      *         @OA\JsonContent(ref="#/components/schemas/ExitVehicleResource")
      *     )
      * )

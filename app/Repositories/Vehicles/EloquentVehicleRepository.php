@@ -28,8 +28,8 @@ final class EloquentVehicleRepository implements IVehicleRepository
             return new Vehicle(
                 $vehicle->id,
                 is_null($vehicle->manufacturer) ? null : new Manufacturer($vehicle->manufacturer),
-                is_null($vehicle->color) ? null :  new Color($vehicle->color),
-                is_null($vehicle->model) ? null :  new Model($vehicle->model),
+                is_null($vehicle->color) ? null : new Color($vehicle->color),
+                is_null($vehicle->model) ? null : new Model($vehicle->model),
                 new LicensePlate($vehicle->license_plate),
                 new EntryTimes($vehicle->entry_times),
                 new DepartureTimes($vehicle->departure_times)
@@ -50,8 +50,8 @@ final class EloquentVehicleRepository implements IVehicleRepository
         return new Vehicle(
             $modelsVehicle->id,
             is_null($modelsVehicle->manufacturer) ? null : new Manufacturer($modelsVehicle->manufacturer),
-            is_null($modelsVehicle->color) ? null :  new Color($modelsVehicle->color),
-            is_null($modelsVehicle->model) ? null :  new Model($modelsVehicle->model),
+            is_null($modelsVehicle->color) ? null : new Color($modelsVehicle->color),
+            is_null($modelsVehicle->model) ? null : new Model($modelsVehicle->model),
             new LicensePlate($modelsVehicle->license_plate),
             new EntryTimes($modelsVehicle->entry_times),
             is_null($modelsVehicle->departure_times) ? null : new DepartureTimes($modelsVehicle->departure_times)
@@ -83,7 +83,7 @@ final class EloquentVehicleRepository implements IVehicleRepository
         );
 
         $vehicleEntity->pendings()->map(function (Pending $pendingItem) use ($modelsVehicle, $vehicle) {
-            if(!is_null($pendingItem->description)){
+            if (! is_null($pendingItem->description)) {
 
                 $modelsPending = new ModelsPending();
                 $modelsPending->type = $pendingItem->type->value();
@@ -112,17 +112,29 @@ final class EloquentVehicleRepository implements IVehicleRepository
             return null;
         }
 
-        $modelsVehicle->manufacturer = $vehicle->manufacturer();
-        $modelsVehicle->color = $vehicle->color();
-        $modelsVehicle->model = $vehicle->model();
-        $modelsVehicle->license_plate = $vehicle->licensePlate();
+        if (! is_null($vehicle->manufacturer())) {
+            $modelsVehicle->manufacturer = $vehicle->manufacturer();
+        }
+
+        if (! is_null($vehicle->color())) {
+            $modelsVehicle->color = $vehicle->color();
+        }
+
+        if (! is_null($vehicle->model())) {
+            $modelsVehicle->model = $vehicle->model();
+        }
+
+        if (! is_null($vehicle->licensePlate())) {
+            $modelsVehicle->license_plate = $vehicle->licensePlate();
+        }
+
         $modelsVehicle->update();
 
         return new Vehicle(
             $vehicle->id(),
             is_null($vehicle->manufacturer()) ? null : new Manufacturer($vehicle->manufacturer()),
-            is_null($vehicle->color()) ? null :  new Color($vehicle->color()),
-            is_null($vehicle->model()) ? null :  new Model($vehicle->model()),
+            is_null($vehicle->color()) ? null : new Color($vehicle->color()),
+            is_null($vehicle->model()) ? null : new Model($vehicle->model()),
             new LicensePlate($vehicle->licensePlate()),
             $vehicle->entryTimes(),
             $vehicle->departureTimes()
