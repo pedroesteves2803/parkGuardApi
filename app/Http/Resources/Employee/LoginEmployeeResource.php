@@ -65,7 +65,7 @@ class LoginEmployeeResource extends JsonResource
             'token'    => $this->employee->token(),
             'name'  => $this->employee->name()->value(),
             'email' => $this->employee->email()->value(),
-            'tipo'  => $this->employee->type()->value(),
+            'type'  => $this->employee->type()->value(),
         ];
     }
 }

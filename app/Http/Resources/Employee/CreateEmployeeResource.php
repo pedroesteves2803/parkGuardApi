@@ -86,7 +86,7 @@ class CreateEmployeeResource extends JsonResource
             'id' => $this->employee->id(),
             'name' => $this->employee->name()->value(),
             'email' => $this->employee->email()->value(),
-            'tipo' => $this->employee->type()->value(),
+            'type' => $this->employee->type()->value(),
         ];
     }
 }

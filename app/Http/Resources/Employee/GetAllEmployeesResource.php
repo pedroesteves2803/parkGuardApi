@@ -74,9 +74,9 @@ class GetAllEmployeesResource extends JsonResource
         $employees = $this->employees->map(function ($item) {
             return [
                 'id'    => $item->id(),
-                'nome'  => $item->name()->value(),
+                'name'  => $item->name()->value(),
                 'email' => $item->email()->value(),
-                'tipo'  => $item->type()->value(),
+                'type'  => $item->type()->value(),
             ];
         });
 
