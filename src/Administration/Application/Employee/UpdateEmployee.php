@@ -8,7 +8,6 @@ use Src\Administration\Domain\Entities\Employee;
 use Src\Administration\Domain\Repositories\IEmployeeRepository;
 use Src\Administration\Domain\ValueObjects\Email;
 use Src\Administration\Domain\ValueObjects\Name;
-use Src\Administration\Domain\ValueObjects\Password;
 use Src\Administration\Domain\ValueObjects\Type;
 use Src\Shared\Utils\Notification;
 
@@ -17,8 +16,7 @@ final class UpdateEmployee
     public function __construct(
         readonly IEmployeeRepository $iEmployeeRepository,
         readonly Notification $notification,
-    ) {
-    }
+    ) {}
 
     public function execute(UpdateEmployeeInputDto $input): UpdateEmployeeOutputDto
     {
@@ -32,7 +30,7 @@ final class UpdateEmployee
                     $input->id,
                     new Name($input->name),
                     new Email($input->email),
-                    new Password($input->password),
+                    $employeeById->password(),
                     new Type($input->type),
                     null
                 )

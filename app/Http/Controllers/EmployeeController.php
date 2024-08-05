@@ -20,7 +20,6 @@ use App\Http\Resources\Employee\PasswordResetTokenResource;
 use App\Http\Resources\Employee\UnauthenticatedResource;
 use App\Http\Resources\Employee\UpdateEmployeeResource;
 use App\Http\Resources\Employee\VerifyTokenPasswordResetResource;
-use Illuminate\Http\Request;
 use Src\Administration\Application\Employee\CreateEmployee;
 use Src\Administration\Application\Employee\DeleteEmployeeById;
 use Src\Administration\Application\Employee\Dtos\CreateEmployeeInputDto;
@@ -252,7 +251,6 @@ class EmployeeController extends Controller
             $id,
             $request->name,
             $request->email,
-            $request->password,
             $request->type
         );
 

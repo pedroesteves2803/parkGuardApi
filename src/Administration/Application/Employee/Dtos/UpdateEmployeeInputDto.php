@@ -8,8 +8,7 @@ final class UpdateEmployeeInputDto
         readonly string $id,
         readonly string $name,
         readonly string $email,
-        readonly string $password,
+        // readonly string $password,
         readonly int $type,
-    ) {
-    }
+    ) {}
 }
