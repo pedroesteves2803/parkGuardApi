@@ -37,7 +37,7 @@ it('can update an existing employee with valid input', function () {
         $employeeId,
         new Name('Updated Name'),
         new Email('updated@example.com'),
-        new Password('NewPassword@456'),
+        new Password('Password@123'),
         new Type(2),
         null
     );
@@ -50,7 +50,6 @@ it('can update an existing employee with valid input', function () {
         $employeeId,
         'Updated Name',
         'updated@example.com',
-        'NewPassword@456',
         2,
     );
 
@@ -94,7 +93,6 @@ it('can update an existing employee with a valid entry and the same email as the
         $employeeId,
         'Updated Name',
         'john@example.com',
-        'NewPassword@456',
         2,
     );
 
@@ -118,7 +116,6 @@ it('returns error notification when trying to update an employee with non-existi
         $employeeId,
         'Updated Name',
         'updated@example.com',
-        'NewPassword@456',
         2,
     );
 
@@ -158,7 +155,6 @@ it('returns error notification when trying to update an employee with an already
         $employeeId,
         'Updated Name',
         'updated@example.com',
-        'NewPassword@456',
         2,
     );
 
