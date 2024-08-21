@@ -5,11 +5,11 @@ namespace Src\Administration\Application\Employee\Dtos;
 use Src\Administration\Domain\Entities\PasswordResetToken;
 use Src\Shared\Utils\Notification;
 
-final class GeneratePasswordResetTokenEmployeeOutputDto
+final readonly class GeneratePasswordResetTokenEmployeeOutputDto
 {
     public function __construct(
-        readonly ?PasswordResetToken $passwordResetToken,
-        readonly Notification $notification
+        public ?PasswordResetToken $passwordResetToken,
+        public Notification        $notification
     ) {
     }
 }

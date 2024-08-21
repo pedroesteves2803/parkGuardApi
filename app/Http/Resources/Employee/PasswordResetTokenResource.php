@@ -16,7 +16,7 @@ class PasswordResetTokenResource extends JsonResource
         ];
     }
 
-    private function getStatus()
+    private function getStatus(): bool
     {
         return ! $this->notification->hasErrors();
     }
@@ -26,7 +26,7 @@ class PasswordResetTokenResource extends JsonResource
         return $this->notification->getErrors();
     }
 
-    private function getMessage()
+    private function getMessage(): ?string
     {
         return empty($this->passwordResetToken) ? null : 'token enviado!';
     }

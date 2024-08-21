@@ -2,10 +2,10 @@
 
 namespace Src\Administration\Application\Employee\Dtos;
 
-final class GetEmployeeByIdInputDto
+final readonly class GetEmployeeByIdInputDto
 {
     public function __construct(
-        readonly ?string $id,
+        public ?string $id,
     ) {
     }
 }

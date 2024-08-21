@@ -4,12 +4,12 @@ namespace Src\Payments\Application\Payment\Dtos;
 
 use DateTime;
 
-final class CreatePaymentInputDto
+final readonly class CreatePaymentInputDto
 {
     public function __construct(
-        readonly DateTime $dateTime,
-        readonly int $paymentMethod,
-        readonly int $vehicle_id,
+        public DateTime $dateTime,
+        public int      $paymentMethod,
+        public int      $vehicle_id,
     ) {
     }
 }

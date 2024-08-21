@@ -11,11 +11,11 @@ use Src\Administration\Domain\ValueObjects\Name;
 use Src\Administration\Domain\ValueObjects\Type;
 use Src\Shared\Utils\Notification;
 
-final class UpdateEmployee
+final readonly class UpdateEmployee
 {
     public function __construct(
-        readonly IEmployeeRepository $iEmployeeRepository,
-        readonly Notification $notification,
+        public IEmployeeRepository $iEmployeeRepository,
+        public Notification        $notification,
     ) {}
 
     public function execute(UpdateEmployeeInputDto $input): UpdateEmployeeOutputDto
@@ -53,7 +53,7 @@ final class UpdateEmployee
         $employee = $this->iEmployeeRepository->getById($input->id);
 
         if (is_null($employee)) {
-            throw new \Exception('Funcionario não encontrado!');
+            throw new \RuntimeException('Funcionario não encontrado!');
         }
 
         return $employee;
@@ -72,7 +72,7 @@ final class UpdateEmployee
         );
 
         if ($existEmployee) {
-            throw new \Exception('Email já cadastrado!');
+            throw new \RuntimeException('Email já cadastrado!');
         }
     }
 }

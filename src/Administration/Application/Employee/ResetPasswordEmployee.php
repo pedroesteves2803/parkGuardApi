@@ -15,12 +15,12 @@ use Src\Administration\Domain\ValueObjects\Token;
 use Src\Administration\Domain\ValueObjects\Type;
 use Src\Shared\Utils\Notification;
 
-final class ResetPasswordEmployee
+final readonly class ResetPasswordEmployee
 {
     public function __construct(
-        readonly IPasswordResetRepository $iPasswordResetRepository,
-        readonly IEmployeeRepository $iEmployeeRepository,
-        readonly Notification $notification,
+        public IPasswordResetRepository $iPasswordResetRepository,
+        public IEmployeeRepository      $iEmployeeRepository,
+        public Notification             $notification,
     ) {}
 
     public function execute(PasswordResetEmployeeInputDto $input): PasswordResetEmployeeOutputDto
@@ -57,11 +57,11 @@ final class ResetPasswordEmployee
         $passwordReset = $this->iPasswordResetRepository->getByToken(new Token($input->token));
 
         if (is_null($passwordReset)) {
-            throw new \Exception('Token não existe!');
+            throw new \RuntimeException('Token não existe!');
         }
 
         if ($passwordReset->isExpired()) {
-            throw new \Exception('Token expirado!');
+            throw new \RuntimeException('Token expirado!');
         }
 
         return $passwordReset;
@@ -72,7 +72,7 @@ final class ResetPasswordEmployee
         $employee = $this->iEmployeeRepository->getByEmail($email);
 
         if (is_null($employee)) {
-            throw new \Exception('Funcionario não encontrado!');
+            throw new \RuntimeException('Funcionario não encontrado!');
         }
 
         return $employee;
@@ -81,13 +81,13 @@ final class ResetPasswordEmployee
     private function updatePassword(PasswordResetToken $passwordResetToken, Employee $employee, PasswordResetEmployeeInputDto $input): Employee
     {
         if ($passwordResetToken->token()->value() !== $input->token) {
-            throw new \Exception('Token de redefinição de senha não encontrado ou inválido.');
+            throw new \RuntimeException('Token de redefinição de senha não encontrado ou inválido.');
         }
 
         $employee = $this->iEmployeeRepository->updatePassword($passwordResetToken, $employee, new Token($input->token));
 
         if (is_null($employee)) {
-            throw new \Exception('Token de redefinição de senha não encontrado ou inválido.');
+            throw new \RuntimeException('Token de redefinição de senha não encontrado ou inválido.');
         }
 
         return $employee;

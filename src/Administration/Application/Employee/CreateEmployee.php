@@ -12,11 +12,11 @@ use Src\Administration\Domain\ValueObjects\Password;
 use Src\Administration\Domain\ValueObjects\Type;
 use Src\Shared\Utils\Notification;
 
-final class CreateEmployee
+final readonly class CreateEmployee
 {
     public function __construct(
-        readonly IEmployeeRepository $iEmployeeRepository,
-        readonly Notification $notification,
+        public IEmployeeRepository $iEmployeeRepository,
+        public Notification        $notification,
     ) {}
 
     public function execute(CreateEmployeeInputDto $input): CreateEmployeeOutputDto
@@ -53,7 +53,7 @@ final class CreateEmployee
         );
 
         if ($existEmployee) {
-            throw new \Exception('Email já cadastrado!');
+            throw new \RuntimeException('Email já cadastrado!');
         }
     }
 }

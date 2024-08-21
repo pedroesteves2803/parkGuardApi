@@ -20,23 +20,23 @@ class VehiclePendingNotification extends Notification implements ShouldQueue
         $this->vehicle = $vehicle;
     }
 
-    public function via($notifiable)
+    public function via($notifiable): array
     {
         return ['mail', 'vonage'];
     }
 
-    public function toMail($notifiable)
+    public function toMail($notifiable): VehiclePendingEmail
     {
         return new VehiclePendingEmail($this->vehicle);
     }
 
-    public function toVonage($notifiable)
+    public function toVonage($notifiable): VonageMessage
     {
         return (new VonageMessage)
             ->content("Veiculo com a placa: {$this->vehicle->licensePlate()->value()} possui uma pendencia.");
     }
 
-    public function toArray($notifiable)
+    public function toArray($notifiable): array
     {
         return [
             'vehicle_id' => $this->vehicle->id(),

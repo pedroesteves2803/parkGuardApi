@@ -7,15 +7,15 @@ use Src\Shared\Domain\ValueObjects\ValueObject;
 final class Token extends ValueObject
 {
     public function __construct(
-        private string $value
+        private readonly string $value
     ) {
         $this->validate();
     }
 
-    public function validate()
+    public function validate(): void
     {
         if (strlen($this->value) !== 5) {
-            throw new \Exception('Token precisa ter 5 caracteres!');
+            throw new \RuntimeException('Token precisa ter 5 caracteres!');
         }
     }
 

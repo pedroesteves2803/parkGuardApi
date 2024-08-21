@@ -7,15 +7,15 @@ use Src\Shared\Domain\ValueObjects\ValueObject;
 final class Color extends ValueObject
 {
     public function __construct(
-        private string $value
+        private readonly string $value
     ) {
         $this->validate();
     }
 
-    public function validate()
+    public function validate(): void
     {
         if (empty($this->value)) {
-            throw new \Exception('Cor não pode estar vazia.');
+            throw new \RuntimeException('Cor não pode estar vazia.');
         }
     }
 

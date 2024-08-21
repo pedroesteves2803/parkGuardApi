@@ -2,10 +2,10 @@
 
 namespace Src\Vehicles\Application\Vehicle\Dtos;
 
-final class GetVehicleInputDto
+final readonly class GetVehicleInputDto
 {
     public function __construct(
-        readonly int $id,
+        public int $id,
     ) {
     }
 }

@@ -48,7 +48,7 @@ it('can create an instance of ConsultVehicleByLicensePlateOutputDto with valid d
         new Pending(null, new Type('Tipo 2'), new Description('SEM RESTRICAO')),
     ];
 
-    foreach ($outputDto->pendings as $index => $pending) {
+    foreach ($outputDto->pending as $index => $pending) {
         expect($pending->type->value())->toBe($expectedPendings[$index]->type->value());
         expect($pending->description->value())->toBe($expectedPendings[$index]->description->value());
     }

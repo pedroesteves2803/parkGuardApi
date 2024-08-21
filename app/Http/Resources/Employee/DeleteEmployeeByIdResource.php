@@ -53,7 +53,7 @@ class DeleteEmployeeByIdResource extends JsonResource
         ];
     }
 
-    private function getStatus()
+    private function getStatus(): bool
     {
         return !$this->notification->hasErrors();
     }
@@ -63,7 +63,7 @@ class DeleteEmployeeByIdResource extends JsonResource
         return $this->notification->getErrors();
     }
 
-    private function getMessage()
+    private function getMessage(): ?string
     {
         return $this->notification->hasErrors() ? null : 'Funcionario removido!';
     }

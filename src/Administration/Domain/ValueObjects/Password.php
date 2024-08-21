@@ -14,31 +14,31 @@ final class Password extends ValueObject
         $this->validate();
     }
 
-    public function validate()
+    private function validate(): void
     {
         if (! $this->isHashed) {
             if (empty($this->value)) {
-                throw new \Exception('Senha não pode estar vazio.');
+                throw new \RuntimeException('Senha não pode estar vazio.');
             }
 
             if (strlen($this->value) < 8) {
-                throw new \Exception('Senha deve ter pelo menos 8 caracteres.');
+                throw new \RuntimeException('Senha deve ter pelo menos 8 caracteres.');
             }
 
             if (! preg_match('/[A-Z]/', $this->value)) {
-                throw new \Exception('Senha deve conter pelo menos uma letra maiúscula.');
+                throw new \RuntimeException('Senha deve conter pelo menos uma letra maiúscula.');
             }
 
             if (! preg_match('/[a-z]/', $this->value)) {
-                throw new \Exception('Senha deve conter pelo menos uma letra minúscula.');
+                throw new \RuntimeException('Senha deve conter pelo menos uma letra minúscula.');
             }
 
             if (! preg_match('/[0-9]/', $this->value)) {
-                throw new \Exception('Senha deve conter pelo menos um número.');
+                throw new \RuntimeException('Senha deve conter pelo menos um número.');
             }
 
             if (! preg_match('/[!@#$%^&*()\-_=+{};:,<.>]/', $this->value)) {
-                throw new \Exception('Senha deve conter pelo menos um carácter especial.');
+                throw new \RuntimeException('Senha deve conter pelo menos um carácter especial.');
             }
         }
     }

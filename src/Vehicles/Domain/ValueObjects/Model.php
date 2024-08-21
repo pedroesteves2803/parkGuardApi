@@ -7,15 +7,15 @@ use Src\Shared\Domain\ValueObjects\ValueObject;
 final class Model extends ValueObject
 {
     public function __construct(
-        private string $value
+        private readonly string $value
     ) {
         $this->validate();
     }
 
-    public function validate()
+    public function validate(): void
     {
         if (empty($this->value)) {
-            throw new \Exception('Modelo não pode estar vazio.');
+            throw new \RuntimeException('Modelo não pode estar vazio.');
         }
     }
 

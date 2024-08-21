@@ -50,7 +50,7 @@ class GetAllEmployeesResource extends JsonResource
         ];
     }
 
-    private function getStatus()
+    private function getStatus(): bool
     {
         return !$this->notification->hasErrors();
     }
@@ -60,26 +60,24 @@ class GetAllEmployeesResource extends JsonResource
         return $this->notification->getErrors();
     }
 
-    private function getMessage()
+    private function getMessage(): ?string
     {
         return empty($this->employees) ? null : 'Lista de funcionarios encontrados!';
     }
 
-    private function getEmployeesDetails()
+    private function getEmployeesDetails(): array
     {
         if (empty($this->employees)) {
             return [];
         }
 
-        $employees = $this->employees->map(function ($item) {
+        return $this->employees->map(function ($item) {
             return [
                 'id'    => $item->id(),
                 'name'  => $item->name()->value(),
                 'email' => $item->email()->value(),
                 'type'  => $item->type()->value(),
             ];
-        });
-
-        return $employees;
+        })->toArray();
     }
 }

@@ -22,32 +22,11 @@ final class EloquentPaymentRepository implements IPaymentRepository
 {
     public function getAll(): ?Collection
     {
-        $payments = ModelsPayment::orderBy('id', 'desc')->get();
-
-        $payments = $payments->map(function ($payment) {
+        return ModelsPayment::orderBy('id', 'desc')->get()->map(function ($payment) {
             $modelsVehicle = ModelsVehicle::find($payment->vehicle_id);
 
-            $vehicle = new Vehicle(
-                $modelsVehicle->id,
-                is_null($modelsVehicle->manufacturer) ? null : new Manufacturer($modelsVehicle->manufacturer),
-                is_null($modelsVehicle->color) ? null : new Color($modelsVehicle->color),
-                is_null($modelsVehicle->model) ? null : new Model($modelsVehicle->model),
-                new LicensePlate($modelsVehicle->license_plate),
-                new EntryTimes($modelsVehicle->entry_times),
-                is_null($modelsVehicle->departure_times) ? null : new DepartureTimes($modelsVehicle->departure_times)
-            );
-
-            return new Payment(
-                $payment->id,
-                is_null($payment->value) ? null : new Value($payment->value),
-                is_null($payment->registration_time) ? null : new RegistrationTime($payment->registration_time),
-                is_null($payment->payment_method) ? null : new PaymentMethod($payment->payment_method),
-                is_null($payment->paid) ? null : $payment->paid,
-                $vehicle
-            );
+            return $this->createPaymentFromModels($modelsVehicle, $payment);
         });
-
-        return $payments;
     }
 
     public function getById(int $id): ?Payment
@@ -64,24 +43,7 @@ final class EloquentPaymentRepository implements IPaymentRepository
             return null;
         }
 
-        $vehicle = new Vehicle(
-            $modelsVehicle->id,
-            is_null($modelsVehicle->manufacturer) ? null : new Manufacturer($modelsVehicle->manufacturer),
-            is_null($modelsVehicle->color) ? null : new Color($modelsVehicle->color),
-            is_null($modelsVehicle->model) ? null : new Model($modelsVehicle->model),
-            new LicensePlate($modelsVehicle->license_plate),
-            new EntryTimes($modelsVehicle->entry_times),
-            is_null($modelsVehicle->departure_times) ? null : new DepartureTimes($modelsVehicle->departure_times)
-        );
-
-        return new Payment(
-            $modelsPayment->id,
-            is_null($modelsPayment->value) ? null : new Value($modelsPayment->value),
-            is_null($modelsPayment->registration_time) ? null : new RegistrationTime($modelsPayment->registration_time),
-            is_null($modelsPayment->payment_method) ? null : new PaymentMethod($modelsPayment->payment_method),
-            is_null($modelsPayment->paid) ? null : $modelsPayment->paid,
-            $vehicle
-        );
+        return $this->createPaymentFromModels($modelsVehicle, $modelsPayment);
     }
 
     public function create(Payment $payment): Payment
@@ -134,4 +96,28 @@ final class EloquentPaymentRepository implements IPaymentRepository
         $modelsPayment = ModelsPayment::find($id);
         $modelsPayment->delete();
     }
+
+
+    public function createPaymentFromModels(ModelsVehicle $modelsVehicle, ModelsPayment $payment): Payment
+    {
+        $vehicle = new Vehicle(
+            $modelsVehicle->id,
+            is_null($modelsVehicle->manufacturer) ? null : new Manufacturer($modelsVehicle->manufacturer),
+            is_null($modelsVehicle->color) ? null : new Color($modelsVehicle->color),
+            is_null($modelsVehicle->model) ? null : new Model($modelsVehicle->model),
+            new LicensePlate($modelsVehicle->license_plate),
+            new EntryTimes($modelsVehicle->entry_times),
+            is_null($modelsVehicle->departure_times) ? null : new DepartureTimes($modelsVehicle->departure_times)
+        );
+
+        return new Payment(
+            $payment->id,
+            is_null($payment->value) ? null : new Value($payment->value),
+            is_null($payment->registration_time) ? null : new RegistrationTime($payment->registration_time),
+            is_null($payment->payment_method) ? null : new PaymentMethod($payment->payment_method),
+            is_null($payment->paid) ? null : $payment->paid,
+            $vehicle
+        );
+    }
+
 }

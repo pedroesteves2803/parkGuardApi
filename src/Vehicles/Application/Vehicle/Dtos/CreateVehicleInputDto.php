@@ -2,10 +2,10 @@
 
 namespace Src\Vehicles\Application\Vehicle\Dtos;
 
-final class CreateVehicleInputDto
+final readonly class CreateVehicleInputDto
 {
     public function __construct(
-        readonly string $licensePlate,
+        public string $licensePlate,
     ) {
     }
 }

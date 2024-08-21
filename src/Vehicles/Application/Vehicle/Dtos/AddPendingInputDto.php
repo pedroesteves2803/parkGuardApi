@@ -5,17 +5,17 @@ namespace Src\Vehicles\Application\Vehicle\Dtos;
 use DateTime;
 use Src\Vehicles\Domain\Entities\Vehicle;
 
-final class AddPendingInputDto
+final readonly class AddPendingInputDto
 {
     public function __construct(
-        readonly int $id,
-        readonly ?string $manufacturer,
-        readonly ?string $color,
-        readonly ?string $model,
-        readonly string $licensePlate,
-        readonly DateTime $entryTimes,
-        readonly ?DateTime $departureTimes,
-        readonly array $pendings
+        public int       $id,
+        public ?string   $manufacturer,
+        public ?string   $color,
+        public ?string   $model,
+        public string    $licensePlate,
+        public DateTime  $entryTimes,
+        public ?DateTime $departureTimes,
+        public array     $pendings
     ) {
     }
 }

@@ -26,7 +26,7 @@ class LogoutEmployeeResource extends JsonResource
         return $this->notification->getErrors();
     }
 
-    private function getMessage()
+    private function getMessage(): string
     {
         return 'deslogado!';
     }

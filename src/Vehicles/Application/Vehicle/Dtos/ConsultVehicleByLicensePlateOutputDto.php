@@ -2,20 +2,17 @@
 
 namespace Src\Vehicles\Application\Vehicle\Dtos;
 
-use Illuminate\Support\Collection;
 use Src\Shared\Utils\Notification;
-use Src\Vehicles\Domain\Entities\Consult;
-use Src\Vehicles\Domain\Entities\Vehicle;
 
-final class ConsultVehicleByLicensePlateOutputDto
+final readonly class ConsultVehicleByLicensePlateOutputDto
 {
     public function __construct(
-        readonly ?string $manufacturer,
-        readonly ?string $color,
-        readonly ?string $model,
-        readonly ?string $licensePlate,
-        readonly array $pendings,
-        readonly Notification $notification
+        public ?string      $manufacturer,
+        public ?string      $color,
+        public ?string      $model,
+        public ?string      $licensePlate,
+        public array        $pending,
+        public Notification $notification
     ) {
     }
 }

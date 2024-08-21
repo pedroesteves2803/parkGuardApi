@@ -39,7 +39,7 @@ class ApiConsultVehicleRepository implements IConsultVehicleRepository
                 'query' => $query,
             ]);
 
-            $vehicleData = json_decode($response->getBody()->getContents(), true);
+            $vehicleData = json_decode($response->getBody()->getContents(), true, 512, JSON_THROW_ON_ERROR);
 
             if (isset($vehicleData['error']) && $vehicleData['error']) {
                 return $this->getEmptyVehicleData($licensePlate);
@@ -58,13 +58,10 @@ class ApiConsultVehicleRepository implements IConsultVehicleRepository
                 $description = $pending;
 
 
-                array_push(
-                    $pendings,
-                    new Pending(
-                        null,
-                        is_null($type) ? null : new Type($type),
-                        is_null($description) || $description == "" ? null : new Description($description)
-                    )
+                $pendings[] = new Pending(
+                    null,
+                    new Type($type),
+                    $description === "" ? null : new Description($description)
                 );
             }
 

@@ -35,9 +35,9 @@ it('can create an instance of IConsultVehicleRepositoryOutputDto with valid data
         )
     ];
 
-    expect(count($inputDto->pendings))->toBe(count($expectedPendings));
+    expect(count($inputDto->pending))->toBe(count($expectedPendings));
 
-    foreach ($inputDto->pendings as $index => $pending) {
+    foreach ($inputDto->pending as $index => $pending) {
         expect($pending->type->value())->toBe($expectedPendings[$index]->type->value());
         expect($pending->description->value())->toBe($expectedPendings[$index]->description->value());
     }

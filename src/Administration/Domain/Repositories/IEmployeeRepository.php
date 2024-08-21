@@ -16,7 +16,7 @@ interface IEmployeeRepository
 
     public function create(Employee $employee): Employee;
 
-    public function update(Employee $employee): Employee;
+    public function update(Employee $employee): ?Employee;
 
     public function delete(int $id): void;
 

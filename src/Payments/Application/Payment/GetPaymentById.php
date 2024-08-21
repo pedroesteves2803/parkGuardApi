@@ -8,11 +8,11 @@ use Src\Payments\Domain\Entities\Payment;
 use Src\Payments\Domain\Repositories\IPaymentRepository;
 use Src\Shared\Utils\Notification;
 
-final class GetPaymentById
+final readonly class GetPaymentById
 {
     public function __construct(
-        readonly IPaymentRepository $paymentsRepository,
-        readonly Notification $notification,
+        public IPaymentRepository $paymentsRepository,
+        public Notification       $notification,
     ) {
     }
 
@@ -39,7 +39,7 @@ final class GetPaymentById
         );
 
         if (is_null($payment)) {
-            throw new \Exception('Pagamento não registrado!');
+            throw new \RuntimeException('Pagamento não registrado!');
         }
 
         return $payment;

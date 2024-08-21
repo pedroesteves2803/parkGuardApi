@@ -68,7 +68,7 @@ final class CreatePayment
         );
 
         if (is_null($getVehicleOutputDto->vehicle)) {
-            throw new \Exception('Veículo não cadastrado!');
+            throw new \RuntimeException('Veículo não cadastrado!');
         }
 
         return $getVehicleOutputDto->vehicle;
@@ -81,7 +81,7 @@ final class CreatePayment
         );
 
         if (is_null($exitVehicleOutputDto->vehicle)) {
-            throw new \Exception('Veículo não cadastrado!');
+            throw new \RuntimeException('Veículo não cadastrado!');
         }
 
         return $exitVehicleOutputDto->vehicle;
@@ -92,6 +92,10 @@ final class CreatePayment
 
         $entryTimes = $vehicle->entryTimes()->value();
         $departureTimes = $vehicle->departureTimes()->value();
+
+        if (is_null($departureTimes)) {
+            throw new \RuntimeException('Horário de partida não está definido!');
+        }
 
         $interval = $entryTimes->diff($departureTimes);
 

@@ -9,12 +9,12 @@ use Src\Payments\Domain\Entities\Payment;
 use Src\Payments\Domain\Repositories\IPaymentRepository;
 use Src\Shared\Utils\Notification;
 
-final class DeletePaymentById
+final readonly class DeletePaymentById
 {
     public function __construct(
-        readonly IPaymentRepository $paymentsRepository,
-        readonly GetPaymentById $getPaymentById,
-        readonly Notification $notification,
+        public IPaymentRepository $paymentsRepository,
+        public GetPaymentById     $getPaymentById,
+        public Notification       $notification,
     ) {
     }
 
@@ -25,7 +25,7 @@ final class DeletePaymentById
 
             $this->checkIfItHasAlreadyBeenPaid($payment);
 
-            $payment = $this->paymentsRepository->delete(
+            $this->paymentsRepository->delete(
                 $payment->id()
             );
 

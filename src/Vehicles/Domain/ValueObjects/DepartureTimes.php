@@ -7,7 +7,7 @@ use Src\Shared\Domain\ValueObjects\ValueObject;
 final class DepartureTimes extends ValueObject
 {
     public function __construct(
-        private ?\DateTime $value
+        private readonly ?\DateTime $value
     ) {
     }
 

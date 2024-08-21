@@ -5,10 +5,10 @@ namespace Src\Administration\Application\Employee\Dtos;
 use Src\Administration\Domain\Entities\Employee;
 use Src\Shared\Utils\Notification;
 
-final class PasswordResetEmployeeOutputDto
+final readonly class PasswordResetEmployeeOutputDto
 {
     public function __construct(
-        readonly ?Employee $employee,
-        readonly Notification $notification
+        public ?Employee    $employee,
+        public Notification $notification
     ) {}
 }

@@ -9,12 +9,12 @@ use Src\Payments\Domain\Entities\Payment;
 use Src\Payments\Domain\Repositories\IPaymentRepository;
 use Src\Shared\Utils\Notification;
 
-final class FinalizePayment
+final readonly class FinalizePayment
 {
     public function __construct(
-        readonly IPaymentRepository $paymentsRepository,
-        readonly GetPaymentById $getPaymentById,
-        readonly Notification $notification,
+        public IPaymentRepository $paymentsRepository,
+        public GetPaymentById     $getPaymentById,
+        public Notification       $notification,
     ) {
     }
 
@@ -43,7 +43,7 @@ final class FinalizePayment
         );
 
         if (is_null($getPaymentByIdOutputDto->payment)) {
-            throw new \Exception('Pagamento não cadastrado!');
+            throw new \RuntimeException('Pagamento não cadastrado!');
         }
 
         return $getPaymentByIdOutputDto->payment;
@@ -56,7 +56,7 @@ final class FinalizePayment
         );
 
         if (is_null($payment)) {
-            throw new \Exception('Pagamento já foi finalizado!');
+            throw new \RuntimeException('Pagamento já foi finalizado!');
         }
 
         return $payment;

@@ -2,13 +2,12 @@
 
 namespace Src\Administration\Application\Employee\Dtos;
 
-final class UpdateEmployeeInputDto
+final readonly class UpdateEmployeeInputDto
 {
     public function __construct(
-        readonly string $id,
-        readonly string $name,
-        readonly string $email,
-        // readonly string $password,
-        readonly int $type,
+        public string $id,
+        public string $name,
+        public string $email,
+        public int    $type,
     ) {}
 }

@@ -7,15 +7,15 @@ use Src\Shared\Domain\ValueObjects\ValueObject;
 final class Name extends ValueObject
 {
     public function __construct(
-        private string $name
+        private readonly string $name
     ) {
         $this->validate();
     }
 
-    public function validate()
+    public function validate(): void
     {
         if (empty($this->name)) {
-            throw new \Exception('Nome não pode estar vazio.');
+            throw new \RuntimeException('Nome não pode estar vazio.');
         }
     }
 

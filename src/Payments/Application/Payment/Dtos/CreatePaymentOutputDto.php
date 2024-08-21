@@ -5,11 +5,11 @@ namespace Src\Payments\Application\Payment\Dtos;
 use Src\Payments\Domain\Entities\Payment;
 use Src\Shared\Utils\Notification;
 
-final class CreatePaymentOutputDto
+final readonly class CreatePaymentOutputDto
 {
     public function __construct(
-        readonly ?Payment $payment,
-        readonly Notification $notification
+        public ?Payment     $payment,
+        public Notification $notification
     ) {
     }
 }

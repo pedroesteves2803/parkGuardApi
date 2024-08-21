@@ -69,7 +69,7 @@ class UpdateEmployeeResource extends JsonResource
         ];
     }
 
-    private function getStatus()
+    private function getStatus(): bool
     {
         return !$this->notification->hasErrors();
     }
@@ -79,12 +79,12 @@ class UpdateEmployeeResource extends JsonResource
         return $this->notification->getErrors();
     }
 
-    private function getMessage()
+    private function getMessage(): ?string
     {
         return empty($this->employee) ? null : $this->employee->name().' atualizado!';
     }
 
-    private function getEmployeeDetails()
+    private function getEmployeeDetails(): array
     {
         if (empty($this->employee)) {
             return [];

@@ -4,11 +4,11 @@ namespace Src\Administration\Application\Employee\Dtos;
 
 use Src\Shared\Utils\Notification;
 
-final class LogoutEmployeeOutputDto
+final readonly class LogoutEmployeeOutputDto
 {
     public function __construct(
-        readonly ?string $token,
-        readonly Notification $notification
+        public ?string      $token,
+        public Notification $notification
     ) {
     }
 }

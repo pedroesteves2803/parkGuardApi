@@ -14,12 +14,12 @@ class AuthResource extends JsonResource
         ];
     }
 
-    private function getStatus()
+    private function getStatus(): bool
     {
         return false;
     }
 
-    private function getMessage()
+    private function getMessage(): string
     {
         return 'token de autenticação esta incorreto!';
     }

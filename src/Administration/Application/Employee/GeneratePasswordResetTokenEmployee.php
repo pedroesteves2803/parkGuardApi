@@ -12,13 +12,13 @@ use Src\Administration\Domain\Services\ISendPasswordResetTokenService;
 use Src\Administration\Domain\ValueObjects\Email;
 use Src\Shared\Utils\Notification;
 
-final class GeneratePasswordResetTokenEmployee
+final readonly class GeneratePasswordResetTokenEmployee
 {
     public function __construct(
-        readonly IPasswordResetRepository $iPasswordResetRepository,
-        readonly IEmployeeRepository $iEmployeeRepository,
-        readonly ISendPasswordResetTokenService $iSendPasswordResetTokenService,
-        readonly Notification $notification,
+        public IPasswordResetRepository       $iPasswordResetRepository,
+        public IEmployeeRepository            $iEmployeeRepository,
+        public ISendPasswordResetTokenService $iSendPasswordResetTokenService,
+        public Notification                   $notification,
     ) {
     }
 
@@ -56,7 +56,7 @@ final class GeneratePasswordResetTokenEmployee
         );
 
         if (!$employee) {
-            throw new \Exception('Funcionário não existe!');
+            throw new \RuntimeException('Funcionário não existe!');
         }
 
         return $employee;

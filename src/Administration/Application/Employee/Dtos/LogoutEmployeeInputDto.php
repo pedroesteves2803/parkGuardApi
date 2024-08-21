@@ -2,10 +2,10 @@
 
 namespace Src\Administration\Application\Employee\Dtos;
 
-final class LogoutEmployeeInputDto
+final readonly class LogoutEmployeeInputDto
 {
     public function __construct(
-        readonly string $token,
+        public string $token,
     ) {
     }
 }

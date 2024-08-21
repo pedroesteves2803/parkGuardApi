@@ -2,9 +2,9 @@
 
 namespace Src\Administration\Application\Employee\Dtos;
 
-final class VerifyTokenPasswordResetInputDto
+final readonly class VerifyTokenPasswordResetInputDto
 {
     public function __construct(
-        readonly ?string $token,
+        public ?string $token,
     ) {}
 }

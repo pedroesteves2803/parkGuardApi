@@ -18,9 +18,7 @@ final class EloquentEmployeeRepository implements IEmployeeRepository
 {
     public function getAll(): ?Collection
     {
-        $employees = ModelsEmployee::orderBy('id', 'desc')->get();
-
-        $employees = $employees->map(function ($employee) {
+        return ModelsEmployee::orderBy('id', 'desc')->get()->map(function ($employee) {
             return new Employee(
                 $employee->id,
                 new Name($employee->name),
@@ -30,8 +28,6 @@ final class EloquentEmployeeRepository implements IEmployeeRepository
                 null
             );
         });
-
-        return $employees;
     }
 
     public function getById(int $id): ?Employee
@@ -71,7 +67,7 @@ final class EloquentEmployeeRepository implements IEmployeeRepository
         );
     }
 
-    public function update(Employee $employee): Employee
+    public function update(Employee $employee): ?Employee
     {
         $modelsEmployee = ModelsEmployee::find($employee->id());
 
@@ -123,7 +119,7 @@ final class EloquentEmployeeRepository implements IEmployeeRepository
         );
     }
 
-    public function updatePassword(PasswordResetToken $passwordResetToken, Employee $employee, Token $token): Employee
+    public function updatePassword(PasswordResetToken $passwordResetToken, Employee $employee, Token $token): ?Employee
     {
         $modelsPasswordResetToken = ModelsPasswordResetToken::where([
             'token' => $token->value(),

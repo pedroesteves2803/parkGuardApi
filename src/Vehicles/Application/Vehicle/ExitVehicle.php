@@ -8,11 +8,11 @@ use Src\Vehicles\Application\Vehicle\Dtos\ExitVehicleOutputDto;
 use Src\Vehicles\Domain\Repositories\IVehicleRepository;
 use Src\Vehicles\Domain\ValueObjects\LicensePlate;
 
-final class ExitVehicle
+final readonly class ExitVehicle
 {
     public function __construct(
-        readonly IVehicleRepository $iVehicleRepository,
-        readonly Notification $notification,
+        public IVehicleRepository $iVehicleRepository,
+        public Notification       $notification,
     ) {
     }
 
@@ -45,7 +45,7 @@ final class ExitVehicle
         );
 
         if (! $existVehicle) {
-            throw new \Exception('Veiculo não encontrado!');
+            throw new \RuntimeException('Veiculo não encontrado!');
         }
     }
 }

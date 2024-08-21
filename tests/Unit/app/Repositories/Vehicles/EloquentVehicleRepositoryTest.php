@@ -96,10 +96,10 @@ it('creates a new vehicle', function () {
     expect($createdVehicle->licensePlate()->value())->toBe($vehicleData->licensePlate()->value());
     $this->assertNull($createdVehicle->departureTimes()->value());
 
-    expect($createdVehicle->pendings())->toBeInstanceOf(Collection::class);
-    expect($createdVehicle->pendings())->toHaveCount(1);
-    expect($createdVehicle->pendings()[0]->type()->value())->toBe('Type 1');
-    expect($createdVehicle->pendings()[0]->description()->value())->toBe('Description 1');
+    expect($createdVehicle->pending())->toBeInstanceOf(Collection::class);
+    expect($createdVehicle->pending())->toHaveCount(1);
+    expect($createdVehicle->pending()[0]->type()->value())->toBe('Type 1');
+    expect($createdVehicle->pending()[0]->description()->value())->toBe('Description 1');
 });
 
 it('update a vehicle', function () {

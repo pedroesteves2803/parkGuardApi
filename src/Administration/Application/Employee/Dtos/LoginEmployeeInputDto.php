@@ -2,11 +2,11 @@
 
 namespace Src\Administration\Application\Employee\Dtos;
 
-final class LoginEmployeeInputDto
+final readonly class LoginEmployeeInputDto
 {
     public function __construct(
-        readonly string $email,
-        readonly string $password,
+        public string $email,
+        public string $password,
     ) {
     }
 }

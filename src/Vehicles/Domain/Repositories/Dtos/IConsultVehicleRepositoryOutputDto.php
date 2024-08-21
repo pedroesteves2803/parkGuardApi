@@ -2,14 +2,14 @@
 
 namespace Src\Vehicles\Domain\Repositories\Dtos;
 
-final class IConsultVehicleRepositoryOutputDto
+final readonly class IConsultVehicleRepositoryOutputDto
 {
     public function __construct(
-        readonly ?string $manufacturer,
-        readonly ?string $color,
-        readonly ?string $model,
-        readonly ?string $licensePlate,
-        readonly array $pendings,
+        public ?string $manufacturer,
+        public ?string $color,
+        public ?string $model,
+        public ?string $licensePlate,
+        public array   $pending,
     ) {
     }
 }

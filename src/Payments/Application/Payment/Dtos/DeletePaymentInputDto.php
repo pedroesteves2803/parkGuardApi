@@ -2,12 +2,10 @@
 
 namespace Src\Payments\Application\Payment\Dtos;
 
-use DateTime;
-
-final class DeletePaymentInputDto
+final readonly class DeletePaymentInputDto
 {
     public function __construct(
-        readonly int $id,
+        public int $id,
     ) {
     }
 }

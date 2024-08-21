@@ -47,7 +47,7 @@ class DeletePaymentByIdResource extends JsonResource
         ];
     }
 
-    private function getStatus()
+    private function getStatus(): bool
     {
         return !$this->notification->hasErrors();
     }
@@ -57,7 +57,7 @@ class DeletePaymentByIdResource extends JsonResource
         return $this->notification->getErrors();
     }
 
-    private function getMessage()
+    private function getMessage(): string
     {
         return 'Pagamento removido!';
     }

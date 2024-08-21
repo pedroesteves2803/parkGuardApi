@@ -14,7 +14,7 @@ use Src\Vehicles\Domain\ValueObjects\Model;
 
 class Vehicle extends Entity implements IAggregator
 {
-    private $pendings;
+    private Collection $pending;
 
     public function __construct(
         readonly private ?int $id,
@@ -25,7 +25,7 @@ class Vehicle extends Entity implements IAggregator
         readonly private EntryTimes $entryTimes,
         readonly private ?DepartureTimes $departureTimes,
     ) {
-        $this->pendings = new Collection();
+        $this->pending = new Collection();
     }
 
     public function id(): ?int
@@ -63,13 +63,13 @@ class Vehicle extends Entity implements IAggregator
         return $this->departureTimes;
     }
 
-    public function pendings(): Collection
+    public function pending(): Collection
     {
-        return $this->pendings;
+        return $this->pending;
     }
 
     public function addPending(Pending $pending): void
     {
-        $this->pendings->push($pending);
+        $this->pending->push($pending);
     }
 }

@@ -20,16 +20,16 @@ class LoginEmployeeService implements ILoginEmployeeService
         if ($token = JWTAuth::attempt($credentials)) {
             $employeeModel = Auth::user();
 
-            $employee = new Employee(
-                $employeeModel->id,
-                new Name($employeeModel->name),
-                new Email($employeeModel->email),
-                new Password($employeeModel->password),
-                new Type($employeeModel->type),
-                $token
-            );
-
-            return $employee;
+            if($employeeModel !== null){
+                return new Employee(
+                    $employeeModel->id,
+                    new Name($employeeModel->name),
+                    new Email($employeeModel->email),
+                    new Password($employeeModel->password),
+                    new Type($employeeModel->type),
+                    $token
+                );
+            }
         }
 
         return null;

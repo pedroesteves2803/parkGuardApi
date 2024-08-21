@@ -2,8 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\payment\CreateOrUpdatePaymentRequest;
-use App\Http\Requests\payment\CreatePaymentRequest;
+use App\Http\Requests\Payment\CreatePaymentRequest;
 use App\Http\Resources\Payment\CreatePaymentResource;
 use App\Http\Resources\Payment\DeletePaymentByIdResource;
 use App\Http\Resources\Payment\FinalizePaymentResource;
@@ -46,7 +45,8 @@ class PaymentController extends Controller
      */
     public function index(
         GetAllPayment $getAllPayment
-    ) {
+    ): GetAllPaymentsResource
+    {
         $output = $getAllPayment->execute();
 
         return new GetAllPaymentsResource($output);
@@ -84,7 +84,8 @@ class PaymentController extends Controller
     public function store(
         CreatePaymentRequest $request,
         CreatePayment $createPayment
-    ) {
+    ): CreatePaymentResource
+    {
         $createPaymentInputDto = new CreatePaymentInputDto(
             new DateTime(),
             $request->paymentMethod,
@@ -125,7 +126,8 @@ class PaymentController extends Controller
     public function show(
         int $id,
         GetPaymentById $getPaymentById
-    ) {
+    ): GetPaymentByIdResource
+    {
         $getPaymentByIdInputDto = new GetPaymentByIdInputDto($id);
 
         $getPaymentByIdOutputDto = $getPaymentById->execute($getPaymentByIdInputDto);
@@ -162,7 +164,8 @@ class PaymentController extends Controller
     public function finalize(
         int $id,
         FinalizePayment $finalizePayment
-    ) {
+    ): FinalizePaymentResource
+    {
         $finalizePaymentInputDto = new FinalizePaymentInputDto($id);
 
         $finalizePaymentOutputDto = $finalizePayment->execute($finalizePaymentInputDto);
@@ -199,7 +202,8 @@ class PaymentController extends Controller
     public function destroy(
         int $id,
         DeletePaymentById $deletePaymentById
-    ) {
+    ): DeletePaymentByIdResource
+    {
         $deletePaymentInputDto = new DeletePaymentInputDto($id);
 
         $deletePaymentOutputDto = $deletePaymentById->execute($deletePaymentInputDto);

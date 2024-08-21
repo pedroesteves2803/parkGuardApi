@@ -8,11 +8,11 @@ use Src\Administration\Domain\Entities\Employee;
 use Src\Administration\Domain\Repositories\IEmployeeRepository;
 use Src\Shared\Utils\Notification;
 
-final class GetEmployeeById
+final readonly class GetEmployeeById
 {
     public function __construct(
-        readonly IEmployeeRepository $iEmployeeRepository,
-        readonly Notification $notification,
+        public IEmployeeRepository $iEmployeeRepository,
+        public Notification        $notification,
     ) {
     }
 
@@ -37,7 +37,7 @@ final class GetEmployeeById
         $employee = $this->iEmployeeRepository->getById($input->id);
 
         if (is_null($employee)) {
-            throw new \Exception('Funcionario não encontrado!');
+            throw new \RuntimeException('Funcionario não encontrado!');
         }
 
         return $employee;

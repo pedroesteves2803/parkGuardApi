@@ -13,14 +13,14 @@ final class Email extends ValueObject
         $this->validate();
     }
 
-    public function validate()
+    public function validate(): void
     {
         if (empty($this->email)) {
-            throw new \Exception('Email não pode estar vazio.');
+            throw new \RuntimeException('Email não pode estar vazio.');
         }
 
         if (! filter_var($this->email, FILTER_VALIDATE_EMAIL)) {
-            throw new \Exception('Email não válido.');
+            throw new \RuntimeException('Email não válido.');
         }
     }
 

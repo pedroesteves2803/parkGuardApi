@@ -6,9 +6,9 @@ use Src\Shared\Domain\ValueObjects\ValueObject;
 
 final class LicensePlate extends ValueObject
 {
-    protected $brazilianStandard = '/^[A-Z]{3}\d{4}$/';
+    protected string $brazilianStandard = '/^[A-Z]{3}\d{4}$/';
 
-    protected $mercosurStandard = '/^[A-Z]{3}\d[A-Z]\d{2}$/';
+    protected string $mercosurStandard = '/^[A-Z]{3}\d[A-Z]\d{2}$/';
 
     public function __construct(
         private string $value
@@ -17,14 +17,14 @@ final class LicensePlate extends ValueObject
         $this->validate();
     }
 
-    public function validate()
+    public function validate(): void
     {
         if (empty($this->value)) {
-            throw new \Exception('Placa não pode estar vazia.');
+            throw new \RuntimeException('Placa não pode estar vazia.');
         }
 
         if (! preg_match($this->brazilianStandard, $this->value) && ! preg_match($this->mercosurStandard, $this->value)) {
-            throw new \Exception('Placa deve ser válida.');
+            throw new \RuntimeException('Placa deve ser válida.');
         }
     }
 

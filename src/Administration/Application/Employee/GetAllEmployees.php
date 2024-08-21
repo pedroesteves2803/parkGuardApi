@@ -7,11 +7,11 @@ use Src\Administration\Application\Employee\Dtos\GetAllEmployeesOutputDto;
 use Src\Administration\Domain\Repositories\IEmployeeRepository;
 use Src\Shared\Utils\Notification;
 
-final class GetAllEmployees
+final readonly class GetAllEmployees
 {
     public function __construct(
-        readonly IEmployeeRepository $iEmployeeRepository,
-        readonly Notification $notification,
+        public IEmployeeRepository $iEmployeeRepository,
+        public Notification        $notification,
     ) {
     }
 
@@ -36,7 +36,7 @@ final class GetAllEmployees
         $employees = $this->iEmployeeRepository->getAll();
 
         if (is_null($employees)) {
-            throw new \Exception('Não possui funcionarios!');
+            throw new \RuntimeException('Não possui funcionarios!');
         }
 
         return $employees;

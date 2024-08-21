@@ -8,11 +8,11 @@ use Src\Vehicles\Application\Vehicle\Dtos\GetVehicleOutputDto;
 use Src\Vehicles\Domain\Entities\Vehicle;
 use Src\Vehicles\Domain\Repositories\IVehicleRepository;
 
-final class GetVehicleById
+final readonly class GetVehicleById
 {
     public function __construct(
-        readonly IVehicleRepository $iVehicleRepository,
-        readonly Notification $notification,
+        public IVehicleRepository $iVehicleRepository,
+        public Notification       $notification,
     ) {
     }
 
@@ -20,13 +20,6 @@ final class GetVehicleById
     {
         try {
             $vehicle = $this->getVehicleById($input->id);
-
-            if ($vehicle instanceof Notification) {
-                return new GetVehicleOutputDto(
-                    null,
-                    $this->notification
-                );
-            }
 
             return new GetVehicleOutputDto($vehicle, $this->notification);
         } catch (\Exception $e) {
@@ -44,7 +37,7 @@ final class GetVehicleById
         $vehicle = $this->iVehicleRepository->getById($id);
 
         if (is_null($vehicle)) {
-            throw new \Exception('Veiculo não encontrado!');
+            throw new \RuntimeException('Veiculo não encontrado!');
         }
 
         return $vehicle;

@@ -56,9 +56,9 @@ test('should successfully query pending issues by license plate with data found'
         )
     ];
 
-    expect(count($outputDto->pendings))->toBe(count($expectedPendings));
+    expect(count($outputDto->pending))->toBe(count($expectedPendings));
 
-    foreach ($outputDto->pendings as $index => $pending) {
+    foreach ($outputDto->pending as $index => $pending) {
         expect($pending->type->value())->toBe($expectedPendings[$index]->type->value());
         expect($pending->description->value())->toBe($expectedPendings[$index]->description->value());
     }
@@ -108,9 +108,9 @@ test('should successfully query pending issues by license plate with no vehicle 
         )
     ];
 
-    expect(count($outputDto->pendings))->toBe(count($expectedPendings));
+    expect(count($outputDto->pending))->toBe(count($expectedPendings));
 
-    foreach ($outputDto->pendings as $index => $pending) {
+    foreach ($outputDto->pending as $index => $pending) {
         expect($pending->type->value())->toBe($expectedPendings[$index]->type->value());
         expect($pending->description->value())->toBe($expectedPendings[$index]->description->value());
     }

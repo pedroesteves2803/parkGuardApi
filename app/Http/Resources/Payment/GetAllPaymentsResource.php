@@ -91,12 +91,12 @@ class GetAllPaymentsResource extends JsonResource
         return $this->notification->getErrors();
     }
 
-    private function getMessage()
+    private function getMessage(): ?string
     {
         return empty($this->payments) ? null : 'Lista de pagamentos encontrada!';
     }
 
-    private function getPaymentsDetails()
+    private function getPaymentsDetails(): array
     {
         if (empty($this->payments)) {
             return [];

@@ -21,10 +21,10 @@ use Src\Vehicles\Domain\ValueObjects\Model;
 final class CreateVehicle
 {
     public function __construct(
-        private IVehicleRepository $vehicleRepository,
-        private ConsultPendingByLicensePlate $consultPendingByLicensePlate,
-        private ISendPendingNotificationService $sendPendingNotificationService,
-        private Notification $notification,
+        private readonly IVehicleRepository              $vehicleRepository,
+        private readonly ConsultPendingByLicensePlate    $consultPendingByLicensePlate,
+        private readonly ISendPendingNotificationService $sendPendingNotificationService,
+        private readonly Notification                    $notification,
     ) {
     }
 
@@ -33,7 +33,7 @@ final class CreateVehicle
         try {
             $this->assertVehicleDoesNotExist($input->licensePlate);
 
-            $consultOutputDto = $this->getPendingsForLicensePlate($input->licensePlate);
+            $consultOutputDto = $this->getPendingForLicensePlate($input->licensePlate);
 
             $vehicleEntity = $this->createVehicleEntity($consultOutputDto);
 
@@ -55,17 +55,17 @@ final class CreateVehicle
         $exists = $this->vehicleRepository->existVehicle(new LicensePlate($licensePlate));
 
         if ($exists) {
-            throw new \Exception('Placa já cadastrada!');
+            throw new \RuntimeException('Placa já cadastrada!');
         }
     }
 
-    private function getPendingsForLicensePlate(string $licensePlate): ConsultVehicleByLicensePlateOutputDto
+    private function getPendingForLicensePlate(string $licensePlate): ConsultVehicleByLicensePlateOutputDto
     {
         $consultInputDto = new ConsultVehicleByLicensePlateInputDto($licensePlate);
 
         $consultOutputDto = $this->consultPendingByLicensePlate->execute($consultInputDto);
 
-        $hasRestriction = ! empty(array_filter($consultOutputDto->pendings, function (Pending $pending) {
+        $hasRestriction = ! empty(array_filter($consultOutputDto->pending, static function (Pending $pending) {
             return !is_null($pending->description) && $pending->description->value() !== 'SEM RESTRICAO';
         }));
 
@@ -90,7 +90,7 @@ final class CreateVehicle
             null
         );
 
-        foreach ($consultOutputDto->pendings as $pending) {
+        foreach ($consultOutputDto->pending as $pending) {
             $vehicle->addPending($pending);
         }
 
@@ -99,10 +99,8 @@ final class CreateVehicle
 
     private function saveVehicle(Vehicle $vehicle): Vehicle
     {
-        $vehicle = $this->vehicleRepository->create(
+        return $this->vehicleRepository->create(
             $vehicle
         );
-
-        return $vehicle;
     }
 }

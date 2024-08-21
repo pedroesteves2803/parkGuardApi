@@ -77,7 +77,7 @@ class FinalizePaymentResource extends JsonResource
         ];
     }
 
-    private function getStatus()
+    private function getStatus(): bool
     {
         return !$this->notification->hasErrors();
     }
@@ -87,12 +87,12 @@ class FinalizePaymentResource extends JsonResource
         return $this->notification->getErrors();
     }
 
-    private function getMessage()
+    private function getMessage(): ?string
     {
         return empty($this->payment) ? null : 'Pagamento com o id: '.$this->payment->id().' finalizado!';
     }
 
-    private function getPaymentDetails()
+    private function getPaymentDetails(): array
     {
         if (empty($this->payment)) {
             return [];

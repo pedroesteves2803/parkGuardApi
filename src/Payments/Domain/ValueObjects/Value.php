@@ -9,12 +9,12 @@ final class Value extends ValueObject
     private const MIN_VALUE = 1;
 
     public function __construct(
-        private int $value
+        private readonly int $value
     ) {
         $this->validate();
     }
 
-    public function validate()
+    public function validate(): void
     {
         if ($this->value < self::MIN_VALUE) {
             throw new \OutOfRangeException('Valor deve ser pelo menos '.self::MIN_VALUE.'.');

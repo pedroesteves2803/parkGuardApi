@@ -13,11 +13,11 @@ use Src\Vehicles\Domain\ValueObjects\LicensePlate;
 use Src\Vehicles\Domain\ValueObjects\Manufacturer;
 use Src\Vehicles\Domain\ValueObjects\Model;
 
-final class UpdateVehicle
+final readonly class UpdateVehicle
 {
     public function __construct(
-        readonly IVehicleRepository $iVehicleRepository,
-        readonly Notification $notification,
+        public IVehicleRepository $iVehicleRepository,
+        public Notification       $notification,
     ) {
     }
 
@@ -54,7 +54,7 @@ final class UpdateVehicle
         $vehicle = $this->iVehicleRepository->getById($id);
 
         if (is_null($vehicle)) {
-            throw new \Exception('Veiculo não encontrado!');
+            throw new \RuntimeException('Veiculo não encontrado!');
         }
     }
 }

@@ -22,9 +22,7 @@ final class EloquentVehicleRepository implements IVehicleRepository
 {
     public function getAll(): ?Collection
     {
-        $vehicles = ModelsVehicle::orderBy('id', 'desc')->get();
-
-        $vehicles = $vehicles->map(function ($vehicle) {
+        return ModelsVehicle::orderBy('id', 'desc')->get()->map(function ($vehicle) {
             return new Vehicle(
                 $vehicle->id,
                 is_null($vehicle->manufacturer) ? null : new Manufacturer($vehicle->manufacturer),
@@ -35,8 +33,6 @@ final class EloquentVehicleRepository implements IVehicleRepository
                 new DepartureTimes($vehicle->departure_times)
             );
         });
-
-        return $vehicles;
     }
 
     public function getById(int $id): ?Vehicle
@@ -82,7 +78,7 @@ final class EloquentVehicleRepository implements IVehicleRepository
             )
         );
 
-        $vehicleEntity->pendings()->map(function (Pending $pendingItem) use ($modelsVehicle, $vehicle) {
+        $vehicleEntity->pending()->map(function (Pending $pendingItem) use ($modelsVehicle, $vehicle) {
             if (! is_null($pendingItem->description)) {
 
                 $modelsPending = new ModelsPending();
@@ -107,10 +103,6 @@ final class EloquentVehicleRepository implements IVehicleRepository
     public function update(Vehicle $vehicle): ?Vehicle
     {
         $modelsVehicle = ModelsVehicle::find($vehicle->id());
-
-        if (is_null($vehicle)) {
-            return null;
-        }
 
         if (! is_null($vehicle->manufacturer())) {
             $modelsVehicle->manufacturer = $vehicle->manufacturer();
@@ -143,9 +135,7 @@ final class EloquentVehicleRepository implements IVehicleRepository
 
     public function existVehicle(LicensePlate $licensePlate): bool
     {
-        $vehicle = ModelsVehicle::where(['license_plate' => $licensePlate, 'departure_times' => null])->exists();
-
-        return $vehicle;
+        return ModelsVehicle::where(['license_plate' => $licensePlate, 'departure_times' => null])->exists();
     }
 
     public function exit(LicensePlate $licensePlate): Vehicle

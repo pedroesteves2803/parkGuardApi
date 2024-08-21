@@ -67,7 +67,8 @@ class EmployeeController extends Controller
      */
     public function index(
         GetAllEmployees $getAllEmployees
-    ) {
+    ): GetAllEmployeesResource
+    {
         $output = $getAllEmployees->execute();
 
         return new GetAllEmployeesResource($output);
@@ -121,7 +122,8 @@ class EmployeeController extends Controller
     public function store(
         CreateEmployeeRequest $request,
         CreateEmployee $createEmployee
-    ) {
+    ): CreateEmployeeResource
+    {
 
         $inputDto = new CreateEmployeeInputDto(
             $request->name,
@@ -171,7 +173,8 @@ class EmployeeController extends Controller
     public function show(
         string $id,
         GetEmployeeById $getEmployeeById
-    ) {
+    ): GetEmployeeByIdResource
+    {
         $inputDto = new GetEmployeeByIdInputDto(
             $id,
         );
@@ -246,7 +249,8 @@ class EmployeeController extends Controller
         UpdateEmployeeRequest $request,
         string $id,
         UpdateEmployee $updateEmployee
-    ) {
+    ): UpdateEmployeeResource
+    {
         $inputDto = new UpdateEmployeeInputDto(
             $id,
             $request->name,
@@ -293,7 +297,8 @@ class EmployeeController extends Controller
     public function destroy(
         string $id,
         DeleteEmployeeById $deleteEmployeeById
-    ) {
+    ): DeleteEmployeeByIdResource
+    {
         $inputDto = new DeleteEmployeeByIdInputDto(
             $id,
         );
@@ -345,7 +350,8 @@ class EmployeeController extends Controller
     public function login(
         LoginEmployeeRequest $request,
         LoginEmployee $loginEmployee
-    ) {
+    ): LoginEmployeeResource
+    {
         $inputDto = new LoginEmployeeInputDto(
             $request->email,
             $request->password,
@@ -391,24 +397,22 @@ class EmployeeController extends Controller
     public function logout(
         LogoutEmployeeRequest $request,
         LogoutEmployee $logoutEmployee
-    ) {
+    ): LogoutEmployeeResource
+    {
         $inputDto = new LogoutEmployeeInputDto(
             $request->token
         );
 
         $outputDto = $logoutEmployee->execute($inputDto);
 
-        if ($outputDto) {
-            return new LogoutEmployeeResource($outputDto);
-        } else {
-            return new UnauthenticatedResource($outputDto);
-        }
+        return new LogoutEmployeeResource($outputDto);
     }
 
     public function passwordResetToken(
         passwordResetTokenRequest $request,
         GeneratePasswordResetTokenEmployee $generatePasswordResetTokenEmployee
-    ) {
+    ): PasswordResetTokenResource
+    {
         $inputDto = new GeneratePasswordResetTokenEmployeeInputDto(
             $request->email,
         );
@@ -421,7 +425,8 @@ class EmployeeController extends Controller
     public function verifyTokenPasswordReset(
         verifyTokenPasswordRequest $request,
         VerifyTokenPasswordReset $verifyTokenPasswordReset
-    ) {
+    ): VerifyTokenPasswordResetResource
+    {
 
         $inputDto = new VerifyTokenPasswordResetInputDto(
             $request->code,
@@ -435,7 +440,8 @@ class EmployeeController extends Controller
     public function passwordReset(
         passwordResetRequest $request,
         ResetPasswordEmployee $resetPasswordEmployee
-    ) {
+    ): PasswordResetResource
+    {
         $inputDto = new PasswordResetEmployeeInputDto(
             $request->password,
             $request->code,

@@ -7,11 +7,11 @@ use Src\Administration\Application\Employee\Dtos\LogoutEmployeeOutputDto;
 use Src\Administration\Domain\Services\ILoginEmployeeService;
 use Src\Shared\Utils\Notification;
 
-final class LogoutEmployee
+final readonly class LogoutEmployee
 {
     public function __construct(
-        readonly ILoginEmployeeService $iLoginEmployeeService,
-        readonly Notification $notification,
+        public ILoginEmployeeService $iLoginEmployeeService,
+        public Notification          $notification,
     ) {
     }
 

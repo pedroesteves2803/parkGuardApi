@@ -78,7 +78,7 @@ it('returns vehicle data with pendings when API response is successful', functio
         new Pending(null, new Type('Tipo 4'), new Description('SEM RESTRICAO')),
     ];
 
-    foreach ($outputDto->pendings as $index => $pending) {
+    foreach ($outputDto->pending as $index => $pending) {
         expect($pending->type->value())->toBe($expectedPendings[$index]->type->value());
         expect($pending->description->value())->toBe($expectedPendings[$index]->description->value());
     }
@@ -134,7 +134,7 @@ it('returns empty vehicle data when API request fails', function () {
     ];
 
 
-    foreach ($outputDto->pendings as $index => $pending) {
+    foreach ($outputDto->pending as $index => $pending) {
         expect($pending->type->value())->toBe($expectedPendings[$index]->type->value());
         expect($pending->description)->toBe($expectedPendings[$index]->description);
     }

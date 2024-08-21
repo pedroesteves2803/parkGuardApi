@@ -62,7 +62,7 @@ class GetPaymentByIdResource extends JsonResource
         return empty($this->payment) ? null : 'Pagamento com o id: '.$this->payment->id().' encontrado!';
     }
 
-    private function getPaymentDetails()
+    private function getPaymentDetails(): array
     {
         if (empty($this->payment)) {
             return [];

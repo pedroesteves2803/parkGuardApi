@@ -2,10 +2,10 @@
 
 namespace Src\Payments\Application\Payment\Dtos;
 
-final class GetPaymentByIdInputDto
+final readonly class GetPaymentByIdInputDto
 {
     public function __construct(
-        readonly int $id,
+        public int $id,
     ) {
     }
 }

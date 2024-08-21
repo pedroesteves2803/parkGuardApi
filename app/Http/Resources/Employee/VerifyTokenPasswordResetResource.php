@@ -17,7 +17,7 @@ class VerifyTokenPasswordResetResource extends JsonResource
         ];
     }
 
-    private function getStatus()
+    private function getStatus(): bool
     {
         return ! $this->notification->hasErrors();
     }
@@ -27,12 +27,12 @@ class VerifyTokenPasswordResetResource extends JsonResource
         return $this->notification->getErrors();
     }
 
-    private function getMessage()
+    private function getMessage(): ?string
     {
         return empty($this->passwordResetToken) ? null : 'Token validado!';
     }
 
-    private function getTokenDetails()
+    private function getTokenDetails(): array
     {
         if (empty($this->passwordResetToken)) {
             return [];

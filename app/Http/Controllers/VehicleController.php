@@ -48,7 +48,8 @@ class VehicleController extends Controller
      */
     public function index(
         GetAllVehicles $getAllVehicles
-    ) {
+    ): GetAllVehiclesResource
+    {
         $output = $getAllVehicles->execute();
 
         return new GetAllVehiclesResource($output);
@@ -86,7 +87,8 @@ class VehicleController extends Controller
     public function store(
         CreateVehicleRequest $request,
         CreateVehicle $createVehicle
-    ) {
+    ): CreateVehicleResource
+    {
         $createInputDto = new CreateVehicleInputDto(
             $request->licensePlate
         );
@@ -125,7 +127,8 @@ class VehicleController extends Controller
     public function show(
         int $id,
         GetVehicleById $getVehicleById
-    ) {
+    ): GetVehicleByIdResource
+    {
         $inputDto = new GetVehicleInputDto($id);
 
         $outputDto = $getVehicleById->execute($inputDto);
@@ -192,7 +195,8 @@ class VehicleController extends Controller
         UpdateVehicleRequest $request,
         int $id,
         UpdateVehicle $updateVehicle
-    ) {
+    ): UpdateVehicleResource
+    {
 
         $inputDto = new UpdateVehicleInputDto(
             $id,
@@ -239,7 +243,8 @@ class VehicleController extends Controller
     public function exit(
         ExitVehicleRequest $request,
         ExitVehicle $exitVehicle
-    ) {
+    ): ExitVehicleResource
+    {
         $inputDto = new ExitVehicleInputDto(
             new LicensePlate($request->licensePlate)
         );

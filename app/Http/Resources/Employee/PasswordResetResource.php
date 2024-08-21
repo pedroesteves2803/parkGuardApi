@@ -27,12 +27,12 @@ class PasswordResetResource extends JsonResource
         return $this->notification->getErrors();
     }
 
-    private function getMessage()
+    private function getMessage(): ?string
     {
         return empty($this->employee) ? null : 'senha atualizada!';
     }
 
-    private function getEmployeeDetails()
+    private function getEmployeeDetails(): array
     {
         if (empty($this->employee)) {
             return [];

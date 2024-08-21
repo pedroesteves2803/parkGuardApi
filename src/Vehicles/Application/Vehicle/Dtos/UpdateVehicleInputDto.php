@@ -2,14 +2,14 @@
 
 namespace Src\Vehicles\Application\Vehicle\Dtos;
 
-final class UpdateVehicleInputDto
+final readonly class UpdateVehicleInputDto
 {
     public function __construct(
-        readonly string $id,
-        readonly ?string $manufacturer,
-        readonly ?string $color,
-        readonly ?string $model,
-        readonly string $licensePlate,
+        public string  $id,
+        public ?string $manufacturer,
+        public ?string $color,
+        public ?string $model,
+        public string  $licensePlate,
     ) {
     }
 }

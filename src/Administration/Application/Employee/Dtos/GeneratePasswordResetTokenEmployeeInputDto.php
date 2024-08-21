@@ -2,10 +2,10 @@
 
 namespace Src\Administration\Application\Employee\Dtos;
 
-final class GeneratePasswordResetTokenEmployeeInputDto
+final readonly class GeneratePasswordResetTokenEmployeeInputDto
 {
     public function __construct(
-        readonly ?string $email,
+        public ?string $email,
     ) {
     }
 }

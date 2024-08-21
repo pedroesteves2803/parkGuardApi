@@ -17,7 +17,7 @@ class Vehicle extends Model
         'departure_times' => 'datetime',
     ];
 
-    public function pendings()
+    public function pendings(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
         return $this->hasMany(Pending::class);
     }

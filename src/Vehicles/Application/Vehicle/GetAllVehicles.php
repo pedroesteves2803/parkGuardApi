@@ -7,11 +7,11 @@ use Src\Shared\Utils\Notification;
 use Src\Vehicles\Application\Vehicle\Dtos\GetAllVehiclesOutputDto;
 use Src\Vehicles\Domain\Repositories\IVehicleRepository;
 
-final class GetAllVehicles
+final readonly class GetAllVehicles
 {
     public function __construct(
-        readonly IVehicleRepository $iVehicleRepository,
-        readonly Notification $notification,
+        public IVehicleRepository $iVehicleRepository,
+        public Notification       $notification,
     ) {
     }
 
@@ -36,7 +36,7 @@ final class GetAllVehicles
         $vehicles = $this->iVehicleRepository->getAll();
 
         if (is_null($vehicles)) {
-            throw new \Exception('Não possui veiculos!');
+            throw new \RuntimeException('Não possui veiculos!');
         }
 
         return $vehicles;

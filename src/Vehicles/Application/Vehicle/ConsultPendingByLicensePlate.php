@@ -9,11 +9,11 @@ use Src\Vehicles\Domain\Repositories\Dtos\IConsultVehicleRepositoryOutputDto;
 use Src\Vehicles\Domain\Repositories\IConsultVehicleRepository;
 use Src\Vehicles\Domain\ValueObjects\LicensePlate;
 
-final class ConsultPendingByLicensePlate
+final readonly class ConsultPendingByLicensePlate
 {
     public function __construct(
-        readonly IConsultVehicleRepository $consultVehicleRepository,
-        readonly Notification $notification,
+        public IConsultVehicleRepository $consultVehicleRepository,
+        public Notification              $notification,
     ) {
     }
 
@@ -26,17 +26,15 @@ final class ConsultPendingByLicensePlate
             $outputResolveConsultVehicle->color,
             $outputResolveConsultVehicle->model,
             $outputResolveConsultVehicle->licensePlate,
-            $outputResolveConsultVehicle->pendings,
+            $outputResolveConsultVehicle->pending,
             $this->notification
         );
     }
 
     public function resolveConsultVehicle(string $licensePlate): IConsultVehicleRepositoryOutputDto
     {
-        $outputResolveConsultVehicle = $this->consultVehicleRepository->consult(
+        return $this->consultVehicleRepository->consult(
             new LicensePlate($licensePlate)
         );
-
-        return $outputResolveConsultVehicle;
     }
 }

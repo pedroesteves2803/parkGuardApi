@@ -10,11 +10,11 @@ use Src\Administration\Domain\ValueObjects\Email;
 use Src\Administration\Domain\ValueObjects\Password;
 use Src\Shared\Utils\Notification;
 
-final class LoginEmployee
+final readonly class LoginEmployee
 {
     public function __construct(
-        readonly ILoginEmployeeService $iLoginEmployeeService,
-        readonly Notification $notification,
+        public ILoginEmployeeService $iLoginEmployeeService,
+        public Notification          $notification,
     ) {}
 
     public function execute(LoginEmployeeInputDto $input): LoginEmployeeOutputDto
@@ -41,7 +41,7 @@ final class LoginEmployee
         $employee = $this->iLoginEmployeeService->login($email, $password);
 
         if (is_null($employee)) {
-            throw new \Exception('Email ou senha incorretos!');
+            throw new \RuntimeException('Email ou senha incorretos!');
         }
 
         return $employee;

@@ -2,10 +2,10 @@
 
 namespace Src\Vehicles\Application\Vehicle\Dtos;
 
-final class ExitVehicleInputDto
+final readonly class ExitVehicleInputDto
 {
     public function __construct(
-        readonly string $licensePlate,
+        public string $licensePlate,
     ) {
     }
 }

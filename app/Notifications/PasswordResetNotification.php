@@ -12,7 +12,7 @@ class PasswordResetNotification extends Notification implements ShouldQueue
 {
     use Queueable;
 
-    protected $passwordResetToken;
+    protected PasswordResetToken $passwordResetToken;
 
     public function __construct(PasswordResetToken $passwordResetToken)
     {
@@ -28,7 +28,7 @@ class PasswordResetNotification extends Notification implements ShouldQueue
     /**
      * Get the mail representation of the notification.
      */
-    public function toMail(object $notifiable)
+    public function toMail(object $notifiable): PasswordResetMail
     {
         return (new PasswordResetMail($this->passwordResetToken));
     }
