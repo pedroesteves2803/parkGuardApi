@@ -2,6 +2,8 @@
 
 namespace Src\Vehicles\Application\Vehicle;
 
+use Exception;
+use RuntimeException;
 use Src\Shared\Utils\Notification;
 use Src\Vehicles\Application\Vehicle\Dtos\ExitVehicleInputDto;
 use Src\Vehicles\Application\Vehicle\Dtos\ExitVehicleOutputDto;
@@ -28,7 +30,7 @@ final readonly class ExitVehicle
 
             return new ExitVehicleOutputDto($vehicle, $this->notification);
 
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->notification->addError([
                 'context' => 'exit_vehicle',
                 'message' => $e->getMessage(),
@@ -45,7 +47,7 @@ final readonly class ExitVehicle
         );
 
         if (! $existVehicle) {
-            throw new \RuntimeException('Veiculo não encontrado!');
+            throw new RuntimeException('Veiculo não encontrado!');
         }
     }
 }

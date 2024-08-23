@@ -3,6 +3,8 @@
 namespace Src\Vehicles\Application\Vehicle;
 
 use DateTime;
+use Exception;
+use RuntimeException;
 use Src\Shared\Utils\Notification;
 use Src\Vehicles\Application\Vehicle\Dtos\ConsultVehicleByLicensePlateInputDto;
 use Src\Vehicles\Application\Vehicle\Dtos\ConsultVehicleByLicensePlateOutputDto;
@@ -18,13 +20,13 @@ use Src\Vehicles\Domain\ValueObjects\LicensePlate;
 use Src\Vehicles\Domain\ValueObjects\Manufacturer;
 use Src\Vehicles\Domain\ValueObjects\Model;
 
-final class CreateVehicle
+final readonly class CreateVehicle
 {
     public function __construct(
-        private readonly IVehicleRepository              $vehicleRepository,
-        private readonly ConsultPendingByLicensePlate    $consultPendingByLicensePlate,
-        private readonly ISendPendingNotificationService $sendPendingNotificationService,
-        private readonly Notification                    $notification,
+        private IVehicleRepository              $vehicleRepository,
+        private ConsultPendingByLicensePlate    $consultPendingByLicensePlate,
+        private ISendPendingNotificationService $sendPendingNotificationService,
+        private Notification                    $notification,
     ) {
     }
 
@@ -40,7 +42,7 @@ final class CreateVehicle
             $vehicle = $this->saveVehicle($vehicleEntity);
 
             return new CreateVehicleOutputDto($vehicle, $this->notification);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->notification->addError([
                 'context' => 'create_vehicle',
                 'message' => $e->getMessage(),
@@ -55,7 +57,7 @@ final class CreateVehicle
         $exists = $this->vehicleRepository->existVehicle(new LicensePlate($licensePlate));
 
         if ($exists) {
-            throw new \RuntimeException('Placa já cadastrada!');
+            throw new RuntimeException('Placa já cadastrada!');
         }
     }
 
