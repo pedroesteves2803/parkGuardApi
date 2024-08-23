@@ -2,6 +2,7 @@
 
 namespace App\Repositories\Vehicles;
 
+use Exception;
 use GuzzleHttp\Client;
 use Src\Vehicles\Domain\Entities\Pending;
 use Src\Vehicles\Domain\Repositories\Dtos\IConsultVehicleRepositoryOutputDto;
@@ -17,7 +18,7 @@ class ApiConsultVehicleRepository implements IConsultVehicleRepository
     public function __construct()
     {
         $options = [
-            'verify' => env('VERIFY_SSL') ?? true,
+            'verify' => config('park-guard.api_verify_ssl') ?? true,
         ];
 
         $this->client = new Client($options);
@@ -26,15 +27,15 @@ class ApiConsultVehicleRepository implements IConsultVehicleRepository
     public function consult(LicensePlate $licensePlate): IConsultVehicleRepositoryOutputDto
     {
         $headers = [
-            'Authorization' => env('API_TOKEN'),
+            'Authorization' => config('park-guard.api_token'),
             'Content-Type' => 'application/json',
-            'DeviceToken' => env('DEVICE_TOKEN'),
+            'DeviceToken' => config('park-guard.api_device_token'),
         ];
 
         $query = ['placa' => $licensePlate->value()];
 
         try {
-            $response = $this->client->request('POST', env('API_URL'), [
+            $response = $this->client->request('POST', config('park-guard.api_url'), [
                 'headers' => $headers,
                 'query' => $query,
             ]);
@@ -72,7 +73,7 @@ class ApiConsultVehicleRepository implements IConsultVehicleRepository
                 $licensePlate,
                 $pendings,
             );
-        } catch (\Exception $e) {
+        } catch (Exception) {
             return $this->getEmptyVehicleData($licensePlate);
         }
     }
