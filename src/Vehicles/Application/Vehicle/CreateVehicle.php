@@ -10,6 +10,7 @@ use Src\Vehicles\Application\Vehicle\Dtos\ConsultVehicleByLicensePlateInputDto;
 use Src\Vehicles\Application\Vehicle\Dtos\ConsultVehicleByLicensePlateOutputDto;
 use Src\Vehicles\Application\Vehicle\Dtos\CreateVehicleInputDto;
 use Src\Vehicles\Application\Vehicle\Dtos\CreateVehicleOutputDto;
+use Src\Vehicles\Application\Vehicle\Dtos\ExistVehicleInputDto;
 use Src\Vehicles\Domain\Entities\Pending;
 use Src\Vehicles\Domain\Entities\Vehicle;
 use Src\Vehicles\Domain\Services\ISendPendingNotificationService;
@@ -26,6 +27,7 @@ final readonly class CreateVehicle
         private IVehicleRepository              $vehicleRepository,
         private ConsultPendingByLicensePlate    $consultPendingByLicensePlate,
         private ISendPendingNotificationService $sendPendingNotificationService,
+        private ExistVehicleById                $existVehicleById,
         private Notification                    $notification,
     ) {
     }
@@ -33,7 +35,16 @@ final readonly class CreateVehicle
     public function execute(CreateVehicleInputDto $input): CreateVehicleOutputDto
     {
         try {
-            $this->assertVehicleDoesNotExist($input->licensePlate);
+
+            $resultExistVehicleById = $this->existVehicleById->execute(
+                new ExistVehicleInputDto(
+                    $input->licensePlate
+                )
+            );
+
+            if($resultExistVehicleById->exist){
+                return new CreateVehicleOutputDto(null, $resultExistVehicleById->notification);
+            }
 
             $consultOutputDto = $this->getPendingForLicensePlate($input->licensePlate);
 
@@ -49,15 +60,6 @@ final readonly class CreateVehicle
             ]);
 
             return new CreateVehicleOutputDto(null, $this->notification);
-        }
-    }
-
-    private function assertVehicleDoesNotExist(string $licensePlate): void
-    {
-        $exists = $this->vehicleRepository->existVehicle(new LicensePlate($licensePlate));
-
-        if ($exists) {
-            throw new RuntimeException('Placa já cadastrada!');
         }
     }
 

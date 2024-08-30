@@ -6,6 +6,7 @@ use Src\Vehicles\Application\Vehicle\ConsultPendingByLicensePlate;
 use Src\Vehicles\Application\Vehicle\CreateVehicle;
 use Src\Vehicles\Application\Vehicle\Dtos\CreateVehicleInputDto;
 use Src\Vehicles\Application\Vehicle\Dtos\CreateVehicleOutputDto;
+use Src\Vehicles\Application\Vehicle\ExistVehicleById;
 use Src\Vehicles\Domain\Entities\Pending;
 use Src\Vehicles\Domain\Entities\Vehicle;
 use Src\Vehicles\Domain\Repositories\Dtos\IConsultVehicleRepositoryOutputDto;
@@ -21,8 +22,9 @@ use Src\Vehicles\Domain\ValueObjects\Model;
 use Src\Vehicles\Domain\ValueObjects\Type;
 
 beforeEach(function () {
-    $this->repositoryVehicleMock = mock(IVehicleRepository::class);
-    $this->repositoryConsultMock = mock(IConsultVehicleRepository::class);
+    $this->repositoryVehicleMock = Mockery::mock(IVehicleRepository::class);
+    $this->repositoryConsultMock = Mockery::mock(IConsultVehicleRepository::class);
+    $this->notification = new Notification();
 });
 
 it('successfully creates a vehicle', function () {
@@ -70,47 +72,48 @@ it('successfully creates a vehicle', function () {
         $this->repositoryVehicleMock,
         new ConsultPendingByLicensePlate(
             $this->repositoryConsultMock,
-            new Notification()
+            $this->notification
         ),
         new SendPendingNotificationService(),
-        new Notification()
+        new ExistVehicleById(
+            $this->repositoryVehicleMock,
+            $this->notification
+        ),
+        $this->notification
     );
 
-    $inputDto = new CreateVehicleInputDto(
-        'ABC-1234',
-    );
-
+    $inputDto = new CreateVehicleInputDto('ABC-1234');
     $outputDto = $createVehicle->execute($inputDto);
 
-    expect($outputDto)->toBeInstanceOf(CreateVehicleOutputDto::class);
-    expect($outputDto->vehicle)->toBeInstanceOf(Vehicle::class);
-    expect($outputDto->notification->getErrors())->toBeEmpty();
+    expect($outputDto)->toBeInstanceOf(CreateVehicleOutputDto::class)
+        ->and($outputDto->vehicle)->toBeInstanceOf(Vehicle::class)
+        ->and($outputDto->notification->getErrors())->toBeEmpty();
 });
 
 it('fails to create a vehicle with existing license plate', function () {
     $this->repositoryVehicleMock->shouldReceive('existVehicle')->once()->andReturnTrue();
+
     $createVehicle = new CreateVehicle(
         $this->repositoryVehicleMock,
         new ConsultPendingByLicensePlate(
             $this->repositoryConsultMock,
-            new Notification()
+            $this->notification
         ),
         new SendPendingNotificationService(),
-        new Notification()
+        new ExistVehicleById(
+            $this->repositoryVehicleMock,
+            $this->notification
+        ),
+        $this->notification
     );
 
-    $inputDto = new CreateVehicleInputDto(
-        'ABC-1234',
-    );
-
+    $inputDto = new CreateVehicleInputDto('ABC-1234');
     $outputDto = $createVehicle->execute($inputDto);
 
-    expect($outputDto)->toBeInstanceOf(CreateVehicleOutputDto::class);
-    expect($outputDto->vehicle)->toBeNull();
-    expect($outputDto->notification->getErrors())->toBe([
-        [
-            'context' => 'create_vehicle',
+    expect($outputDto)->toBeInstanceOf(CreateVehicleOutputDto::class)
+        ->and($outputDto->vehicle)->toBeNull()
+        ->and($outputDto->notification->getErrors())->toContain([
+            'context' => 'exist_vehicle_by_id',
             'message' => 'Placa já cadastrada!',
-        ],
-    ]);
+        ]);
 });
