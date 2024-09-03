@@ -1,9 +1,8 @@
 <?php
 
-use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Collection;
 use Src\Shared\Utils\Notification;
 use Src\Vehicles\Application\Vehicle\Dtos\GetAllVehiclesOutputDto;
-use Src\Vehicles\Application\Vehicle\Dtos\GetVehicleOutputDto;
 use Src\Vehicles\Application\Vehicle\GetAllVehicles;
 use Src\Vehicles\Domain\Entities\Vehicle;
 use Src\Vehicles\Domain\Repositories\IVehicleRepository;
@@ -36,7 +35,7 @@ it('can retrieve all vehicles', function () {
                 new Color($color),
                 new Model($model),
                 new LicensePlate($licensePlate),
-                new EntryTimes(New DateTime()),
+                new EntryTimes(new DateTime()),
                 null
             )
         );
@@ -48,26 +47,28 @@ it('can retrieve all vehicles', function () {
 
     $outputDto = $getAllVehicles->execute();
 
-    expect($outputDto)->toBeInstanceOf(GetAllVehiclesOutputDto::class);
-    expect($outputDto->vehicles)->toBe($vehicles);
-    expect($outputDto->notification->getErrors())->toBeEmpty();
+    expect($outputDto)->toBeInstanceOf(GetAllVehiclesOutputDto::class)
+        ->and($outputDto->vehicles)->toBe($vehicles)
+        ->and($outputDto->notification->getErrors())->toBeEmpty();
 });
 
-it('returns error notification when trying to retrieve a non-existing vehicle', function () {
+it('returns error notification when there are no vehicles', function () {
     $notification = new Notification();
 
-    $this->repositoryMock->shouldReceive('getAll')->once()->andReturnNull();
+    $this->repositoryMock->shouldReceive('getAll')->once()->andReturn(new Collection());
 
     $getAllVehicles = new GetAllVehicles($this->repositoryMock, $notification);
 
     $outputDto = $getAllVehicles->execute();
 
-    expect($outputDto)->toBeInstanceOf(GetAllVehiclesOutputDto::class);
-    expect($outputDto->vehicles)->toBeNull();
-    expect($outputDto->notification->getErrors())->toBe([
-        [
-            'context' => 'get_all_vehicle',
-            'message' => 'Não possui veiculos!',
-        ],
-    ]);
+    expect($outputDto)->toBeInstanceOf(GetAllVehiclesOutputDto::class)
+        ->and($outputDto->vehicles)->toBeInstanceOf(Collection::class)
+        ->and($outputDto->vehicles->isEmpty())->toBeTrue()
+        ->and($outputDto->notification->getErrors())->toMatchArray([
+            [
+                'context' => 'get_all_vehicle',
+                'message' => 'Não possui veículos!',
+            ],
+        ]);
 });
+

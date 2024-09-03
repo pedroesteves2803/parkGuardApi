@@ -5,6 +5,7 @@ namespace Src\Vehicles\Domain\Entities;
 use Illuminate\Support\Collection;
 use Src\Shared\Domain\Entities\Entity;
 use Src\Shared\Domain\Entities\IAggregator;
+use Src\Vehicles\Application\Vehicle\Dtos\ConsultVehicleByLicensePlateOutputDto;
 use Src\Vehicles\Domain\ValueObjects\Color;
 use Src\Vehicles\Domain\ValueObjects\DepartureTimes;
 use Src\Vehicles\Domain\ValueObjects\EntryTimes;
@@ -17,14 +18,15 @@ class Vehicle extends Entity implements IAggregator
     private Collection $pending;
 
     public function __construct(
-        readonly private ?int $id,
-        readonly private ?Manufacturer $manufacturer,
-        readonly private ?Color $color,
-        readonly private ?Model $model,
-        readonly private LicensePlate $licensePlate,
-        readonly private EntryTimes $entryTimes,
+        readonly private ?int            $id,
+        readonly private ?Manufacturer   $manufacturer,
+        readonly private ?Color          $color,
+        readonly private ?Model          $model,
+        readonly private LicensePlate    $licensePlate,
+        readonly private EntryTimes      $entryTimes,
         readonly private ?DepartureTimes $departureTimes,
-    ) {
+    )
+    {
         $this->pending = new Collection();
     }
 
@@ -71,5 +73,12 @@ class Vehicle extends Entity implements IAggregator
     public function addPending(Pending $pending): void
     {
         $this->pending->push($pending);
+    }
+
+    public function hasRestrictions(): bool
+    {
+        return $this->pending->contains(function (Pending $pending) {
+            return !is_null($pending->description) && $pending->description->value() !== 'SEM RESTRICAO';
+        });
     }
 }

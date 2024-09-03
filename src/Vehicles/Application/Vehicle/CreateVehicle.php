@@ -4,22 +4,17 @@ namespace Src\Vehicles\Application\Vehicle;
 
 use DateTime;
 use Exception;
-use RuntimeException;
 use Src\Shared\Utils\Notification;
 use Src\Vehicles\Application\Vehicle\Dtos\ConsultVehicleByLicensePlateInputDto;
 use Src\Vehicles\Application\Vehicle\Dtos\ConsultVehicleByLicensePlateOutputDto;
 use Src\Vehicles\Application\Vehicle\Dtos\CreateVehicleInputDto;
 use Src\Vehicles\Application\Vehicle\Dtos\CreateVehicleOutputDto;
 use Src\Vehicles\Application\Vehicle\Dtos\ExistVehicleInputDto;
-use Src\Vehicles\Domain\Entities\Pending;
 use Src\Vehicles\Domain\Entities\Vehicle;
+use Src\Vehicles\Domain\Factory\VehicleFactory;
 use Src\Vehicles\Domain\Services\ISendPendingNotificationService;
 use Src\Vehicles\Domain\Repositories\IVehicleRepository;
-use Src\Vehicles\Domain\ValueObjects\Color;
-use Src\Vehicles\Domain\ValueObjects\EntryTimes;
-use Src\Vehicles\Domain\ValueObjects\LicensePlate;
-use Src\Vehicles\Domain\ValueObjects\Manufacturer;
-use Src\Vehicles\Domain\ValueObjects\Model;
+
 
 final readonly class CreateVehicle
 {
@@ -29,26 +24,37 @@ final readonly class CreateVehicle
         private ISendPendingNotificationService $sendPendingNotificationService,
         private ExistVehicleById                $existVehicleById,
         private Notification                    $notification,
+        private VehicleFactory                 $vehicleFactory
     ) {
     }
 
     public function execute(CreateVehicleInputDto $input): CreateVehicleOutputDto
     {
         try {
-
             $resultExistVehicleById = $this->existVehicleById->execute(
-                new ExistVehicleInputDto(
-                    $input->licensePlate
-                )
+                new ExistVehicleInputDto($input->licensePlate)
             );
 
-            if($resultExistVehicleById->exist){
+            if ($resultExistVehicleById->exist) {
                 return new CreateVehicleOutputDto(null, $resultExistVehicleById->notification);
             }
 
             $consultOutputDto = $this->getPendingForLicensePlate($input->licensePlate);
 
-            $vehicleEntity = $this->createVehicleEntity($consultOutputDto);
+            $vehicleEntity = $this->vehicleFactory->createWithPendings(
+                null,
+                $consultOutputDto->manufacturer,
+                $consultOutputDto->color,
+                $consultOutputDto->model,
+                $consultOutputDto->licensePlate,
+                new DateTime(),
+                null,
+                $consultOutputDto->pending
+            );
+
+            if ($vehicleEntity->hasRestrictions()) {
+                $this->sendPendingNotificationService->execute($vehicleEntity);
+            }
 
             $vehicle = $this->saveVehicle($vehicleEntity);
 
@@ -66,45 +72,11 @@ final readonly class CreateVehicle
     private function getPendingForLicensePlate(string $licensePlate): ConsultVehicleByLicensePlateOutputDto
     {
         $consultInputDto = new ConsultVehicleByLicensePlateInputDto($licensePlate);
-
-        $consultOutputDto = $this->consultPendingByLicensePlate->execute($consultInputDto);
-
-        $hasRestriction = ! empty(array_filter($consultOutputDto->pending, static function (Pending $pending) {
-            return !is_null($pending->description) && $pending->description->value() !== 'SEM RESTRICAO';
-        }));
-
-        if (!$hasRestriction) {
-            $this->sendPendingNotificationService->execute(
-                $this->createVehicleEntity($consultOutputDto)
-            );
-        }
-
-        return $consultOutputDto;
-    }
-
-    private function createVehicleEntity(ConsultVehicleByLicensePlateOutputDto $consultOutputDto): Vehicle
-    {
-        $vehicle = new Vehicle(
-            null,
-            is_null($consultOutputDto->manufacturer) ? $consultOutputDto->manufacturer : new Manufacturer($consultOutputDto->manufacturer),
-            is_null($consultOutputDto->color) ? $consultOutputDto->color : new Color($consultOutputDto->color),
-            is_null($consultOutputDto->model) ? $consultOutputDto->model : new Model($consultOutputDto->model),
-            new LicensePlate($consultOutputDto->licensePlate),
-            new EntryTimes(new DateTime()),
-            null
-        );
-
-        foreach ($consultOutputDto->pending as $pending) {
-            $vehicle->addPending($pending);
-        }
-
-        return $vehicle;
+        return $this->consultPendingByLicensePlate->execute($consultInputDto);
     }
 
     private function saveVehicle(Vehicle $vehicle): Vehicle
     {
-        return $this->vehicleRepository->create(
-            $vehicle
-        );
+        return $this->vehicleRepository->create($vehicle);
     }
 }

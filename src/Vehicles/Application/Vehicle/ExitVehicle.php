@@ -13,18 +13,29 @@ use Src\Vehicles\Domain\ValueObjects\LicensePlate;
 final readonly class ExitVehicle
 {
     public function __construct(
-        public IVehicleRepository $iVehicleRepository,
-        public Notification       $notification,
+        private IVehicleRepository $vehicleRepository ,
+        private Notification       $notification,
+        private ExistVehicleById   $existVehicleById
     ) {
     }
 
     public function execute(ExitVehicleInputDto $input): ExitVehicleOutputDto
     {
         try {
+            $vehicleExists = $this->existVehicleById->execute(
+                new ExitVehicleInputDto($input->licensePlate)
+            );
 
-            $this->assertVehicleDoesNotExist($input->licensePlate);
+            if (!$vehicleExists->exist) {
+                $this->notification->addError([
+                    'context' => 'exit_vehicle',
+                    'message' => 'Veículo não encontrado!',
+                ]);
 
-            $vehicle = $this->iVehicleRepository->exit(
+                return new ExitVehicleOutputDto(null, $this->notification);
+            }
+
+            $vehicle = $this->vehicleRepository->exit(
                 new LicensePlate($input->licensePlate),
             );
 
@@ -37,17 +48,6 @@ final readonly class ExitVehicle
             ]);
 
             return new ExitVehicleOutputDto(null, $this->notification);
-        }
-    }
-
-    private function assertVehicleDoesNotExist(string $licensePlate): void
-    {
-        $existVehicle = $this->iVehicleRepository->existVehicle(
-            new LicensePlate($licensePlate)
-        );
-
-        if (! $existVehicle) {
-            throw new RuntimeException('Veiculo não encontrado!');
         }
     }
 }

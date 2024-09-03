@@ -9,9 +9,11 @@ use Src\Vehicles\Application\Vehicle\Dtos\CreateVehicleOutputDto;
 use Src\Vehicles\Application\Vehicle\ExistVehicleById;
 use Src\Vehicles\Domain\Entities\Pending;
 use Src\Vehicles\Domain\Entities\Vehicle;
+use Src\Vehicles\Domain\Factory\VehicleFactory;
 use Src\Vehicles\Domain\Repositories\Dtos\IConsultVehicleRepositoryOutputDto;
 use Src\Vehicles\Domain\Repositories\IConsultVehicleRepository;
 use Src\Vehicles\Domain\Repositories\IVehicleRepository;
+use Src\Vehicles\Domain\Services\ISendPendingNotificationService;
 use Src\Vehicles\Domain\ValueObjects\Color;
 use Src\Vehicles\Domain\ValueObjects\DepartureTimes;
 use Src\Vehicles\Domain\ValueObjects\Description;
@@ -24,10 +26,12 @@ use Src\Vehicles\Domain\ValueObjects\Type;
 beforeEach(function () {
     $this->repositoryVehicleMock = Mockery::mock(IVehicleRepository::class);
     $this->repositoryConsultMock = Mockery::mock(IConsultVehicleRepository::class);
+    $this->sendPendingNotificationServiceMock = Mockery::mock(ISendPendingNotificationService::class);
     $this->notification = new Notification();
 });
 
 it('successfully creates a vehicle', function () {
+    $this->sendPendingNotificationServiceMock->shouldReceive('execute')->andReturn(null);
     $this->repositoryVehicleMock->shouldReceive('existVehicle')->once()->andReturnFalse();
     $this->repositoryConsultMock->shouldReceive('consult')->once()->andReturn(
         new IConsultVehicleRepositoryOutputDto(
@@ -74,12 +78,13 @@ it('successfully creates a vehicle', function () {
             $this->repositoryConsultMock,
             $this->notification
         ),
-        new SendPendingNotificationService(),
+        $this->sendPendingNotificationServiceMock,
         new ExistVehicleById(
             $this->repositoryVehicleMock,
             $this->notification
         ),
-        $this->notification
+        $this->notification,
+        new VehicleFactory()
     );
 
     $inputDto = new CreateVehicleInputDto('ABC-1234');
@@ -99,12 +104,13 @@ it('fails to create a vehicle with existing license plate', function () {
             $this->repositoryConsultMock,
             $this->notification
         ),
-        new SendPendingNotificationService(),
+        $this->sendPendingNotificationServiceMock,
         new ExistVehicleById(
             $this->repositoryVehicleMock,
             $this->notification
         ),
-        $this->notification
+        $this->notification,
+        new VehicleFactory()
     );
 
     $inputDto = new CreateVehicleInputDto('ABC-1234');

@@ -10,6 +10,7 @@ use Src\Payments\Domain\ValueObjects\PaymentMethod;
 use Src\Payments\Domain\ValueObjects\RegistrationTime;
 use Src\Payments\Domain\ValueObjects\Value;
 use Src\Shared\Utils\Notification;
+use Src\Vehicles\Application\Vehicle\ExistVehicleById;
 use Src\Vehicles\Application\Vehicle\ExitVehicle;
 use Src\Vehicles\Application\Vehicle\GetVehicleById;
 use Src\Vehicles\Domain\Entities\Vehicle;
@@ -62,7 +63,11 @@ it('successfully creates a payment', function () {
         ),
         new ExitVehicle(
             $this->repositoryVehicleMock,
-            new Notification()
+            new Notification(),
+            new ExistVehicleById(
+                $this->repositoryVehicleMock,
+                new Notification(),
+            )
         ),
         new Notification()
     );
@@ -75,9 +80,9 @@ it('successfully creates a payment', function () {
 
     $outputDto = $createPayment->execute($inputDto);
 
-    expect($outputDto)->toBeInstanceOf(CreatePaymentOutputDto::class);
-    expect($outputDto->payment)->toEqual($expectedPayment);
-    expect($outputDto->notification->getErrors())->toBeEmpty();
+    expect($outputDto)->toBeInstanceOf(CreatePaymentOutputDto::class)
+        ->and($outputDto->payment)->toEqual($expectedPayment)
+        ->and($outputDto->notification->getErrors())->toBeEmpty();
 });
 
 it('fails to create a payment with a non-existent vehicle - No vehicle found', function () {
@@ -91,7 +96,11 @@ it('fails to create a payment with a non-existent vehicle - No vehicle found', f
         ),
         new ExitVehicle(
             $this->repositoryVehicleMock,
-            new Notification()
+            new Notification(),
+            new ExistVehicleById(
+                $this->repositoryVehicleMock,
+                new Notification(),
+            )
         ),
         new Notification()
     );
@@ -104,14 +113,14 @@ it('fails to create a payment with a non-existent vehicle - No vehicle found', f
 
     $outputDto = $createPayment->execute($inputDto);
 
-    expect($outputDto)->toBeInstanceOf(CreatePaymentOutputDto::class);
-    expect($outputDto->payment)->toBeNull();
-    expect($outputDto->notification->getErrors())->toBe([
-        [
-            'context' => 'create_payment',
-            'message' => 'Veículo não cadastrado!',
-        ],
-    ]);
+    expect($outputDto)->toBeInstanceOf(CreatePaymentOutputDto::class)
+        ->and($outputDto->payment)->toBeNull()
+        ->and($outputDto->notification->getErrors())->toBe([
+            [
+                'context' => 'create_payment',
+                'message' => 'Veículo não cadastrado!',
+            ],
+        ]);
 });
 
 it('fails to create a payment with a non-existent vehicle - Vehicle not registered', function () {
@@ -136,7 +145,11 @@ it('fails to create a payment with a non-existent vehicle - Vehicle not register
         ),
         new ExitVehicle(
             $this->repositoryVehicleMock,
-            new Notification()
+            new Notification(),
+            new ExistVehicleById(
+                $this->repositoryVehicleMock,
+                new Notification(),
+            )
         ),
         new Notification()
     );
@@ -149,12 +162,12 @@ it('fails to create a payment with a non-existent vehicle - Vehicle not register
 
     $outputDto = $createPayment->execute($inputDto);
 
-    expect($outputDto)->toBeInstanceOf(CreatePaymentOutputDto::class);
-    expect($outputDto->payment)->toBeNull();
-    expect($outputDto->notification->getErrors())->toBe([
-        [
-            'context' => 'create_payment',
-            'message' => 'Veículo não cadastrado!',
-        ],
-    ]);
+    expect($outputDto)->toBeInstanceOf(CreatePaymentOutputDto::class)
+        ->and($outputDto->payment)->toBeNull()
+        ->and($outputDto->notification->getErrors())->toBe([
+            [
+                'context' => 'create_payment',
+                'message' => 'Veículo não cadastrado!',
+            ],
+        ]);
 });

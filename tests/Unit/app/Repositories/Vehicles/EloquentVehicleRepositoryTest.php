@@ -38,8 +38,8 @@ it('can get all vehicles', function () {
     $repository = new EloquentVehicleRepository();
     $vehicles = $repository->getAll();
 
-    expect($vehicles)->toBeInstanceOf(Collection::class);
-    expect($vehicles)->toHaveCount(2);
+    expect($vehicles)->toBeInstanceOf(Collection::class)
+        ->and($vehicles)->toHaveCount(2);
 });
 
 it('can get vehicle by id', function () {
@@ -56,14 +56,14 @@ it('can get vehicle by id', function () {
 
     $retrievedVehicle = $repository->getById($vehicle->id);
 
-    expect($retrievedVehicle)->toBeInstanceOf(Vehicle::class);
+    expect($retrievedVehicle)->toBeInstanceOf(Vehicle::class)
+        ->and($retrievedVehicle->id())->toBe($vehicle->id)
+        ->and($retrievedVehicle->manufacturer()->value())->toBe($vehicle->manufacturer)
+        ->and($retrievedVehicle->color()->value())->toBe($vehicle->color)
+        ->and($retrievedVehicle->model()->value())->toBe($vehicle->model)
+        ->and($retrievedVehicle->licensePlate()->value())->toBe($vehicle->license_plate)
+        ->and($retrievedVehicle->departureTimes())->toBe($vehicle->departure_times);
 
-    expect($retrievedVehicle->id())->toBe($vehicle->id);
-    expect($retrievedVehicle->manufacturer()->value())->toBe($vehicle->manufacturer);
-    expect($retrievedVehicle->color()->value())->toBe($vehicle->color);
-    expect($retrievedVehicle->model()->value())->toBe($vehicle->model);
-    expect($retrievedVehicle->licensePlate()->value())->toBe($vehicle->license_plate);
-    expect($retrievedVehicle->departureTimes())->toBe($vehicle->departure_times);
 });
 
 it('creates a new vehicle', function () {
@@ -90,16 +90,16 @@ it('creates a new vehicle', function () {
 
     expect($createdVehicle)->toBeInstanceOf(Vehicle::class);
     $this->assertNotNull($createdVehicle->id());
-    expect($createdVehicle->manufacturer()->value())->toBe($vehicleData->manufacturer()->value());
-    expect($createdVehicle->color()->value())->toBe($vehicleData->color()->value());
-    expect($createdVehicle->model()->value())->toBe($vehicleData->model()->value());
-    expect($createdVehicle->licensePlate()->value())->toBe($vehicleData->licensePlate()->value());
+    expect($createdVehicle->manufacturer()->value())->toBe($vehicleData->manufacturer()->value())
+        ->and($createdVehicle->color()->value())->toBe($vehicleData->color()->value())
+        ->and($createdVehicle->model()->value())->toBe($vehicleData->model()->value())
+        ->and($createdVehicle->licensePlate()->value())->toBe($vehicleData->licensePlate()->value());
     $this->assertNull($createdVehicle->departureTimes()->value());
 
-    expect($createdVehicle->pending())->toBeInstanceOf(Collection::class);
-    expect($createdVehicle->pending())->toHaveCount(1);
-    expect($createdVehicle->pending()[0]->type()->value())->toBe('Type 1');
-    expect($createdVehicle->pending()[0]->description()->value())->toBe('Description 1');
+    expect($createdVehicle->pending())->toBeInstanceOf(Collection::class)
+        ->and($createdVehicle->pending())->toHaveCount(1)
+        ->and($createdVehicle->pending()[0]->type()->value())->toBe('Type 1')
+        ->and($createdVehicle->pending()[0]->description()->value())->toBe('Description 1');
 });
 
 it('update a vehicle', function () {
@@ -127,10 +127,10 @@ it('update a vehicle', function () {
 
     expect($createdVehicle)->toBeInstanceOf(Vehicle::class);
     $this->assertNotNull($createdVehicle->id());
-    expect($createdVehicle->manufacturer()->value())->toBe($vehicleData->manufacturer()->value());
-    expect($createdVehicle->color()->value())->toBe($vehicleData->color()->value());
-    expect($createdVehicle->model()->value())->toBe($vehicleData->model()->value());
-    expect($createdVehicle->licensePlate()->value())->toBe($vehicleData->licensePlate()->value());
+    expect($createdVehicle->manufacturer()->value())->toBe($vehicleData->manufacturer()->value())
+        ->and($createdVehicle->color()->value())->toBe($vehicleData->color()->value())
+        ->and($createdVehicle->model()->value())->toBe($vehicleData->model()->value())
+        ->and($createdVehicle->licensePlate()->value())->toBe($vehicleData->licensePlate()->value());
     $this->assertNull($createdVehicle->departureTimes());
 });
 

@@ -5,6 +5,7 @@ use Src\Vehicles\Application\Vehicle\Dtos\UpdateVehicleInputDto;
 use Src\Vehicles\Application\Vehicle\Dtos\UpdateVehicleOutputDto;
 use Src\Vehicles\Application\Vehicle\UpdateVehicle;
 use Src\Vehicles\Domain\Entities\Vehicle;
+use Src\Vehicles\Domain\Factory\VehicleFactory;
 use Src\Vehicles\Domain\Repositories\IVehicleRepository;
 use Src\Vehicles\Domain\ValueObjects\Color;
 use Src\Vehicles\Domain\ValueObjects\DepartureTimes;
@@ -46,7 +47,7 @@ it('can update an existing vehicle with valid input', function () {
 
     $this->repositoryMock->shouldReceive('update')->once()->andReturn($vehicleUpdate);
 
-    $updateVehicle = new UpdateVehicle($this->repositoryMock, $notification);
+    $updateVehicle = new UpdateVehicle($this->repositoryMock, $notification, new VehicleFactory());
 
     $inputDto = new UpdateVehicleInputDto(
         $vehicleId,
@@ -58,9 +59,9 @@ it('can update an existing vehicle with valid input', function () {
 
     $outputDto = $updateVehicle->execute($inputDto);
 
-    expect($outputDto)->toBeInstanceOf(UpdateVehicleOutputDto::class);
-    expect($outputDto->vehicle)->toBe($vehicleUpdate);
-    expect($outputDto->notification->getErrors())->toBeEmpty();
+    expect($outputDto)->toBeInstanceOf(UpdateVehicleOutputDto::class)
+        ->and($outputDto->vehicle)->toBe($vehicleUpdate)
+        ->and($outputDto->notification->getErrors())->toBeEmpty();
 });
 
 it('returns error notification when trying to update an vehicle with non-existing ID', function () {
@@ -70,7 +71,7 @@ it('returns error notification when trying to update an vehicle with non-existin
 
     $this->repositoryMock->shouldReceive('getById')->once()->andReturnNull();
 
-    $updateVehicle = new UpdateVehicle($this->repositoryMock, $notification);
+    $updateVehicle = new UpdateVehicle($this->repositoryMock, $notification, new VehicleFactory());
 
     $inputDto = new UpdateVehicleInputDto(
         $vehicleId,
@@ -82,12 +83,12 @@ it('returns error notification when trying to update an vehicle with non-existin
 
     $outputDto = $updateVehicle->execute($inputDto);
 
-    expect($outputDto)->toBeInstanceOf(UpdateVehicleOutputDto::class);
-    expect($outputDto->vehicle)->toBeNull();
-    expect($outputDto->notification->getErrors())->toBe([
-        [
-            'context' => 'update_vehicle',
-            'message' => 'Veiculo não encontrado!',
-        ],
-    ]);
+    expect($outputDto)->toBeInstanceOf(UpdateVehicleOutputDto::class)
+        ->and($outputDto->vehicle)->toBeNull()
+        ->and($outputDto->notification->getErrors())->toBe([
+            [
+                'context' => 'update_vehicle',
+                'message' => 'Veiculo não encontrado!',
+            ],
+        ]);
 });
