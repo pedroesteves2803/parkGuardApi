@@ -8,7 +8,7 @@ use Src\Vehicles\Application\Vehicle\Dtos\ExistVehicleOutputDto;
 use Src\Vehicles\Domain\Repositories\IVehicleRepository;
 use Src\Vehicles\Domain\ValueObjects\LicensePlate;
 
-readonly class ExistVehicleById
+class ExistVehicleById
 {
     public function __construct(
         public IVehicleRepository $vehicleRepository,
@@ -26,7 +26,7 @@ readonly class ExistVehicleById
                 'message' => 'Placa já cadastrada!',
             ]);
 
-            return  new ExistVehicleOutputDto(
+            return new ExistVehicleOutputDto(
                 true,
                 $this->notification
             );
