@@ -27,6 +27,7 @@ final class CreatePayment
         readonly GetVehicleById $getVehicleById,
         readonly ExitVehicle $exitVehicle,
         readonly Notification $notification,
+        readonly CalculateValue $calculateValue
     ) {
     }
 
@@ -37,12 +38,12 @@ final class CreatePayment
 
             $exitVehicle = $this->exitVehicle($vehicle);
 
-            $calculateValue = $this->calculateValue($exitVehicle);
+            $calculateValue = $this->calculateValue->execute($exitVehicle);
 
             $payment = $this->paymentsRepository->create(
                 new Payment(
                     null,
-                    new Value($calculateValue),
+                    new Value($calculateValue->totalToPay),
                     new RegistrationTime($input->dateTime),
                     new PaymentMethod($input->paymentMethod),
                     false,
@@ -85,33 +86,5 @@ final class CreatePayment
         }
 
         return $exitVehicleOutputDto->vehicle;
-    }
-
-    private function calculateValue(Vehicle $vehicle): int
-    {
-
-        $entryTimes = $vehicle->entryTimes()->value();
-        $departureTimes = $vehicle->departureTimes()->value();
-
-        if (is_null($departureTimes)) {
-            throw new \RuntimeException('Horário de partida não está definido!');
-        }
-
-        $interval = $entryTimes->diff($departureTimes);
-
-        $hours = $interval->h;
-        $minutes = $interval->i;
-
-        if ($minutes > 0) {
-            $hours++;
-        }
-
-        if ($hours <= 1) {
-            $totalToPay = self::VALUE_HOUR;
-        } else {
-            $totalToPay = self::VALUE_HOUR + ($hours - 1) * self::MORE_THAN_AN_HOUR;
-        }
-
-        return $totalToPay;
     }
 }
