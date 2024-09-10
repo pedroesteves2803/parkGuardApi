@@ -22,7 +22,18 @@ final readonly class CreateEmployee
     public function execute(CreateEmployeeInputDto $input): CreateEmployeeOutputDto
     {
         try {
-            $this->assertExistEmployeeByEmail($input->email);
+            $existEmployee = $this->iEmployeeRepository->existByEmail(
+                new Email($input->email)
+            );
+
+            if ($existEmployee) {
+                $this->notification->addError([
+                    'context' => 'create_employee',
+                    'message' => 'Email já cadastrado!',
+                ]);
+
+                return new CreateEmployeeOutputDto(null, $this->notification);
+            }
 
             $employee = $this->iEmployeeRepository->create(
                 new Employee(
@@ -43,17 +54,6 @@ final readonly class CreateEmployee
             ]);
 
             return new CreateEmployeeOutputDto(null, $this->notification);
-        }
-    }
-
-    private function assertExistEmployeeByEmail(string $employeeEmail): void
-    {
-        $existEmployee = $this->iEmployeeRepository->existByEmail(
-            new Email($employeeEmail)
-        );
-
-        if ($existEmployee) {
-            throw new \RuntimeException('Email já cadastrado!');
         }
     }
 }
