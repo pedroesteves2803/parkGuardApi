@@ -5,6 +5,7 @@ namespace Src\Vehicles\Application\Vehicle;
 use Exception;
 use RuntimeException;
 use Src\Shared\Utils\Notification;
+use Src\Vehicles\Application\Vehicle\Dtos\ExistVehicleInputDto;
 use Src\Vehicles\Application\Vehicle\Dtos\ExitVehicleInputDto;
 use Src\Vehicles\Application\Vehicle\Dtos\ExitVehicleOutputDto;
 use Src\Vehicles\Domain\Repositories\IVehicleRepository;
@@ -23,7 +24,7 @@ final readonly class ExitVehicle
     {
         try {
             $vehicleExists = $this->existVehicleById->execute(
-                new ExitVehicleInputDto($input->licensePlate)
+                new ExistVehicleInputDto($input->licensePlate)
             );
 
             if (!$vehicleExists->exist) {
