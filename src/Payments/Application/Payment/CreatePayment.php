@@ -16,29 +16,37 @@ use Src\Vehicles\Application\Vehicle\ExitVehicle;
 use Src\Vehicles\Application\Vehicle\GetVehicleById;
 use Src\Vehicles\Domain\Entities\Vehicle;
 
-final class CreatePayment
+final readonly class CreatePayment
 {
-    private const VALUE_HOUR = 2000;
-
-    private const MORE_THAN_AN_HOUR = 1000;
-
     public function __construct(
-        readonly IPaymentRepository $paymentsRepository,
-        readonly GetVehicleById $getVehicleById,
-        readonly ExitVehicle $exitVehicle,
-        readonly Notification $notification,
-        readonly CalculateValue $calculateValue
+        public IPaymentRepository $paymentsRepository,
+        public GetVehicleById     $getVehicleById,
+        public ExitVehicle        $exitVehicle,
+        public Notification       $notification,
+        public CalculateValue     $calculateValue
     ) {
     }
 
     public function execute(CreatePaymentInputDto $input): CreatePaymentOutputDto
     {
         try {
-            $vehicle = $this->getVehicleById($input->vehicle_id);
+            $getVehicleOutputDto = $this->getVehicleById->execute(
+                new GetVehicleInputDto($input->vehicle_id)
+            );
 
-            $exitVehicle = $this->exitVehicle($vehicle);
+            if($getVehicleOutputDto->notification->hasErrors()){
+                return new CreatePaymentOutputDto(null, $getVehicleOutputDto->notification);
+            }
 
-            $calculateValue = $this->calculateValue->execute($exitVehicle);
+            $exitVehicleOutputDto = $this->exitVehicle->execute(
+                new ExitVehicleInputDto($getVehicleOutputDto->vehicle->licensePlate()->value())
+            );
+
+            if($exitVehicleOutputDto->notification->hasErrors()){
+                return new CreatePaymentOutputDto(null, $exitVehicleOutputDto->notification);
+            }
+
+            $calculateValue = $this->calculateValue->execute($exitVehicleOutputDto->vehicle);
 
             if(is_null($calculateValue->totalToPay)){
                 return new CreatePaymentOutputDto(null, $calculateValue->notification);
@@ -51,7 +59,7 @@ final class CreatePayment
                     new RegistrationTime($input->dateTime),
                     new PaymentMethod($input->paymentMethod),
                     false,
-                    $vehicle
+                    $exitVehicleOutputDto->vehicle
                 )
             );
 
@@ -64,31 +72,5 @@ final class CreatePayment
 
             return new CreatePaymentOutputDto(null, $this->notification);
         }
-    }
-
-    private function getVehicleById(string $vehicle_id): Vehicle
-    {
-        $getVehicleOutputDto = $this->getVehicleById->execute(
-            new GetVehicleInputDto($vehicle_id)
-        );
-
-        if (is_null($getVehicleOutputDto->vehicle)) {
-            throw new \RuntimeException('Veículo não cadastrado!');
-        }
-
-        return $getVehicleOutputDto->vehicle;
-    }
-
-    private function exitVehicle(Vehicle $vehicle): Vehicle
-    {
-        $exitVehicleOutputDto = $this->exitVehicle->execute(
-            new ExitVehicleInputDto($vehicle->licensePlate()->value())
-        );
-
-        if (is_null($exitVehicleOutputDto->vehicle)) {
-            throw new \RuntimeException('Veículo não cadastrado!');
-        }
-
-        return $exitVehicleOutputDto->vehicle;
     }
 }

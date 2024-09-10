@@ -2,6 +2,7 @@
 
 namespace Src\Payments\Application\Payment;
 
+use Src\Payments\Application\Payment\Dtos\DeletePaymentOutputDto;
 use Src\Payments\Application\Payment\Dtos\FinalizePaymentInputDto;
 use Src\Payments\Application\Payment\Dtos\FinalizePaymentOutputDto;
 use Src\Payments\Application\Payment\Dtos\GetPaymentByIdInputDto;
@@ -21,9 +22,26 @@ final readonly class FinalizePayment
     public function execute(FinalizePaymentInputDto $input): FinalizePaymentOutputDto
     {
         try {
-            $payment = $this->getPaymentById($input->id);
+            $getPaymentByIdOutputDto = $this->getPaymentById->execute(
+                new GetPaymentByIdInputDto($input->id)
+            );
 
-            $payment = $this->finalizePayment($payment);
+            if($getPaymentByIdOutputDto->notification->hasErrors()){
+                return new FinalizePaymentOutputDto(null, $getPaymentByIdOutputDto->notification);
+            }
+
+            $payment = $this->paymentsRepository->finalize(
+                $getPaymentByIdOutputDto->payment
+            );
+
+            if (is_null($payment)) {
+                $this->notification->addError([
+                    'context' => 'finalize_payment',
+                    'message' => 'Pagamento já foi finalizado!',
+                ]);
+
+                return new FinalizePaymentOutputDto(null, $this->notification);
+            }
 
             return new FinalizePaymentOutputDto($payment, $this->notification);
         } catch (\Exception $e) {
@@ -34,31 +52,5 @@ final readonly class FinalizePayment
 
             return new FinalizePaymentOutputDto(null, $this->notification);
         }
-    }
-
-    private function getPaymentById(int $id): Payment
-    {
-        $getPaymentByIdOutputDto = $this->getPaymentById->execute(
-            new GetPaymentByIdInputDto($id)
-        );
-
-        if (is_null($getPaymentByIdOutputDto->payment)) {
-            throw new \RuntimeException('Pagamento não cadastrado!');
-        }
-
-        return $getPaymentByIdOutputDto->payment;
-    }
-
-    private function finalizePayment(Payment $payment): Payment
-    {
-        $payment = $this->paymentsRepository->finalize(
-            $payment
-        );
-
-        if (is_null($payment)) {
-            throw new \RuntimeException('Pagamento já foi finalizado!');
-        }
-
-        return $payment;
     }
 }

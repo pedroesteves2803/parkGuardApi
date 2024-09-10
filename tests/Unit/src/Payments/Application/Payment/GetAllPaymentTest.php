@@ -2,15 +2,8 @@
 
 use DateTime as GlobalDateTime;
 use Illuminate\Support\Collection;
-use Src\Payments\Application\Payment\DeletePaymentById;
-use Src\Payments\Application\Payment\Dtos\DeletePaymentInputDto;
-use Src\Payments\Application\Payment\Dtos\DeletePaymentOutputDto;
-use Src\Payments\Application\Payment\Dtos\FinalizePaymentInputDto;
-use Src\Payments\Application\Payment\Dtos\FinalizePaymentOutputDto;
 use Src\Payments\Application\Payment\Dtos\GetAllPaymentsOutputDto;
-use Src\Payments\Application\Payment\FinalizePayment;
-use Src\Payments\Application\Payment\GetAllPayment;
-use Src\Payments\Application\Payment\GetPaymentById;
+use Src\Payments\Application\Payment\GetAllPayments;
 use Src\Payments\Domain\Entities\Payment;
 use Src\Payments\Domain\Repositories\IPaymentRepository;
 use Src\Payments\Domain\ValueObjects\PaymentMethod;
@@ -55,34 +48,34 @@ it('can retrieve all payments', function () {
 
     $this->repositoryPaymentMock->shouldReceive('getAll')->once()->andReturn($payments);
 
-    $getAllPayment = new GetAllPayment(
+    $getAllPayment = new GetAllPayments(
         $this->repositoryPaymentMock,
         new Notification()
     );
 
     $outputDto = $getAllPayment->execute();
 
-    expect($outputDto)->toBeInstanceOf(GetAllPaymentsOutputDto::class);
-    expect($outputDto->payments)->toBe($payments);
-    expect($outputDto->notification->getErrors())->toBeEmpty();
+    expect($outputDto)->toBeInstanceOf(GetAllPaymentsOutputDto::class)
+        ->and($outputDto->payments)->toBe($payments)
+        ->and($outputDto->notification->getErrors())->toBeEmpty();
 });
 
 it('returns error notification when there are no payments', function () {
     $this->repositoryPaymentMock->shouldReceive('getAll')->once()->andReturnNull();
 
-    $getAllPayment = new GetAllPayment(
+    $getAllPayment = new GetAllPayments(
         $this->repositoryPaymentMock,
         new Notification()
     );
 
     $outputDto = $getAllPayment->execute();
 
-    expect($outputDto)->toBeInstanceOf(GetAllPaymentsOutputDto::class);
-    expect($outputDto->payments)->toBeNull();
-    expect($outputDto->notification->getErrors())->toBe([
-        [
-            'context' => 'get_all_payments',
-            'message' => 'Não possui pagamentos!',
-        ],
-    ]);
+    expect($outputDto)->toBeInstanceOf(GetAllPaymentsOutputDto::class)
+        ->and($outputDto->payments)->toBeNull()
+        ->and($outputDto->notification->getErrors())->toBe([
+            [
+                'context' => 'get_all_payments',
+                'message' => 'Não possui pagamentos!',
+            ],
+        ]);
 });

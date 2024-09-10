@@ -7,7 +7,7 @@ use Src\Payments\Application\Payment\Dtos\GetAllPaymentsOutputDto;
 use Src\Payments\Domain\Repositories\IPaymentRepository;
 use Src\Shared\Utils\Notification;
 
-final readonly class GetAllPayment
+final readonly class GetAllPayments
 {
     public function __construct(
         public IPaymentRepository $paymentsRepository,
@@ -18,7 +18,16 @@ final readonly class GetAllPayment
     public function execute(): GetAllPaymentsOutputDto
     {
         try {
-            $payments = $this->getPayments();
+            $payments = $this->paymentsRepository->getAll();
+
+            if (is_null($payments)) {
+                $this->notification->addError([
+                    'context' => 'get_all_payments',
+                    'message' => 'Não possui pagamentos!',
+                ]);
+
+                return new GetAllPaymentsOutputDto(null, $this->notification);
+            }
 
             return new GetAllPaymentsOutputDto($payments, $this->notification);
         } catch (\Exception $e) {
@@ -29,16 +38,5 @@ final readonly class GetAllPayment
 
             return new GetAllPaymentsOutputDto(null, $this->notification);
         }
-    }
-
-    private function getPayments(): Collection
-    {
-        $payments = $this->paymentsRepository->getAll();
-
-        if (is_null($payments)) {
-            throw new \RuntimeException('Não possui pagamentos!');
-        }
-
-        return $payments;
     }
 }

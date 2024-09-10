@@ -19,7 +19,18 @@ final readonly class GetPaymentById
     public function execute(GetPaymentByIdInputDto $input): GetPaymentByIdOutputDto
     {
         try {
-            $payment = $this->getPaymentById($input->id);
+            $payment = $this->paymentsRepository->getById(
+                $input->id
+            );
+
+            if (is_null($payment)) {
+                $this->notification->addError([
+                    'context' => 'get_payment_by_id',
+                    'message' => 'Pagamento não registrado!',
+                ]);
+
+                return new GetPaymentByIdOutputDto(null, $this->notification);
+            }
 
             return new GetPaymentByIdOutputDto($payment, $this->notification);
         } catch (\Exception $e) {
@@ -32,16 +43,4 @@ final readonly class GetPaymentById
         }
     }
 
-    private function getPaymentById(int $id): Payment
-    {
-        $payment = $this->paymentsRepository->getById(
-            $id
-        );
-
-        if (is_null($payment)) {
-            throw new \RuntimeException('Pagamento não registrado!');
-        }
-
-        return $payment;
-    }
 }

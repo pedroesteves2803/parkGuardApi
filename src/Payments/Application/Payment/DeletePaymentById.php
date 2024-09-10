@@ -5,7 +5,6 @@ namespace Src\Payments\Application\Payment;
 use Src\Payments\Application\Payment\Dtos\DeletePaymentInputDto;
 use Src\Payments\Application\Payment\Dtos\DeletePaymentOutputDto;
 use Src\Payments\Application\Payment\Dtos\GetPaymentByIdInputDto;
-use Src\Payments\Domain\Entities\Payment;
 use Src\Payments\Domain\Repositories\IPaymentRepository;
 use Src\Shared\Utils\Notification;
 
@@ -21,9 +20,24 @@ final readonly class DeletePaymentById
     public function execute(DeletePaymentInputDto $input): DeletePaymentOutputDto
     {
         try {
-            $payment = $this->getPaymentById($input->id);
+            $getPaymentByIdOutputDto = $this->getPaymentById->execute(
+                new GetPaymentByIdInputDto($input->id)
+            );
 
-            $this->checkIfItHasAlreadyBeenPaid($payment);
+            if($getPaymentByIdOutputDto->notification->hasErrors()){
+                return new DeletePaymentOutputDto(null, $getPaymentByIdOutputDto->notification);
+            }
+
+            $payment = $getPaymentByIdOutputDto->payment;
+
+            if ($payment->paid()) {
+                $this->notification->addError([
+                    'context' => 'delete_payment',
+                    'message' => 'Este pagamento não pode ser excluído porque já foi registrado como pago.',
+                ]);
+
+                return new DeletePaymentOutputDto(null, $this->notification);
+            }
 
             $this->paymentsRepository->delete(
                 $payment->id()
@@ -40,23 +54,4 @@ final readonly class DeletePaymentById
         }
     }
 
-    private function getPaymentById(int $id): Payment
-    {
-        $getPaymentByIdOutputDto = $this->getPaymentById->execute(
-            new GetPaymentByIdInputDto($id)
-        );
-
-        if (is_null($getPaymentByIdOutputDto->payment)) {
-            throw new \Exception('Pagamento não registrado!');
-        }
-
-        return $getPaymentByIdOutputDto->payment;
-    }
-
-    private function checkIfItHasAlreadyBeenPaid(Payment $payment): void
-    {
-        if ($payment->paid()) {
-            throw new \Exception('Este pagamento não pode ser excluído porque já foi registrado como pago.');
-        }
-    }
 }

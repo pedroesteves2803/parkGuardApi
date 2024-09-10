@@ -17,7 +17,7 @@ use Src\Payments\Application\Payment\Dtos\DeletePaymentInputDto;
 use Src\Payments\Application\Payment\Dtos\FinalizePaymentInputDto;
 use Src\Payments\Application\Payment\Dtos\GetPaymentByIdInputDto;
 use Src\Payments\Application\Payment\FinalizePayment;
-use Src\Payments\Application\Payment\GetAllPayment;
+use Src\Payments\Application\Payment\GetAllPayments;
 use Src\Payments\Application\Payment\GetPaymentById;
 
 /**
@@ -44,10 +44,10 @@ class PaymentController extends Controller
      * )
      */
     public function index(
-        GetAllPayment $getAllPayment
+        GetAllPayments $getAllPayments
     ): GetAllPaymentsResource
     {
-        $output = $getAllPayment->execute();
+        $output = $getAllPayments->execute();
 
         return new GetAllPaymentsResource($output);
     }

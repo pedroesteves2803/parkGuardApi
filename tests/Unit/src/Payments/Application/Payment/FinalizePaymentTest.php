@@ -79,9 +79,9 @@ it('successfully finalize a payment', function () {
 
     $outputDto = $finalizePayment->execute($inputDto);
 
-    expect($outputDto)->toBeInstanceOf(FinalizePaymentOutputDto::class);
-    expect($outputDto->payment)->toBe($payment);
-    expect($outputDto->notification->getErrors())->toBeEmpty();
+    expect($outputDto)->toBeInstanceOf(FinalizePaymentOutputDto::class)
+        ->and($outputDto->payment)->toBe($payment)
+        ->and($outputDto->notification->getErrors())->toBeEmpty();
 });
 
 it('fails to finalize non-existent payment', function () {
@@ -102,14 +102,14 @@ it('fails to finalize non-existent payment', function () {
 
     $outputDto = $finalizePayment->execute($inputDto);
 
-    expect($outputDto)->toBeInstanceOf(FinalizePaymentOutputDto::class);
-    expect($outputDto->payment)->toBeNull();
-    expect($outputDto->notification->getErrors())->toBe([
-        [
-            'context' => 'finalize_payment',
-            'message' => 'Pagamento não cadastrado!',
-        ],
-    ]);
+    expect($outputDto)->toBeInstanceOf(FinalizePaymentOutputDto::class)
+        ->and($outputDto->payment)->toBeNull()
+        ->and($outputDto->notification->getErrors())->toBe([
+            [
+                'context' => 'get_payment_by_id',
+                'message' => 'Pagamento não registrado!',
+            ],
+        ]);
 });
 
 it('fails to delete payment already finalized', function () {

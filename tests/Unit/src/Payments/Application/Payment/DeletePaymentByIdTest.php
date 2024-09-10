@@ -65,9 +65,9 @@ it('successfully deletes a payment', function () {
 
     $outputDto = $deletePaymentById->execute($inputDto);
 
-    expect($outputDto)->toBeInstanceOf(DeletePaymentOutputDto::class);
-    expect($outputDto->payment)->toBeNull();
-    expect($outputDto->notification->getErrors())->toBeEmpty();
+    expect($outputDto)->toBeInstanceOf(DeletePaymentOutputDto::class)
+        ->and($outputDto->payment)->toBeNull()
+        ->and($outputDto->notification->getErrors())->toBeEmpty();
 });
 
 it('cannot delete a non-existent payment', function () {
@@ -89,14 +89,14 @@ it('cannot delete a non-existent payment', function () {
 
     $outputDto = $deletePaymentById->execute($inputDto);
 
-    expect($outputDto)->toBeInstanceOf(DeletePaymentOutputDto::class);
-    expect($outputDto->payment)->toBeNull();
-    expect($outputDto->notification->getErrors())->toBe([
-        [
-            'context' => 'delete_payment',
-            'message' => 'Pagamento não registrado!',
-        ],
-    ]);
+    expect($outputDto)->toBeInstanceOf(DeletePaymentOutputDto::class)
+        ->and($outputDto->payment)->toBeNull()
+        ->and($outputDto->notification->getErrors())->toBe([
+            [
+                'context' => 'get_payment_by_id',
+                'message' => 'Pagamento não registrado!',
+            ],
+        ]);
 });
 
 it('cannot delete a payment that has already been paid', function () {
@@ -137,12 +137,12 @@ it('cannot delete a payment that has already been paid', function () {
 
     $outputDto = $deletePaymentById->execute($inputDto);
 
-    expect($outputDto)->toBeInstanceOf(DeletePaymentOutputDto::class);
-    expect($outputDto->payment)->toBeNull();
-    expect($outputDto->notification->getErrors())->toBe([
-        [
-            'context' => 'delete_payment',
-            'message' => 'Este pagamento não pode ser excluído porque já foi registrado como pago.',
-        ],
-    ]);
+    expect($outputDto)->toBeInstanceOf(DeletePaymentOutputDto::class)
+        ->and($outputDto->payment)->toBeNull()
+        ->and($outputDto->notification->getErrors())->toBe([
+            [
+                'context' => 'delete_payment',
+                'message' => 'Este pagamento não pode ser excluído porque já foi registrado como pago.',
+            ],
+        ]);
 });

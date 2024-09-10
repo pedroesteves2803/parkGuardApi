@@ -124,8 +124,8 @@ it('fails to create a payment with a non-existent vehicle - No vehicle found', f
         ->and($outputDto->payment)->toBeNull()
         ->and($outputDto->notification->getErrors())->toBe([
             [
-                'context' => 'create_payment',
-                'message' => 'Veículo não cadastrado!',
+                "context" => "get_vehicle_by_id",
+                "message" => "Veiculo não encontrado!"
             ],
         ]);
 });
@@ -176,8 +176,8 @@ it('fails to create a payment with a non-existent vehicle - Vehicle not register
         ->and($outputDto->payment)->toBeNull()
         ->and($outputDto->notification->getErrors())->toBe([
             [
-                'context' => 'create_payment',
-                'message' => 'Veículo não cadastrado!',
+                "context" => "exit_vehicle",
+                "message" => "Veículo não encontrado!"
             ],
         ]);
 });
