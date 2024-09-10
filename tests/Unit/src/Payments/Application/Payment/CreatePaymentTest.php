@@ -1,6 +1,7 @@
 <?php
 
 use DateTime as GlobalDateTime;
+use Src\Payments\Application\Payment\CalculateValue;
 use Src\Payments\Application\Payment\CreatePayment;
 use Src\Payments\Application\Payment\Dtos\CreatePaymentInputDto;
 use Src\Payments\Application\Payment\Dtos\CreatePaymentOutputDto;
@@ -69,7 +70,10 @@ it('successfully creates a payment', function () {
                 new Notification(),
             )
         ),
-        new Notification()
+        new Notification(),
+        new CalculateValue(
+            new Notification(),
+        )
     );
 
     $inputDto = new CreatePaymentInputDto(
@@ -102,7 +106,10 @@ it('fails to create a payment with a non-existent vehicle - No vehicle found', f
                 new Notification(),
             )
         ),
-        new Notification()
+        new Notification(),
+        new CalculateValue(
+            new Notification(),
+        )
     );
 
     $inputDto = new CreatePaymentInputDto(
@@ -151,7 +158,10 @@ it('fails to create a payment with a non-existent vehicle - Vehicle not register
                 new Notification(),
             )
         ),
-        new Notification()
+        new Notification(),
+        new CalculateValue(
+            new Notification(),
+        )
     );
 
     $inputDto = new CreatePaymentInputDto(

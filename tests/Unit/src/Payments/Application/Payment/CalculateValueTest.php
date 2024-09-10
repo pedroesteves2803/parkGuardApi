@@ -31,7 +31,7 @@ it('successfully calculate value', function () {
     $outputDto = $calculateValue->execute($vehicle);
 
     expect($outputDto)->toBeInstanceOf(CalculateValueOutputDto::class)
-        ->and($outputDto->totalToPay)->toBe('2000')
+        ->and($outputDto->totalToPay)->toBe(2000)
         ->and($outputDto->notification->getErrors())->toBeEmpty();
 });
 

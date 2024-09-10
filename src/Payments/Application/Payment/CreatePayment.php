@@ -40,6 +40,10 @@ final class CreatePayment
 
             $calculateValue = $this->calculateValue->execute($exitVehicle);
 
+            if(is_null($calculateValue->totalToPay)){
+                return new CreatePaymentOutputDto(null, $calculateValue->notification);
+            }
+
             $payment = $this->paymentsRepository->create(
                 new Payment(
                     null,
