@@ -1,16 +1,10 @@
 <?php
 
-use Src\Administration\Application\Employee\Dtos\CreateEmployeeOutputDto;
-use Src\Administration\Application\Employee\Dtos\UpdateEmployeeOutputDto;
-use Src\Administration\Application\Employee\Dtos\VerifyTokenPasswordResetOutputDto;
-use Src\Administration\Domain\Entities\Employee;
+use Src\Administration\Application\Dtos\VerifyTokenPasswordResetOutputDto;
 use Src\Administration\Domain\Entities\PasswordResetToken;
 use Src\Administration\Domain\ValueObjects\Email;
 use Src\Administration\Domain\ValueObjects\ExpirationTime;
-use Src\Administration\Domain\ValueObjects\Name;
-use Src\Administration\Domain\ValueObjects\Password;
 use Src\Administration\Domain\ValueObjects\Token;
-use Src\Administration\Domain\ValueObjects\Type;
 use Src\Shared\Utils\Notification;
 
 it('can update an instance of VerifyTokenPasswordResetOutputDto with a valid employee', function () {

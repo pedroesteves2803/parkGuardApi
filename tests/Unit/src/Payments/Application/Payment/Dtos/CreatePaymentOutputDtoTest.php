@@ -1,6 +1,6 @@
 <?php
 
-use Src\Payments\Application\Payment\Dtos\CreatePaymentOutputDto;
+use Src\Payments\Application\Dtos\CreatePaymentOutputDto;
 use Src\Payments\Domain\Entities\Payment;
 use Src\Shared\Utils\Notification;
 

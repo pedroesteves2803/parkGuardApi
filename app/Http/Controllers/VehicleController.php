@@ -10,15 +10,15 @@ use App\Http\Resources\Vehicle\ExitVehicleResource;
 use App\Http\Resources\Vehicle\GetAllVehiclesResource;
 use App\Http\Resources\Vehicle\GetVehicleByIdResource;
 use App\Http\Resources\Vehicle\UpdateVehicleResource;
-use Src\Vehicles\Application\Vehicle\CreateVehicle;
-use Src\Vehicles\Application\Vehicle\Dtos\CreateVehicleInputDto;
-use Src\Vehicles\Application\Vehicle\Dtos\ExitVehicleInputDto;
-use Src\Vehicles\Application\Vehicle\Dtos\GetVehicleInputDto;
-use Src\Vehicles\Application\Vehicle\Dtos\UpdateVehicleInputDto;
-use Src\Vehicles\Application\Vehicle\ExitVehicle;
-use Src\Vehicles\Application\Vehicle\GetAllVehicles;
-use Src\Vehicles\Application\Vehicle\GetVehicleById;
-use Src\Vehicles\Application\Vehicle\UpdateVehicle;
+use Src\Vehicles\Application\Dtos\CreateVehicleInputDto;
+use Src\Vehicles\Application\Dtos\ExitVehicleInputDto;
+use Src\Vehicles\Application\Dtos\GetVehicleInputDto;
+use Src\Vehicles\Application\Dtos\UpdateVehicleInputDto;
+use Src\Vehicles\Application\Usecase\CreateVehicle;
+use Src\Vehicles\Application\Usecase\ExitVehicle;
+use Src\Vehicles\Application\Usecase\GetAllVehicles;
+use Src\Vehicles\Application\Usecase\GetVehicleById;
+use Src\Vehicles\Application\Usecase\UpdateVehicle;
 use Src\Vehicles\Domain\ValueObjects\LicensePlate;
 
 /**

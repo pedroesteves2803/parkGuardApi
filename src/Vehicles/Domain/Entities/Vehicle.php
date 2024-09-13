@@ -5,7 +5,7 @@ namespace Src\Vehicles\Domain\Entities;
 use Illuminate\Support\Collection;
 use Src\Shared\Domain\Entities\Entity;
 use Src\Shared\Domain\Entities\IAggregator;
-use Src\Vehicles\Application\Vehicle\Dtos\ConsultVehicleByLicensePlateOutputDto;
+use Src\Vehicles\Domain\Repositories\IVehicleRepository;
 use Src\Vehicles\Domain\ValueObjects\Color;
 use Src\Vehicles\Domain\ValueObjects\DepartureTimes;
 use Src\Vehicles\Domain\ValueObjects\EntryTimes;
@@ -80,5 +80,10 @@ class Vehicle extends Entity implements IAggregator
         return $this->pending->contains(function (Pending $pending) {
             return !is_null($pending->description) && $pending->description->value() !== 'SEM RESTRICAO';
         });
+    }
+
+    public function exists(IVehicleRepository $vehicleRepository): bool
+    {
+        return $vehicleRepository->existVehicle($this->licensePlate);
     }
 }

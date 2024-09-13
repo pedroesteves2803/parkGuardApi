@@ -1,6 +1,6 @@
 <?php
 
-use Src\Payments\Application\Payment\Dtos\CreatePaymentInputDto;
+use Src\Payments\Application\Dtos\CreatePaymentInputDto;
 
 it('can create an instance of CreatePaymentInputDto with valid data', function () {
     $dateTime = now();

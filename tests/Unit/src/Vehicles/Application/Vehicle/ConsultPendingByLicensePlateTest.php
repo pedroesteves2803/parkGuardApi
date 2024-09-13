@@ -1,9 +1,9 @@
 <?php
 
 use Src\Shared\Utils\Notification;
-use Src\Vehicles\Application\Vehicle\ConsultPendingByLicensePlate;
-use Src\Vehicles\Application\Vehicle\Dtos\ConsultVehicleByLicensePlateInputDto;
-use Src\Vehicles\Application\Vehicle\Dtos\ConsultVehicleByLicensePlateOutputDto;
+use Src\Vehicles\Application\Dtos\ConsultVehicleByLicensePlateInputDto;
+use Src\Vehicles\Application\Dtos\ConsultVehicleByLicensePlateOutputDto;
+use Src\Vehicles\Application\Usecase\ConsultPendingByLicensePlate;
 use Src\Vehicles\Domain\Entities\Pending;
 use Src\Vehicles\Domain\Repositories\Dtos\IConsultVehicleRepositoryOutputDto;
 use Src\Vehicles\Domain\Repositories\IConsultVehicleRepository;

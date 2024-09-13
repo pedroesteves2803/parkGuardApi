@@ -1,6 +1,6 @@
 <?php
 
-use Src\Vehicles\Application\Vehicle\Dtos\ConsultVehicleByLicensePlateInputDto;
+use Src\Vehicles\Application\Dtos\ConsultVehicleByLicensePlateInputDto;
 
 it('can create an instance of ConsultVehicleByLicensePlateInputDto with valid data', function () {
     $inputDto = new ConsultVehicleByLicensePlateInputDto(

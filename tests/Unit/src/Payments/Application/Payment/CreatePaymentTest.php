@@ -1,21 +1,20 @@
 <?php
 
 use DateTime as GlobalDateTime;
-use Src\Payments\Application\Payment\CalculateValue;
-use Src\Payments\Application\Payment\CreatePayment;
-use Src\Payments\Application\Payment\Dtos\CreatePaymentInputDto;
-use Src\Payments\Application\Payment\Dtos\CreatePaymentOutputDto;
+use Src\Payments\Application\Dtos\CreatePaymentInputDto;
+use Src\Payments\Application\Dtos\CreatePaymentOutputDto;
+use Src\Payments\Application\Usecase\CalculateValue;
+use Src\Payments\Application\Usecase\CreatePayment;
 use Src\Payments\Domain\Entities\Payment;
 use Src\Payments\Domain\Repositories\IPaymentRepository;
 use Src\Payments\Domain\ValueObjects\PaymentMethod;
 use Src\Payments\Domain\ValueObjects\RegistrationTime;
 use Src\Payments\Domain\ValueObjects\Value;
 use Src\Shared\Utils\Notification;
-use Src\Vehicles\Application\Vehicle\ExistVehicleById;
-use Src\Vehicles\Application\Vehicle\ExitVehicle;
-use Src\Vehicles\Application\Vehicle\GetVehicleById;
+use Src\Vehicles\Application\Dtos\ExitVehicleOutputDto;
+use Src\Vehicles\Application\Dtos\GetVehicleOutputDto;
 use Src\Vehicles\Domain\Entities\Vehicle;
-use Src\Vehicles\Domain\Repositories\IVehicleRepository;
+use Src\Vehicles\Domain\Service\IVehicleService;
 use Src\Vehicles\Domain\ValueObjects\Color;
 use Src\Vehicles\Domain\ValueObjects\DepartureTimes;
 use Src\Vehicles\Domain\ValueObjects\EntryTimes;
@@ -25,7 +24,7 @@ use Src\Vehicles\Domain\ValueObjects\Model;
 
 beforeEach(function () {
     $this->repositoryPaymentMock = mock(IPaymentRepository::class);
-    $this->repositoryVehicleMock = mock(IVehicleRepository::class);
+    $this->vehicleServiceMock = mock(IVehicleService::class);
 });
 
 it('successfully creates a payment', function () {
@@ -39,9 +38,11 @@ it('successfully creates a payment', function () {
         new DepartureTimes(new GlobalDateTime('2024-06-02 08:00:00')),
     );
 
-    $this->repositoryVehicleMock->shouldReceive('getById')->once()->andReturn($vehicle);
-    $this->repositoryVehicleMock->shouldReceive('existVehicle')->once()->andReturnTrue();
-    $this->repositoryVehicleMock->shouldReceive('exit')->once()->andReturn($vehicle);
+    $getVehicleOutputDto = new GetVehicleOutputDto($vehicle, new Notification());
+    $this->vehicleServiceMock->shouldReceive('getVehicleById')->once()->andReturn($getVehicleOutputDto);
+
+    $exitVehicleOutputDto = new ExitVehicleOutputDto($vehicle, new Notification());
+    $this->vehicleServiceMock->shouldReceive('exitVehicle')->once()->andReturn($exitVehicleOutputDto);
 
     $expectedPayment = new Payment(
         1,
@@ -51,6 +52,7 @@ it('successfully creates a payment', function () {
         false,
         $vehicle
     );
+
     $this->repositoryPaymentMock
         ->shouldReceive('create')
         ->once()
@@ -58,22 +60,9 @@ it('successfully creates a payment', function () {
 
     $createPayment = new CreatePayment(
         $this->repositoryPaymentMock,
-        new GetVehicleById(
-            $this->repositoryVehicleMock,
-            new Notification()
-        ),
-        new ExitVehicle(
-            $this->repositoryVehicleMock,
-            new Notification(),
-            new ExistVehicleById(
-                $this->repositoryVehicleMock,
-                new Notification(),
-            )
-        ),
         new Notification(),
-        new CalculateValue(
-            new Notification(),
-        )
+        new CalculateValue(new Notification()),
+        $this->vehicleServiceMock
     );
 
     $inputDto = new CreatePaymentInputDto(
@@ -90,26 +79,23 @@ it('successfully creates a payment', function () {
 });
 
 it('fails to create a payment with a non-existent vehicle - No vehicle found', function () {
-    $this->repositoryVehicleMock->shouldReceive('getById')->once()->andReturnNull();
+    $notification = new Notification();
+    $notification->addError([
+        'context' => 'get_vehicle_by_id',
+        'message' => 'Veiculo não encontrado!',
+    ]);
+
+    $getVehicleOutputDto = new GetVehicleOutputDto(null, $notification);
+
+    $this->vehicleServiceMock->shouldReceive('getVehicleById')
+        ->once()
+        ->andReturn($getVehicleOutputDto);
 
     $createPayment = new CreatePayment(
         $this->repositoryPaymentMock,
-        new GetVehicleById(
-            $this->repositoryVehicleMock,
-            new Notification()
-        ),
-        new ExitVehicle(
-            $this->repositoryVehicleMock,
-            new Notification(),
-            new ExistVehicleById(
-                $this->repositoryVehicleMock,
-                new Notification(),
-            )
-        ),
         new Notification(),
-        new CalculateValue(
-            new Notification(),
-        )
+        new CalculateValue(new Notification()),
+        $this->vehicleServiceMock
     );
 
     $inputDto = new CreatePaymentInputDto(
@@ -138,30 +124,27 @@ it('fails to create a payment with a non-existent vehicle - Vehicle not register
         new Model('Corolla'),
         new LicensePlate('ABC-1234'),
         new EntryTimes(new GlobalDateTime('2024-05-12 08:00:00')),
-        new DepartureTimes(new GlobalDateTime('2024-06-02 08:00:00')),
+        new DepartureTimes(new GlobalDateTime('2024-06-02 08:00:00'))
     );
 
-    $this->repositoryVehicleMock->shouldReceive('getById')->once()->andReturn($vehicle);
-    $this->repositoryVehicleMock->shouldReceive('existVehicle')->once()->andReturnFalse();
+    $notification = new Notification();
+
+    $this->vehicleServiceMock->shouldReceive('getVehicleById')
+        ->once()
+        ->andReturn(
+            new GetVehicleOutputDto($vehicle, $notification)
+        );
+
+    $notification->addError([
+        'context' => 'exit_vehicle',
+        'message' => 'Veículo não encontrado!',
+    ]);
 
     $createPayment = new CreatePayment(
         $this->repositoryPaymentMock,
-        new GetVehicleById(
-            $this->repositoryVehicleMock,
-            new Notification()
-        ),
-        new ExitVehicle(
-            $this->repositoryVehicleMock,
-            new Notification(),
-            new ExistVehicleById(
-                $this->repositoryVehicleMock,
-                new Notification(),
-            )
-        ),
         new Notification(),
-        new CalculateValue(
-            new Notification(),
-        )
+        new CalculateValue(new Notification()),
+        $this->vehicleServiceMock
     );
 
     $inputDto = new CreatePaymentInputDto(

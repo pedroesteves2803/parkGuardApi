@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Collection;
-use Src\Payments\Application\Payment\Dtos\GetAllPaymentsOutputDto;
+use Src\Payments\Application\Dtos\GetAllPaymentsOutputDto;
 use Src\Payments\Domain\Entities\Payment;
 use Src\Shared\Utils\Notification;
 

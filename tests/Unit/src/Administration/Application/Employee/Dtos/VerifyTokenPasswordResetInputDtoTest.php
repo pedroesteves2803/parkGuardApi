@@ -1,6 +1,6 @@
 <?php
 
-use Src\Administration\Application\Employee\Dtos\VerifyTokenPasswordResetInputDto;
+use Src\Administration\Application\Dtos\VerifyTokenPasswordResetInputDto;
 
 it('can update an instance of VerifyTokenPasswordResetInputDto with valid data', function () {
     $token = 'token';

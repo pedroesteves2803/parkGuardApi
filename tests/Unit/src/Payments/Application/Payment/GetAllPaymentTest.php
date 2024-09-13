@@ -2,8 +2,8 @@
 
 use DateTime as GlobalDateTime;
 use Illuminate\Support\Collection;
-use Src\Payments\Application\Payment\Dtos\GetAllPaymentsOutputDto;
-use Src\Payments\Application\Payment\GetAllPayments;
+use Src\Payments\Application\Dtos\GetAllPaymentsOutputDto;
+use Src\Payments\Application\Usecase\GetAllPayments;
 use Src\Payments\Domain\Entities\Payment;
 use Src\Payments\Domain\Repositories\IPaymentRepository;
 use Src\Payments\Domain\ValueObjects\PaymentMethod;

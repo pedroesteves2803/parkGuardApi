@@ -1,8 +1,8 @@
 <?php
 
 use Illuminate\Support\Collection;
-use Src\Administration\Application\Employee\Dtos\GetAllEmployeesOutputDto;
-use Src\Administration\Application\Employee\GetAllEmployees;
+use Src\Administration\Application\Dtos\GetAllEmployeesOutputDto;
+use Src\Administration\Application\Usecase\GetAllEmployees;
 use Src\Administration\Domain\Entities\Employee;
 use Src\Administration\Domain\Repositories\IEmployeeRepository;
 use Src\Administration\Domain\ValueObjects\Email;

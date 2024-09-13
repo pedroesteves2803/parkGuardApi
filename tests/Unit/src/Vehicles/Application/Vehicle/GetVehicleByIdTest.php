@@ -1,9 +1,9 @@
 <?php
 
 use Src\Shared\Utils\Notification;
-use Src\Vehicles\Application\Vehicle\Dtos\GetVehicleInputDto;
-use Src\Vehicles\Application\Vehicle\Dtos\GetVehicleOutputDto;
-use Src\Vehicles\Application\Vehicle\GetVehicleById;
+use Src\Vehicles\Application\Dtos\GetVehicleInputDto;
+use Src\Vehicles\Application\Dtos\GetVehicleOutputDto;
+use Src\Vehicles\Application\Usecase\GetVehicleById;
 use Src\Vehicles\Domain\Entities\Vehicle;
 use Src\Vehicles\Domain\Repositories\IVehicleRepository;
 use Src\Vehicles\Domain\ValueObjects\Color;

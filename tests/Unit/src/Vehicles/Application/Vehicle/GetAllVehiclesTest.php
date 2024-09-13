@@ -2,8 +2,8 @@
 
 use Illuminate\Support\Collection;
 use Src\Shared\Utils\Notification;
-use Src\Vehicles\Application\Vehicle\Dtos\GetAllVehiclesOutputDto;
-use Src\Vehicles\Application\Vehicle\GetAllVehicles;
+use Src\Vehicles\Application\Dtos\GetAllVehiclesOutputDto;
+use Src\Vehicles\Application\Usecase\GetAllVehicles;
 use Src\Vehicles\Domain\Entities\Vehicle;
 use Src\Vehicles\Domain\Repositories\IVehicleRepository;
 use Src\Vehicles\Domain\ValueObjects\Color;

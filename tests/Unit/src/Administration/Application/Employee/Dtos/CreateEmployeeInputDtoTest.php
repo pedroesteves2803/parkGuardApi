@@ -1,6 +1,6 @@
 <?php
 
-use Src\Administration\Application\Employee\Dtos\CreateEmployeeInputDto;
+use Src\Administration\Application\Dtos\CreateEmployeeInputDto;
 
 it('can create an instance of CreateEmployeeInputDto with valid data', function () {
     $name = 'John Doe';

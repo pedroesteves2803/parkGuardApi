@@ -1,8 +1,8 @@
 <?php
 
-use Src\Administration\Application\Employee\DeleteEmployeeById;
-use Src\Administration\Application\Employee\Dtos\DeleteEmployeeByIdInputDto;
-use Src\Administration\Application\Employee\Dtos\DeleteEmployeeByIdOutputDto;
+use Src\Administration\Application\Dtos\DeleteEmployeeByIdInputDto;
+use Src\Administration\Application\Dtos\DeleteEmployeeByIdOutputDto;
+use Src\Administration\Application\Usecase\DeleteEmployeeById;
 use Src\Administration\Domain\Entities\Employee;
 use Src\Administration\Domain\Repositories\IEmployeeRepository;
 use Src\Administration\Domain\ValueObjects\Email;

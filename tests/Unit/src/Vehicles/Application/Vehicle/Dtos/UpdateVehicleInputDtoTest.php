@@ -1,6 +1,6 @@
 <?php
 
-use Src\Vehicles\Application\Vehicle\Dtos\UpdateVehicleInputDto;
+use Src\Vehicles\Application\Dtos\UpdateVehicleInputDto;
 
 it('can update an instance of UpdateVehicleInputDto with valid data', function () {
     $id = '1';

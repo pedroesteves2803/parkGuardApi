@@ -1,7 +1,7 @@
 <?php
 
 use Src\Shared\Utils\Notification;
-use Src\Vehicles\Application\Vehicle\Dtos\UpdateVehicleOutputDto;
+use Src\Vehicles\Application\Dtos\UpdateVehicleOutputDto;
 use Src\Vehicles\Domain\Entities\Vehicle;
 use Src\Vehicles\Domain\ValueObjects\Color;
 use Src\Vehicles\Domain\ValueObjects\EntryTimes;

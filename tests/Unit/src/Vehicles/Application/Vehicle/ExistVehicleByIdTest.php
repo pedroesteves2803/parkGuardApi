@@ -1,7 +1,7 @@
 <?php
 
-use Src\Vehicles\Application\Vehicle\Dtos\ExistVehicleInputDto;
-use Src\Vehicles\Application\Vehicle\ExistVehicleById;
+use Src\Vehicles\Application\Dtos\ExistVehicleInputDto;
+use Src\Vehicles\Application\Usecase\ExistVehicleById;
 use Src\Vehicles\Domain\Repositories\IVehicleRepository;
 
 beforeEach(function () {
@@ -23,7 +23,7 @@ test('should check if there is a vehicle by returning false.', function () {
 
     $outputDto = $existVehicleById->execute($inputDto);
 
-    expect($outputDto)->toBeInstanceOf(\Src\Vehicles\Application\Vehicle\Dtos\ExistVehicleOutputDto::class)
+    expect($outputDto)->toBeInstanceOf(\Src\Vehicles\Application\Dtos\ExistVehicleOutputDto::class)
         ->and($outputDto->notification->getErrors())->toBeEmpty()
         ->and($outputDto->exist)->toBeFalse();
 });

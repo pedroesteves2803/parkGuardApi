@@ -1,10 +1,10 @@
 <?php
 
 use DateTime as GlobalDateTime;
-use Src\Payments\Application\Payment\DeletePaymentById;
-use Src\Payments\Application\Payment\Dtos\DeletePaymentInputDto;
-use Src\Payments\Application\Payment\Dtos\DeletePaymentOutputDto;
-use Src\Payments\Application\Payment\GetPaymentById;
+use Src\Payments\Application\Dtos\DeletePaymentInputDto;
+use Src\Payments\Application\Dtos\DeletePaymentOutputDto;
+use Src\Payments\Application\Usecase\DeletePaymentById;
+use Src\Payments\Application\Usecase\GetPaymentById;
 use Src\Payments\Domain\Entities\Payment;
 use Src\Payments\Domain\Repositories\IPaymentRepository;
 use Src\Payments\Domain\ValueObjects\PaymentMethod;

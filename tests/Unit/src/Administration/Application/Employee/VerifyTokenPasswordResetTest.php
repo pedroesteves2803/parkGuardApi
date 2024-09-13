@@ -1,8 +1,8 @@
 <?php
 
-use Src\Administration\Application\Employee\Dtos\VerifyTokenPasswordResetInputDto;
-use Src\Administration\Application\Employee\Dtos\VerifyTokenPasswordResetOutputDto;
-use Src\Administration\Application\Employee\VerifyTokenPasswordReset;
+use Src\Administration\Application\Dtos\VerifyTokenPasswordResetInputDto;
+use Src\Administration\Application\Dtos\VerifyTokenPasswordResetOutputDto;
+use Src\Administration\Application\Usecase\VerifyTokenPasswordReset;
 use Src\Administration\Domain\Entities\PasswordResetToken;
 use Src\Administration\Domain\Repositories\IPasswordResetRepository;
 use Src\Administration\Domain\ValueObjects\Email;

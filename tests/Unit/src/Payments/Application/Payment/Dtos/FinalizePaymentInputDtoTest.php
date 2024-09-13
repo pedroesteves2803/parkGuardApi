@@ -1,6 +1,6 @@
 <?php
 
-use Src\Payments\Application\Payment\Dtos\FinalizePaymentInputDto;
+use Src\Payments\Application\Dtos\FinalizePaymentInputDto;
 
 it('can create an instance of FinalizePaymentInputDto with valid data', function () {
     $id = 1;

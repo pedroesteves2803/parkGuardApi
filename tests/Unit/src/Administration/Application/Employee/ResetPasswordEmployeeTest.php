@@ -1,8 +1,8 @@
 <?php
 
-use Src\Administration\Application\Employee\Dtos\PasswordResetEmployeeInputDto;
-use Src\Administration\Application\Employee\Dtos\PasswordResetEmployeeOutputDto;
-use Src\Administration\Application\Employee\ResetPasswordEmployee;
+use Src\Administration\Application\Dtos\PasswordResetEmployeeInputDto;
+use Src\Administration\Application\Dtos\PasswordResetEmployeeOutputDto;
+use Src\Administration\Application\Usecase\ResetPasswordEmployee;
 use Src\Administration\Domain\Entities\Employee;
 use Src\Administration\Domain\Entities\PasswordResetToken;
 use Src\Administration\Domain\Repositories\IEmployeeRepository;

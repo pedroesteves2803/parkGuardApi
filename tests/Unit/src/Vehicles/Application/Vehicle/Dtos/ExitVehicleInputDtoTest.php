@@ -1,6 +1,6 @@
 <?php
 
-use Src\Vehicles\Application\Vehicle\Dtos\ExitVehicleInputDto;
+use Src\Vehicles\Application\Dtos\ExitVehicleInputDto;
 use Src\Vehicles\Domain\ValueObjects\LicensePlate;
 
 it('can create an instance of ExitVehicleInputDtoTest with valid data', function () {

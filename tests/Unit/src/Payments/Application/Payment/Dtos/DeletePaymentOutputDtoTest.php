@@ -1,6 +1,6 @@
 <?php
 
-use Src\Payments\Application\Payment\Dtos\DeletePaymentOutputDto;
+use Src\Payments\Application\Dtos\DeletePaymentOutputDto;
 use Src\Payments\Domain\Entities\Payment;
 use Src\Shared\Utils\Notification;
 

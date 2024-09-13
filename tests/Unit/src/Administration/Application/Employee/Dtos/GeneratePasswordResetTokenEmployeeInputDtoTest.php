@@ -1,6 +1,6 @@
 <?php
 
-use Src\Administration\Application\Employee\Dtos\GeneratePasswordResetTokenEmployeeInputDto;
+use Src\Administration\Application\Dtos\GeneratePasswordResetTokenEmployeeInputDto;
 
 it('can create an instance of GeneratePasswordResetTokenEmployeeInputDto with a valid ID', function () {
     $email = 'email@email.com';

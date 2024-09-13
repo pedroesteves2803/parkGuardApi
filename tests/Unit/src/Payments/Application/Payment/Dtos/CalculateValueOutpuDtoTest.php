@@ -1,10 +1,7 @@
 <?php
 
-use Src\Payments\Application\Payment\Dtos\CalculateValueOutputDto;
-use Src\Payments\Application\Payment\Dtos\CreatePaymentOutputDto;
-use Src\Payments\Domain\Entities\Payment;
+use Src\Payments\Application\Dtos\CalculateValueOutputDto;
 use Src\Shared\Utils\Notification;
-use Src\Vehicles\Domain\Entities\Vehicle;
 
 it('can create an instance of CalculateValueOutputDto with a valid vehicle', function () {
     $notification = new Notification();

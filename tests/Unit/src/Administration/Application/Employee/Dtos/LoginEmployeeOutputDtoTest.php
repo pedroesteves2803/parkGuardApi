@@ -1,6 +1,6 @@
 <?php
 
-use Src\Administration\Application\Employee\Dtos\LoginEmployeeInputDto;
+use Src\Administration\Application\Dtos\LoginEmployeeInputDto;
 
 it('can create an instance of LoginEmployeeInputDto with a valid', function () {
     $email = 'teste@teste.com';

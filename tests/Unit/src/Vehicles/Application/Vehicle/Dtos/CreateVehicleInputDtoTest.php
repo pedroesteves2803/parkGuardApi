@@ -1,6 +1,6 @@
 <?php
 
-use Src\Vehicles\Application\Vehicle\Dtos\CreateVehicleInputDto;
+use Src\Vehicles\Application\Dtos\CreateVehicleInputDto;
 
 it('can create an instance of CreateVehicleInputDto with valid data', function () {
     $inputDto = new CreateVehicleInputDto(

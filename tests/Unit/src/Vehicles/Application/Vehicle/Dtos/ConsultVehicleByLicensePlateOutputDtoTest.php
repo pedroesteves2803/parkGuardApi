@@ -1,17 +1,9 @@
 <?php
 
 use Src\Shared\Utils\Notification;
-use Src\Vehicles\Application\Vehicle\Dtos\ConsultVehicleByLicensePlateOutputDto;
-use Src\Vehicles\Application\Vehicle\Dtos\CreateVehicleOutputDto;
+use Src\Vehicles\Application\Dtos\ConsultVehicleByLicensePlateOutputDto;
 use Src\Vehicles\Domain\Entities\Pending;
-use Src\Vehicles\Domain\Entities\Vehicle;
-use Src\Vehicles\Domain\ValueObjects\Color;
-use Src\Vehicles\Domain\ValueObjects\DepartureTimes;
 use Src\Vehicles\Domain\ValueObjects\Description;
-use Src\Vehicles\Domain\ValueObjects\EntryTimes;
-use Src\Vehicles\Domain\ValueObjects\LicensePlate;
-use Src\Vehicles\Domain\ValueObjects\Manufacturer;
-use Src\Vehicles\Domain\ValueObjects\Model;
 use Src\Vehicles\Domain\ValueObjects\Type;
 
 it('can create an instance of ConsultVehicleByLicensePlateOutputDto with valid data', function () {

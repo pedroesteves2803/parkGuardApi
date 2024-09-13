@@ -9,16 +9,15 @@ use App\Http\Resources\Payment\FinalizePaymentResource;
 use App\Http\Resources\Payment\GetAllPaymentsResource;
 use App\Http\Resources\Payment\GetPaymentByIdResource;
 use DateTime;
-use Illuminate\Http\Request;
-use Src\Payments\Application\Payment\CreatePayment;
-use Src\Payments\Application\Payment\DeletePaymentById;
-use Src\Payments\Application\Payment\Dtos\CreatePaymentInputDto;
-use Src\Payments\Application\Payment\Dtos\DeletePaymentInputDto;
-use Src\Payments\Application\Payment\Dtos\FinalizePaymentInputDto;
-use Src\Payments\Application\Payment\Dtos\GetPaymentByIdInputDto;
-use Src\Payments\Application\Payment\FinalizePayment;
-use Src\Payments\Application\Payment\GetAllPayments;
-use Src\Payments\Application\Payment\GetPaymentById;
+use Src\Payments\Application\Dtos\CreatePaymentInputDto;
+use Src\Payments\Application\Dtos\DeletePaymentInputDto;
+use Src\Payments\Application\Dtos\FinalizePaymentInputDto;
+use Src\Payments\Application\Dtos\GetPaymentByIdInputDto;
+use Src\Payments\Application\Usecase\CreatePayment;
+use Src\Payments\Application\Usecase\DeletePaymentById;
+use Src\Payments\Application\Usecase\FinalizePayment;
+use Src\Payments\Application\Usecase\GetAllPayments;
+use Src\Payments\Application\Usecase\GetPaymentById;
 
 /**
  * Class PaymentController.

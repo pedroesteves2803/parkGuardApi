@@ -1,6 +1,5 @@
 <?php
 
-use Src\Vehicles\Application\Vehicle\Dtos\CreateVehicleInputDto;
 use Src\Vehicles\Domain\Entities\Pending;
 use Src\Vehicles\Domain\Repositories\Dtos\IConsultVehicleRepositoryOutputDto;
 use Src\Vehicles\Domain\ValueObjects\Description;

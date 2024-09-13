@@ -1,12 +1,10 @@
 <?php
 
-use App\Services\SendPendingNotificationService;
 use Src\Shared\Utils\Notification;
-use Src\Vehicles\Application\Vehicle\ConsultPendingByLicensePlate;
-use Src\Vehicles\Application\Vehicle\CreateVehicle;
-use Src\Vehicles\Application\Vehicle\Dtos\CreateVehicleInputDto;
-use Src\Vehicles\Application\Vehicle\Dtos\CreateVehicleOutputDto;
-use Src\Vehicles\Application\Vehicle\ExistVehicleById;
+use Src\Vehicles\Application\Dtos\CreateVehicleInputDto;
+use Src\Vehicles\Application\Dtos\CreateVehicleOutputDto;
+use Src\Vehicles\Application\Usecase\ConsultPendingByLicensePlate;
+use Src\Vehicles\Application\Usecase\CreateVehicle;
 use Src\Vehicles\Domain\Entities\Pending;
 use Src\Vehicles\Domain\Entities\Vehicle;
 use Src\Vehicles\Domain\Factory\VehicleFactory;
@@ -79,10 +77,6 @@ it('successfully creates a vehicle', function () {
             $this->notification
         ),
         $this->sendPendingNotificationServiceMock,
-        new ExistVehicleById(
-            $this->repositoryVehicleMock,
-            $this->notification
-        ),
         $this->notification,
         new VehicleFactory()
     );
@@ -105,10 +99,6 @@ it('fails to create a vehicle with existing license plate', function () {
             $this->notification
         ),
         $this->sendPendingNotificationServiceMock,
-        new ExistVehicleById(
-            $this->repositoryVehicleMock,
-            $this->notification
-        ),
         $this->notification,
         new VehicleFactory()
     );
@@ -119,7 +109,7 @@ it('fails to create a vehicle with existing license plate', function () {
     expect($outputDto)->toBeInstanceOf(CreateVehicleOutputDto::class)
         ->and($outputDto->vehicle)->toBeNull()
         ->and($outputDto->notification->getErrors())->toContain([
-            'context' => 'exist_vehicle_by_id',
+            'context' => 'create_vehicle',
             'message' => 'Placa já cadastrada!',
         ]);
 });

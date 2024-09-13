@@ -1,8 +1,7 @@
 <?php
 
-use Src\Administration\Application\Employee\Dtos\GetEmployeeByIdOutputDto;
 use Src\Shared\Utils\Notification;
-use Src\Vehicles\Application\Vehicle\Dtos\GetVehicleOutputDto;
+use Src\Vehicles\Application\Dtos\GetVehicleOutputDto;
 use Src\Vehicles\Domain\Entities\Vehicle;
 use Src\Vehicles\Domain\ValueObjects\Color;
 use Src\Vehicles\Domain\ValueObjects\EntryTimes;

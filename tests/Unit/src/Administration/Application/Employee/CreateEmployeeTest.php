@@ -1,8 +1,8 @@
 <?php
 
-use Src\Administration\Application\Employee\CreateEmployee;
-use Src\Administration\Application\Employee\Dtos\CreateEmployeeInputDto;
-use Src\Administration\Application\Employee\Dtos\CreateEmployeeOutputDto;
+use Src\Administration\Application\Dtos\CreateEmployeeInputDto;
+use Src\Administration\Application\Dtos\CreateEmployeeOutputDto;
+use Src\Administration\Application\Usecase\CreateEmployee;
 use Src\Administration\Domain\Entities\Employee;
 use Src\Administration\Domain\Repositories\IEmployeeRepository;
 use Src\Administration\Domain\ValueObjects\Email;

@@ -1,11 +1,9 @@
 <?php
 
 use Src\Shared\Utils\Notification;
-use Src\Vehicles\Application\Vehicle\Dtos\ExistVehicleOutputDto;
-use Src\Vehicles\Application\Vehicle\Dtos\ExitVehicleInputDto;
-use Src\Vehicles\Application\Vehicle\Dtos\ExitVehicleOutputDto;
-use Src\Vehicles\Application\Vehicle\ExistVehicleById;
-use Src\Vehicles\Application\Vehicle\ExitVehicle;
+use Src\Vehicles\Application\Dtos\ExitVehicleInputDto;
+use Src\Vehicles\Application\Dtos\ExitVehicleOutputDto;
+use Src\Vehicles\Application\Usecase\ExitVehicle;
 use Src\Vehicles\Domain\Entities\Vehicle;
 use Src\Vehicles\Domain\Repositories\IVehicleRepository;
 use Src\Vehicles\Domain\ValueObjects\Color;
@@ -17,7 +15,6 @@ use Src\Vehicles\Domain\ValueObjects\Model;
 
 beforeEach(function () {
     $this->repositoryMock = mock(IVehicleRepository::class);
-    $this->existVehicleByIdMock = mock(ExistVehicleById::class);
 });
 
 it('can exit an existing vehicle with a valid entry', function () {
@@ -36,18 +33,11 @@ it('can exit an existing vehicle with a valid entry', function () {
     );
 
     $this->repositoryMock->shouldReceive('exit')->once()->andReturn($vehicle);
-
-    $this->existVehicleByIdMock->shouldReceive('execute')->once()->andReturn(
-        new ExistVehicleOutputDto(
-            true,
-            new Notification()
-        )
-    );
+    $this->repositoryMock->shouldReceive('existVehicle')->once()->andReturnTrue();
 
     $exitVehicle = new ExitVehicle(
         $this->repositoryMock,
         $notification,
-        $this->existVehicleByIdMock
     );
 
     $inputDto = new ExitVehicleInputDto('ABC-1234');
@@ -61,19 +51,13 @@ it('can exit an existing vehicle with a valid entry', function () {
 
 it('returns an error notification when attempting to exit a vehicle with a non-existent entry', function () {
     $notification = new Notification();
-
-    $this->existVehicleByIdMock->shouldReceive('execute')->once()->andReturn(
-        new ExistVehicleOutputDto(
-            false,
-            new Notification()
-        )
-    );
+    $this->repositoryMock->shouldReceive('existVehicle')->once()->andReturnFalse();
 
     $exitVehicle = new ExitVehicle(
         $this->repositoryMock,
         $notification,
-        $this->existVehicleByIdMock
     );
+
 
     $inputDto = new ExitVehicleInputDto('ABC-1234');
 

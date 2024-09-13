@@ -1,7 +1,6 @@
 <?php
 
-use Src\Administration\Application\Employee\Dtos\CreateEmployeeOutputDto;
-use Src\Administration\Application\Employee\Dtos\UpdateEmployeeOutputDto;
+use Src\Administration\Application\Dtos\UpdateEmployeeOutputDto;
 use Src\Administration\Domain\Entities\Employee;
 use Src\Administration\Domain\ValueObjects\Email;
 use Src\Administration\Domain\ValueObjects\Name;

@@ -1,8 +1,8 @@
 <?php
 
-use Src\Administration\Application\Employee\Dtos\LoginEmployeeInputDto;
-use Src\Administration\Application\Employee\Dtos\LoginEmployeeOutputDto;
-use Src\Administration\Application\Employee\LoginEmployee;
+use Src\Administration\Application\Dtos\LoginEmployeeInputDto;
+use Src\Administration\Application\Dtos\LoginEmployeeOutputDto;
+use Src\Administration\Application\Usecase\LoginEmployee;
 use Src\Administration\Domain\Entities\Employee;
 use Src\Administration\Domain\Services\ILoginEmployeeService;
 use Src\Administration\Domain\ValueObjects\Email;

@@ -1,17 +1,8 @@
 <?php
 
-use Src\Administration\Application\Employee\Dtos\GetEmployeeByIdInputDto;
-use Src\Administration\Application\Employee\Dtos\GetEmployeeByIdOutputDto;
-use Src\Administration\Application\Employee\GetEmployeeById;
-use Src\Administration\Domain\Entities\Employee;
-use Src\Administration\Domain\Repositories\IEmployeeRepository;
-use Src\Administration\Domain\ValueObjects\Email;
-use Src\Administration\Domain\ValueObjects\Name;
-use Src\Administration\Domain\ValueObjects\Password;
-use Src\Administration\Domain\ValueObjects\Type;
-use Src\Payments\Application\Payment\Dtos\GetPaymentByIdInputDto;
-use Src\Payments\Application\Payment\Dtos\GetPaymentByIdOutputDto;
-use Src\Payments\Application\Payment\GetPaymentById;
+use Src\Payments\Application\Dtos\GetPaymentByIdInputDto;
+use Src\Payments\Application\Dtos\GetPaymentByIdOutputDto;
+use Src\Payments\Application\Usecase\GetPaymentById;
 use Src\Payments\Domain\Entities\Payment;
 use Src\Payments\Domain\Repositories\IPaymentRepository;
 use Src\Payments\Domain\ValueObjects\PaymentMethod;

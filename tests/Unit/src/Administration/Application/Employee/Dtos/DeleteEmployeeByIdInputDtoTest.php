@@ -1,6 +1,6 @@
 <?php
 
-use Src\Administration\Application\Employee\Dtos\DeleteEmployeeByIdInputDto;
+use Src\Administration\Application\Dtos\DeleteEmployeeByIdInputDto;
 
 it('can create an instance of DeleteEmployeeByIdInputDto with a valid ID', function () {
     $id = '1';

@@ -1,6 +1,6 @@
 <?php
 
-use Src\Payments\Application\Payment\Dtos\GetPaymentByIdInputDto;
+use Src\Payments\Application\Dtos\GetPaymentByIdInputDto;
 
 it('can create an instance of GetPaymentByIdInputDto with valid data', function () {
     $id = 1;

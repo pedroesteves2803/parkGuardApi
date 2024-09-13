@@ -1,6 +1,6 @@
 <?php
 
-use Src\Payments\Application\Payment\Dtos\DeletePaymentInputDto;
+use Src\Payments\Application\Dtos\DeletePaymentInputDto;
 
 it('can create an instance of DeletePaymentInputDto with valid data', function () {
     $id = 1;

@@ -1,9 +1,9 @@
 <?php
 
 use Src\Shared\Utils\Notification;
-use Src\Vehicles\Application\Vehicle\Dtos\UpdateVehicleInputDto;
-use Src\Vehicles\Application\Vehicle\Dtos\UpdateVehicleOutputDto;
-use Src\Vehicles\Application\Vehicle\UpdateVehicle;
+use Src\Vehicles\Application\Dtos\UpdateVehicleInputDto;
+use Src\Vehicles\Application\Dtos\UpdateVehicleOutputDto;
+use Src\Vehicles\Application\Usecase\UpdateVehicle;
 use Src\Vehicles\Domain\Entities\Vehicle;
 use Src\Vehicles\Domain\Factory\VehicleFactory;
 use Src\Vehicles\Domain\Repositories\IVehicleRepository;

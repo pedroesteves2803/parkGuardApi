@@ -1,6 +1,6 @@
 <?php
 
-use Src\Administration\Application\Employee\Dtos\PasswordResetEmployeeInputDto;
+use Src\Administration\Application\Dtos\PasswordResetEmployeeInputDto;
 
 it('can create an instance of PasswordResetEmployeeInputDto with a valid ID', function () {
     $password = '1';

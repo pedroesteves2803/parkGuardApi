@@ -1,8 +1,8 @@
 <?php
 
 use DateTime as GlobalDateTime;
-use Src\Payments\Application\Payment\CalculateValue;
-use Src\Payments\Application\Payment\Dtos\CalculateValueOutputDto;
+use Src\Payments\Application\Dtos\CalculateValueOutputDto;
+use Src\Payments\Application\Usecase\CalculateValue;
 use Src\Shared\Utils\Notification;
 use Src\Vehicles\Domain\Entities\Vehicle;
 use Src\Vehicles\Domain\ValueObjects\Color;
