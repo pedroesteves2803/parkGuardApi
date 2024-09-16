@@ -40,7 +40,8 @@ it('successfully finalize a payment', function () {
         new RegistrationTime(now()),
         new PaymentMethod(1),
         false,
-        $vehicle
+        $vehicle,
+        new Notification()
     );
 
     $this->repositoryPaymentMock->shouldReceive('getById')->once()->andReturn($payment);
@@ -51,7 +52,8 @@ it('successfully finalize a payment', function () {
         new RegistrationTime(now()),
         new PaymentMethod(1),
         true,
-        $vehicle
+        $vehicle,
+        new Notification()
     );
 
     $this->repositoryPaymentMock
@@ -126,19 +128,11 @@ it('fails to delete payment already finalized', function () {
         new RegistrationTime(now()),
         new PaymentMethod(1),
         false,
-        $vehicle
+        $vehicle,
+        new Notification()
     );
 
     $this->repositoryPaymentMock->shouldReceive('getById')->once()->andReturn($payment);
-
-    $payment = new Payment(
-        1,
-        new Value(1000),
-        new RegistrationTime(now()),
-        new PaymentMethod(1),
-        true,
-        $vehicle
-    );
 
     $this->repositoryPaymentMock
         ->shouldReceive('finalize')
@@ -160,12 +154,12 @@ it('fails to delete payment already finalized', function () {
 
     $outputDto = $finalizePayment->execute($inputDto);
 
-    expect($outputDto)->toBeInstanceOf(FinalizePaymentOutputDto::class);
-    expect($outputDto->payment)->toBeNull();
-    expect($outputDto->notification->getErrors())->toBe([
-        [
-            'context' => 'finalize_payment',
-            'message' => 'Pagamento já foi finalizado!',
-        ],
-    ]);
+    expect($outputDto)->toBeInstanceOf(FinalizePaymentOutputDto::class)
+        ->and($outputDto->payment)->toBeNull()
+        ->and($outputDto->notification->getErrors())->toBe([
+            [
+                'context' => 'finalize_payment',
+                'message' => 'Pagamento já foi finalizado!',
+            ],
+        ]);
 });

@@ -28,6 +28,7 @@ function createValidPayment()
         new RegistrationTime(now()),
         new PaymentMethod(1),
         false,
-        mock(Vehicle::class)
+        mock(Vehicle::class),
+        new \Src\Shared\Utils\Notification()
     );
 }

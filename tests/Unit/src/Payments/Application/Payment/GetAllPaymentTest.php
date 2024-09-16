@@ -42,7 +42,8 @@ it('can retrieve all payments', function () {
             new RegistrationTime(now()),
             new PaymentMethod(1),
             false,
-            $vehicle
+            $vehicle,
+            new Notification()
         )
     );
 

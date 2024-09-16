@@ -40,7 +40,8 @@ it('successfully deletes a payment', function () {
         new RegistrationTime(now()),
         new PaymentMethod(1),
         false,
-        $vehicle
+        $vehicle,
+        new Notification()
     );
 
     $this->repositoryPaymentMock->shouldReceive('getById')->once()->andReturn($payment);
@@ -117,7 +118,8 @@ it('cannot delete a payment that has already been paid', function () {
         new RegistrationTime(now()),
         new PaymentMethod(1),
         true,
-        $vehicle
+        $vehicle,
+        new Notification()
     );
 
     $this->repositoryPaymentMock->shouldReceive('getById')->once()->andReturn($payment);

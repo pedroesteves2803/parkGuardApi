@@ -6,10 +6,12 @@ use App\Models\Payment as ModelsPayment;
 use App\Models\Vehicle as ModelsVehicle;
 use Illuminate\Support\Collection;
 use Src\Payments\Domain\Entities\Payment;
+use Src\Payments\Domain\Factory\PaymentFactory;
 use Src\Payments\Domain\Repositories\IPaymentRepository;
 use Src\Payments\Domain\ValueObjects\PaymentMethod;
 use Src\Payments\Domain\ValueObjects\RegistrationTime;
 use Src\Payments\Domain\ValueObjects\Value;
+use Src\Shared\Utils\Notification;
 use Src\Vehicles\Domain\Entities\Vehicle;
 use Src\Vehicles\Domain\ValueObjects\Color;
 use Src\Vehicles\Domain\ValueObjects\DepartureTimes;
@@ -57,11 +59,11 @@ final class EloquentPaymentRepository implements IPaymentRepository
         $modelsPayment->vehicle_id = $payment->vehicle()->id();
         $modelsPayment->save();
 
-        return new Payment(
+        return (new PaymentFactory())->create(
             $modelsPayment->id,
-            new Value($modelsPayment->value),
-            new RegistrationTime($modelsPayment->registration_time),
-            new PaymentMethod($modelsPayment->payment_method),
+            $modelsPayment->value,
+            $modelsPayment->registration_time,
+            $modelsPayment->payment_method,
             $modelsPayment->paid,
             $payment->vehicle(),
         );
@@ -81,11 +83,11 @@ final class EloquentPaymentRepository implements IPaymentRepository
         $modelsPayment->paid = true;
         $modelsPayment->save();
 
-        return new Payment(
+        return (new PaymentFactory())->create(
             $modelsPayment->id,
-            new Value($modelsPayment->value),
-            new RegistrationTime($modelsPayment->registration_time),
-            new PaymentMethod($modelsPayment->payment_method),
+            $modelsPayment->value,
+            $modelsPayment->registration_time,
+            $modelsPayment->payment_method,
             $modelsPayment->paid,
             $payment->vehicle(),
         );
@@ -110,13 +112,13 @@ final class EloquentPaymentRepository implements IPaymentRepository
             is_null($modelsVehicle->departure_times) ? null : new DepartureTimes($modelsVehicle->departure_times)
         );
 
-        return new Payment(
+        return (new PaymentFactory())->create(
             $payment->id,
-            is_null($payment->value) ? null : new Value($payment->value),
-            is_null($payment->registration_time) ? null : new RegistrationTime($payment->registration_time),
-            is_null($payment->payment_method) ? null : new PaymentMethod($payment->payment_method),
+            is_null($payment->value) ? null : $payment->value,
+            is_null($payment->registration_time) ? null : $payment->registration_time,
+            is_null($payment->payment_method) ? null : $payment->payment_method,
             is_null($payment->paid) ? null : $payment->paid,
-            $vehicle
+            $vehicle,
         );
     }
 

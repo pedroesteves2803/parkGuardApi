@@ -12,8 +12,8 @@ it('validates a valid value', function () {
     expect($value->value())->toBe(1000);
 });
 
-test('throws an exception for a value less than 1', function () {
-    $this->expectException(Exception::class);
-    $this->expectExceptionMessage('Valor deve ser pelo menos 1.');
-    new Value(0);
+test('throws an exception for a value less than 0', function () {
+    $this->expectException(\OutOfRangeException::class);
+    $this->expectExceptionMessage('Valor deve ser pelo menos 0.');
+    new Value(-1);
 });

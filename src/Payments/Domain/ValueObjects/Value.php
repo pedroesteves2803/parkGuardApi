@@ -6,7 +6,7 @@ use Src\Shared\Domain\ValueObjects\ValueObject;
 
 final class Value extends ValueObject
 {
-    private const MIN_VALUE = 1;
+    private const MIN_VALUE = 0;
 
     public function __construct(
         private readonly int $value

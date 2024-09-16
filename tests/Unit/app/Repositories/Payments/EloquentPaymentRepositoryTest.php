@@ -3,22 +3,19 @@
 use App\Models\Payment as ModelsPayment;
 use App\Models\Vehicle as ModelsVehicle;
 use App\Repositories\Payments\EloquentPaymentRepository;
-use App\Repositories\Vehicles\EloquentVehicleRepository;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Collection;
 use Src\Payments\Domain\Entities\Payment;
 use Src\Payments\Domain\ValueObjects\PaymentMethod;
 use Src\Payments\Domain\ValueObjects\RegistrationTime;
 use Src\Payments\Domain\ValueObjects\Value;
-use Src\Vehicles\Domain\Entities\Pending;
 use Src\Vehicles\Domain\Entities\Vehicle;
 use Src\Vehicles\Domain\ValueObjects\Color;
-use Src\Vehicles\Domain\ValueObjects\Description;
 use Src\Vehicles\Domain\ValueObjects\EntryTimes;
 use Src\Vehicles\Domain\ValueObjects\LicensePlate;
 use Src\Vehicles\Domain\ValueObjects\Manufacturer;
 use Src\Vehicles\Domain\ValueObjects\Model;
-use Src\Vehicles\Domain\ValueObjects\Type;
+use Src\Shared\Utils\Notification;
 use Tests\TestCase;
 
 uses(TestCase::class, RefreshDatabase::class);
@@ -61,8 +58,8 @@ it('can get all payments', function () {
     $repository = new EloquentPaymentRepository();
     $payments = $repository->getAll();
 
-    expect($payments)->toBeInstanceOf(Collection::class);
-    expect($payments)->toHaveCount(2);
+    expect($payments)->toBeInstanceOf(Collection::class)
+        ->and($payments)->toHaveCount(2);
 });
 
 it('can get payment by id', function () {
@@ -87,14 +84,14 @@ it('can get payment by id', function () {
 
     $retrievedPayment = $repository->getById($payment->id);
 
-    expect($retrievedPayment)->toBeInstanceOf(Payment::class);
+    expect($retrievedPayment)->toBeInstanceOf(Payment::class)
+        ->and($retrievedPayment->id())->toBe($payment->id)
+        ->and($retrievedPayment->value()->value())->toBe($payment->value)
+        ->and($retrievedPayment->registrationTime()->value()->format('Y-m-d H:i:s'))->toBe($payment->registration_time->format('Y-m-d H:i:s'))
+        ->and($retrievedPayment->paymentMethod()->value())->toBe($payment->payment_method)
+        ->and($retrievedPayment->paid())->toBe($payment->paid)
+        ->and($retrievedPayment->vehicle()->id())->toBe($payment->vehicle_id);
 
-    expect($retrievedPayment->id())->toBe($payment->id);
-    expect($retrievedPayment->value()->value())->toBe($payment->value);
-    expect($retrievedPayment->registrationTime()->value()->format('Y-m-d H:i:s'))->toBe($payment->registration_time->format('Y-m-d H:i:s'));
-    expect($retrievedPayment->paymentMethod()->value())->toBe($payment->payment_method);
-    expect($retrievedPayment->paid())->toBe($payment->paid);
-    expect($retrievedPayment->vehicle()->id())->toBe($payment->vehicle_id);
 });
 
 it('create a new payment', function () {
@@ -124,17 +121,18 @@ it('create a new payment', function () {
         new PaymentMethod(1),
         false,
         $vehicleData,
+        New Notification()
     );
     $repository = new EloquentPaymentRepository();
     $createdPayment = $repository->create($paymentData);
 
-    expect($createdPayment)->toBeInstanceOf(Payment::class);
-    expect($createdPayment->id())->not()->toBeNull();
-    expect($createdPayment->value()->value())->toBe(1000);
-    expect($createdPayment->registrationTime()->value())->not()->toBeNull();
-    expect($createdPayment->paymentMethod()->value())->toBe(1);
-    expect($createdPayment->paid())->toBe(false);
-    expect($createdPayment->vehicle()->id())->toBe(1);
+    expect($createdPayment)->toBeInstanceOf(Payment::class)
+        ->and($createdPayment->id())->not()->toBeNull()
+        ->and($createdPayment->value()->value())->toBe(1000)
+        ->and($createdPayment->registrationTime()->value())->not()->toBeNull()
+        ->and($createdPayment->paymentMethod()->value())->toBe(1)
+        ->and($createdPayment->paid())->toBe(false)
+        ->and($createdPayment->vehicle()->id())->toBe(1);
 });
 
 it('finalize a vehicle', function () {
@@ -172,6 +170,7 @@ it('finalize a vehicle', function () {
         new PaymentMethod($payment->payment_method),
         $payment->paid,
         $vehicleData,
+        New Notification()
     );
 
 
@@ -179,13 +178,13 @@ it('finalize a vehicle', function () {
     $finalizePayment = $repository->finalize($paymentData);
 
 
-    expect($finalizePayment)->toBeInstanceOf(Payment::class);
-    expect($finalizePayment->id())->not()->toBeNull();
-    expect($finalizePayment->value()->value())->toBe(1000);
-    expect($finalizePayment->registrationTime()->value())->not()->toBeNull();
-    expect($finalizePayment->paymentMethod()->value())->toBe(1);
-    expect($finalizePayment->paid())->toBe(true);
-    expect($finalizePayment->vehicle()->id())->toBe(1);
+    expect($finalizePayment)->toBeInstanceOf(Payment::class)
+        ->and($finalizePayment->id())->not()->toBeNull()
+        ->and($finalizePayment->value()->value())->toBe(1000)
+        ->and($finalizePayment->registrationTime()->value())->not()->toBeNull()
+        ->and($finalizePayment->paymentMethod()->value())->toBe(1)
+        ->and($finalizePayment->paid())->toBe(true)
+        ->and($finalizePayment->vehicle()->id())->toBe(1);
 });
 
 it('delete a vehicle', function () {
@@ -223,8 +222,8 @@ it('delete a vehicle', function () {
         new PaymentMethod($payment->payment_method),
         $payment->paid,
         $vehicleData,
+        New Notification()
     );
-
 
     $repository = new EloquentPaymentRepository();
     $repository->delete($paymentData->id());

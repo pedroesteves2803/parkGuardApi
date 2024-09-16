@@ -42,7 +42,8 @@ it('can retrieve an payments by ID from the repository', function () {
         new RegistrationTime(now()),
         new PaymentMethod(1),
         false,
-        $vehicle
+        $vehicle,
+        new Notification()
     );
 
     $this->repositoryMock->shouldReceive('getById')->once()->andReturn($payment);

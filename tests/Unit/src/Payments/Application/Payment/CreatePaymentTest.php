@@ -3,9 +3,9 @@
 use DateTime as GlobalDateTime;
 use Src\Payments\Application\Dtos\CreatePaymentInputDto;
 use Src\Payments\Application\Dtos\CreatePaymentOutputDto;
-use Src\Payments\Application\Usecase\CalculateValue;
 use Src\Payments\Application\Usecase\CreatePayment;
 use Src\Payments\Domain\Entities\Payment;
+use Src\Payments\Domain\Factory\PaymentFactory;
 use Src\Payments\Domain\Repositories\IPaymentRepository;
 use Src\Payments\Domain\ValueObjects\PaymentMethod;
 use Src\Payments\Domain\ValueObjects\RegistrationTime;
@@ -25,6 +25,7 @@ use Src\Vehicles\Domain\ValueObjects\Model;
 beforeEach(function () {
     $this->repositoryPaymentMock = mock(IPaymentRepository::class);
     $this->vehicleServiceMock = mock(IVehicleService::class);
+    $this->paymentFactoryMock = mock(PaymentFactory::class); // Mockando a PaymentFactory
 });
 
 it('successfully creates a payment', function () {
@@ -35,7 +36,7 @@ it('successfully creates a payment', function () {
         new Model('Corolla'),
         new LicensePlate('ABC-1234'),
         new EntryTimes(new GlobalDateTime('2024-05-12 08:00:00')),
-        new DepartureTimes(new GlobalDateTime('2024-06-02 08:00:00')),
+        new DepartureTimes(new GlobalDateTime('2024-06-02 08:00:00'))
     );
 
     $getVehicleOutputDto = new GetVehicleOutputDto($vehicle, new Notification());
@@ -50,19 +51,23 @@ it('successfully creates a payment', function () {
         new RegistrationTime(now()),
         new PaymentMethod(1),
         false,
-        $vehicle
+        $vehicle,
+        new Notification()
     );
 
-    $this->repositoryPaymentMock
-        ->shouldReceive('create')
+    $this->paymentFactoryMock->shouldReceive('createWithCalculation')
+        ->once()
+        ->andReturn($expectedPayment);
+
+    $this->repositoryPaymentMock->shouldReceive('create')
         ->once()
         ->andReturn($expectedPayment);
 
     $createPayment = new CreatePayment(
         $this->repositoryPaymentMock,
         new Notification(),
-        new CalculateValue(new Notification()),
-        $this->vehicleServiceMock
+        $this->vehicleServiceMock,
+        $this->paymentFactoryMock
     );
 
     $inputDto = new CreatePaymentInputDto(
@@ -94,8 +99,8 @@ it('fails to create a payment with a non-existent vehicle - No vehicle found', f
     $createPayment = new CreatePayment(
         $this->repositoryPaymentMock,
         new Notification(),
-        new CalculateValue(new Notification()),
-        $this->vehicleServiceMock
+        $this->vehicleServiceMock,
+        $this->paymentFactoryMock
     );
 
     $inputDto = new CreatePaymentInputDto(
@@ -143,8 +148,8 @@ it('fails to create a payment with a non-existent vehicle - Vehicle not register
     $createPayment = new CreatePayment(
         $this->repositoryPaymentMock,
         new Notification(),
-        new CalculateValue(new Notification()),
-        $this->vehicleServiceMock
+        $this->vehicleServiceMock,
+        $this->paymentFactoryMock
     );
 
     $inputDto = new CreatePaymentInputDto(
