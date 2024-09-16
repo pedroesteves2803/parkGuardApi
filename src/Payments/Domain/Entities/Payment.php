@@ -1,12 +1,12 @@
 <?php
 namespace Src\Payments\Domain\Entities;
 
+use RuntimeException;
 use Src\Payments\Domain\ValueObjects\PaymentMethod;
 use Src\Payments\Domain\ValueObjects\RegistrationTime;
 use Src\Payments\Domain\ValueObjects\Value;
 use Src\Shared\Domain\Entities\Entity;
 use Src\Shared\Domain\Entities\IAggregator;
-use Src\Shared\Utils\Notification;
 use Src\Vehicles\Domain\Entities\Vehicle;
 
 class Payment extends Entity implements IAggregator
@@ -21,7 +21,6 @@ class Payment extends Entity implements IAggregator
         readonly private PaymentMethod $paymentMethod,
         readonly private bool $paid,
         readonly private Vehicle $vehicle,
-        readonly private Notification $notification
     ) {
     }
 
@@ -58,11 +57,7 @@ class Payment extends Entity implements IAggregator
     public function calculateTotalToPay(): void
     {
         if (is_null($this->vehicle->departureTimes())) {
-            $this->notification->addError([
-                'context' => 'calculate_value',
-                'message' => 'Horário de partida não está definido!',
-            ]);
-            return;
+            throw new RuntimeException('Horário de partida não está definido!');
         }
 
         $entryTimes = $this->vehicle->entryTimes()->value();
@@ -71,7 +66,6 @@ class Payment extends Entity implements IAggregator
 
         $hours = $interval->h;
         $minutes = $interval->i;
-
         if ($minutes > 0) {
             $hours++;
         }
@@ -81,10 +75,5 @@ class Payment extends Entity implements IAggregator
             : self::VALUE_HOUR + ($hours - 1) * self::MORE_THAN_AN_HOUR;
 
         $this->value = new Value($totalToPay);
-    }
-
-    public function getNotification(): Notification
-    {
-        return $this->notification;
     }
 }

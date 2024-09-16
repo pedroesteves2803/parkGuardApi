@@ -55,4 +55,9 @@ class Employee extends Entity implements IAggregator
     {
         return "Funcionario ID: {$this->id}, Nome: {$this->name->value()}, Email: {$this->email->value()}, Tipo: {$this->type->value()}";
     }
+
+    public function hasEmail(Email $email): bool
+    {
+        return $this->email->value() === $email->value();
+    }
 }

@@ -73,7 +73,8 @@ class ApiConsultVehicleRepository implements IConsultVehicleRepository
                 $licensePlate,
                 $pendings,
             );
-        } catch (Exception) {
+        } catch (Exception $e) {
+
             return $this->getEmptyVehicleData($licensePlate);
         }
     }

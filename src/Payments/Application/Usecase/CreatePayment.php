@@ -8,9 +8,6 @@ use Src\Payments\Application\Dtos\CreatePaymentOutputDto;
 use Src\Payments\Domain\Entities\Payment;
 use Src\Payments\Domain\Factory\PaymentFactory;
 use Src\Payments\Domain\Repositories\IPaymentRepository;
-use Src\Payments\Domain\ValueObjects\PaymentMethod;
-use Src\Payments\Domain\ValueObjects\RegistrationTime;
-use Src\Payments\Domain\ValueObjects\Value;
 use Src\Shared\Utils\Notification;
 use Src\Vehicles\Domain\Entities\Vehicle;
 use Src\Vehicles\Domain\Service\IVehicleService;
@@ -39,16 +36,11 @@ final readonly class CreatePayment
                 return new CreatePaymentOutputDto(null, $exitVehicleOutputDto->notification);
             }
 
-            $payment = $this->createEntityPayment($input->dateTime, $input->paymentMethod, $exitVehicleOutputDto->vehicle);
+            $paymentEntity = $this->createEntityPayment($input->dateTime, $input->paymentMethod, $exitVehicleOutputDto->vehicle);
 
-            //verificar se esta correto
-            $payment->calculateTotalToPay();
+            $paymentEntity->calculateTotalToPay();
 
-            if ($payment->getNotification()->hasErrors()) {
-                return new CreatePaymentOutputDto(null, $payment->getNotification());
-            }
-
-            $this->paymentsRepository->create($payment);
+            $payment = $this->paymentsRepository->create($paymentEntity);
 
             return new CreatePaymentOutputDto($payment, $this->notification);
         } catch (\Exception $e) {

@@ -21,6 +21,10 @@ final readonly class VerifyTokenPasswordReset
         try {
             $passwordResetToken = $this->getPasswordResetTokenByToken($input);
 
+            if($passwordResetToken === null){
+                return new VerifyTokenPasswordResetOutputDto(null, $this->notification);
+            }
+
             return new VerifyTokenPasswordResetOutputDto($passwordResetToken, $this->notification);
         } catch (\Exception $e) {
             $this->notification->addError([
@@ -32,16 +36,27 @@ final readonly class VerifyTokenPasswordReset
         }
     }
 
-    private function getPasswordResetTokenByToken(VerifyTokenPasswordResetInputDto $input): PasswordResetToken
+    private function getPasswordResetTokenByToken(VerifyTokenPasswordResetInputDto $input): ?PasswordResetToken
     {
         $passwordResetToken = $this->iPasswordResetRepository->getByToken(new Token($input->token));
 
         if (is_null($passwordResetToken)) {
-            throw new \RuntimeException('Token não existe!');
+            $this->notification->addError([
+                'context' => 'verify_token_password_reset_employee',
+                'message' => 'Token não existe!',
+            ]);
+
+            return null;
         }
 
         if ($passwordResetToken->isExpired()) {
-            throw new \RuntimeException('Token expirado!');
+
+            $this->notification->addError([
+                'context' => 'verify_token_password_reset_employee',
+                'message' => 'Token expirado!',
+            ]);
+
+            return null;
         }
 
         return $passwordResetToken;

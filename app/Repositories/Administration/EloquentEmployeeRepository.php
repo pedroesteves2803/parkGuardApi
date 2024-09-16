@@ -7,24 +7,28 @@ use App\Models\PasswordResetToken as ModelsPasswordResetToken;
 use Illuminate\Support\Collection;
 use Src\Administration\Domain\Entities\Employee;
 use Src\Administration\Domain\Entities\PasswordResetToken;
+use Src\Administration\Domain\Factory\EmployeeFactory;
 use Src\Administration\Domain\Repositories\IEmployeeRepository;
 use Src\Administration\Domain\ValueObjects\Email;
-use Src\Administration\Domain\ValueObjects\Name;
-use Src\Administration\Domain\ValueObjects\Password;
 use Src\Administration\Domain\ValueObjects\Token;
-use Src\Administration\Domain\ValueObjects\Type;
 
-final class EloquentEmployeeRepository implements IEmployeeRepository
+final readonly class EloquentEmployeeRepository implements IEmployeeRepository
 {
+
+    public function __construct(
+        private EmployeeFactory $employeeFactory
+    )
+    {}
+
     public function getAll(): ?Collection
     {
         return ModelsEmployee::orderBy('id', 'desc')->get()->map(function ($employee) {
-            return new Employee(
+            return $this->employeeFactory->create(
                 $employee->id,
-                new Name($employee->name),
-                new Email($employee->email),
-                new Password($employee->password),
-                new Type($employee->type),
+                $employee->name,
+                $employee->email,
+                $employee->password,
+                $employee->type,
                 null
             );
         });
@@ -38,12 +42,12 @@ final class EloquentEmployeeRepository implements IEmployeeRepository
             return null;
         }
 
-        return new Employee(
+        return $this->employeeFactory->create(
             $employee->id,
-            new Name($employee->name),
-            new Email($employee->email),
-            new Password($employee->password),
-            new Type($employee->type),
+            $employee->name,
+            $employee->email,
+            $employee->password,
+            $employee->type,
             null
         );
     }
@@ -57,12 +61,12 @@ final class EloquentEmployeeRepository implements IEmployeeRepository
         $modelsEmployee->type = $employee->type()->value();
         $modelsEmployee->save();
 
-        return new Employee(
+        return $this->employeeFactory->create(
             $modelsEmployee->id,
-            new Name($modelsEmployee->name),
-            new Email($modelsEmployee->email),
-            new Password($modelsEmployee->password, true),
-            new Type($modelsEmployee->type),
+            $modelsEmployee->name,
+            $modelsEmployee->email,
+            $modelsEmployee->password,
+            $modelsEmployee->type,
             null
         );
     }
@@ -80,12 +84,12 @@ final class EloquentEmployeeRepository implements IEmployeeRepository
         $modelsEmployee->type = $employee->type()->value();
         $modelsEmployee->update();
 
-        return new Employee(
+        return $this->employeeFactory->create(
             $modelsEmployee->id,
-            new Name($modelsEmployee->name),
-            new Email($modelsEmployee->email),
-            new Password($modelsEmployee->password),
-            new Type($modelsEmployee->type),
+            $modelsEmployee->name,
+            $modelsEmployee->email,
+            $modelsEmployee->password,
+            $modelsEmployee->type,
             null
         );
     }
@@ -109,12 +113,12 @@ final class EloquentEmployeeRepository implements IEmployeeRepository
             return null;
         }
 
-        return new Employee(
+        return $this->employeeFactory->create(
             $modelsEmployee->id,
-            new Name($modelsEmployee->name),
-            new Email($modelsEmployee->email),
-            new Password($modelsEmployee->password),
-            new Type($modelsEmployee->type),
+            $modelsEmployee->name,
+            $modelsEmployee->email,
+            $modelsEmployee->password,
+            $modelsEmployee->type,
             null
         );
     }
@@ -136,12 +140,12 @@ final class EloquentEmployeeRepository implements IEmployeeRepository
 
         $modelsPasswordResetToken->delete();
 
-        return new Employee(
+        return $this->employeeFactory->create(
             $modelsEmployee->id,
-            new Name($modelsEmployee->name),
-            new Email($modelsEmployee->email),
-            new Password($modelsEmployee->password),
-            new Type($modelsEmployee->type),
+            $modelsEmployee->name,
+            $modelsEmployee->email,
+            $modelsEmployee->password,
+            $modelsEmployee->type,
             null
         );
     }

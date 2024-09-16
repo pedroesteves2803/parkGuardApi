@@ -22,6 +22,10 @@ final readonly class LoginEmployee
         try {
             $employee = $this->auth($input);
 
+            if(is_null($employee)){
+                return new LoginEmployeeOutputDto(null, $this->notification);
+            }
+
             return new LoginEmployeeOutputDto($employee, $this->notification);
         } catch (\Exception $e) {
             $this->notification->addError([
@@ -33,7 +37,7 @@ final readonly class LoginEmployee
         }
     }
 
-    private function auth($input): Employee
+    private function auth($input): ?Employee
     {
         $email = new Email($input->email);
         $password = new Password($input->password);
@@ -41,7 +45,11 @@ final readonly class LoginEmployee
         $employee = $this->iLoginEmployeeService->login($email, $password);
 
         if (is_null($employee)) {
-            throw new \RuntimeException('Email ou senha incorretos!');
+            $this->notification->addError([
+                'context' => 'login_employee',
+                'message' => 'Email ou senha incorretos!',
+            ]);
+            return null;
         }
 
         return $employee;

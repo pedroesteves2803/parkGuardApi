@@ -24,13 +24,13 @@ class VehicleFactory
     ): Vehicle
     {
         return new Vehicle(
-            $id,
-            new Manufacturer($manufacturer),
-            new Color($color),
-            new Model($model),
+            $id ?? null ,
+            empty($manufacturer) ? null : new Manufacturer($manufacturer),
+            empty($color) ? null : new Color($color),
+            empty($model) ? null : new Model($model),
             new LicensePlate($licensePlate),
             new EntryTimes($entryTimes),
-            New DepartureTimes($departureTimes)
+            $departureTimes === null ? null : New DepartureTimes($departureTimes)
         );
     }
 
@@ -50,7 +50,7 @@ class VehicleFactory
             empty($manufacturer) ? null : new Manufacturer($manufacturer),
             empty($color) ? null : new Color($color),
             empty($model) ? null : new Model($model),
-            empty($licensePlate) ? null : new LicensePlate($licensePlate),
+            new LicensePlate($licensePlate),
             new EntryTimes($entryTimes),
             $departureTimes === null ? null : New DepartureTimes($departureTimes)
         );

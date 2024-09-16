@@ -105,7 +105,7 @@ it('fails to finalize non-existent payment', function () {
         ->and($outputDto->payment)->toBeNull()
         ->and($outputDto->notification->getErrors())->toBe([
             [
-                'context' => 'get_payment_by_id',
+                'context' => 'finalize_payment',
                 'message' => 'Pagamento não registrado!',
             ],
         ]);

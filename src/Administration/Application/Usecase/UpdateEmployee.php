@@ -5,38 +5,53 @@ namespace Src\Administration\Application\Usecase;
 use Src\Administration\Application\Dtos\UpdateEmployeeInputDto;
 use Src\Administration\Application\Dtos\UpdateEmployeeOutputDto;
 use Src\Administration\Domain\Entities\Employee;
+use Src\Administration\Domain\Factory\EmployeeFactory;
 use Src\Administration\Domain\Repositories\IEmployeeRepository;
 use Src\Administration\Domain\ValueObjects\Email;
-use Src\Administration\Domain\ValueObjects\Name;
-use Src\Administration\Domain\ValueObjects\Type;
 use Src\Shared\Utils\Notification;
 
 final readonly class UpdateEmployee
 {
     public function __construct(
-        public IEmployeeRepository $iEmployeeRepository,
-        public Notification        $notification,
+        private IEmployeeRepository $employeeRepository,
+        private Notification        $notification,
+        private EmployeeFactory $employeeFactory
     ) {}
 
     public function execute(UpdateEmployeeInputDto $input): UpdateEmployeeOutputDto
     {
         try {
-            $employeeById = $this->getEmployeeById($input);
+            $employee = $this->getEmployeeById($input->id);
 
-            $this->assertExistEmployeeByEmail($employeeById, $input);
+            if (is_null($employee)) {
+                return new UpdateEmployeeOutputDto(null, $this->notification);
+            }
 
-            $employee = $this->iEmployeeRepository->update(
-                new Employee(
+            if (!$employee->hasEmail(new Email($input->email))) {
+                $existsEmployeeWithEmail = $this->employeeRepository->existByEmail(new Email($input->email));
+
+                if ($existsEmployeeWithEmail) {
+                    $this->notification->addError([
+                        'context' => 'update_employee',
+                        'message' => 'Email já cadastrado!',
+                    ]);
+
+                    return new UpdateEmployeeOutputDto(null, $this->notification);
+                }
+            }
+
+            $updatedEmployee = $this->employeeRepository->update(
+                $this->employeeFactory->create(
                     $input->id,
-                    new Name($input->name),
-                    new Email($input->email),
-                    $employeeById->password(),
-                    new Type($input->type),
-                    null
+                    $input->name,
+                    $input->email,
+                    $employee->password()->Value(),
+                    $input->type,
+                    $employee->token()
                 )
             );
 
-            return new UpdateEmployeeOutputDto($employee, $this->notification);
+            return new UpdateEmployeeOutputDto($updatedEmployee, $this->notification);
 
         } catch (\Exception $e) {
             $this->notification->addError([
@@ -48,31 +63,17 @@ final readonly class UpdateEmployee
         }
     }
 
-    private function getEmployeeById(UpdateEmployeeInputDto $input): Employee
+    private function getEmployeeById(int $id): ?Employee
     {
-        $employee = $this->iEmployeeRepository->getById($input->id);
+        $employee = $this->employeeRepository->getById($id);
 
-        if (is_null($employee)) {
-            throw new \RuntimeException('Funcionario não encontrado!');
+        if ($employee === null) {
+            $this->notification->addError([
+                'context' => 'update_employee',
+                'message' => 'Funcionário não encontrado.',
+            ]);
         }
 
         return $employee;
-    }
-
-    private function assertExistEmployeeByEmail(
-        Employee $employee,
-        UpdateEmployeeInputDto $input
-    ): void {
-        if ($employee->email()->value() === $input->email) {
-            return;
-        }
-
-        $existEmployee = $this->iEmployeeRepository->existByEmail(
-            new Email($input->email)
-        );
-
-        if ($existEmployee) {
-            throw new \RuntimeException('Email já cadastrado!');
-        }
     }
 }

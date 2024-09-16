@@ -4,7 +4,6 @@ namespace Src\Payments\Application\Usecase;
 
 use Src\Payments\Application\Dtos\DeletePaymentInputDto;
 use Src\Payments\Application\Dtos\DeletePaymentOutputDto;
-use Src\Payments\Application\Dtos\GetPaymentByIdInputDto;
 use Src\Payments\Domain\Repositories\IPaymentRepository;
 use Src\Shared\Utils\Notification;
 
@@ -16,19 +15,20 @@ final readonly class DeletePaymentById
         public Notification       $notification,
     ) {
     }
-
     public function execute(DeletePaymentInputDto $input): DeletePaymentOutputDto
     {
         try {
-            $getPaymentByIdOutputDto = $this->getPaymentById->execute(
-                new GetPaymentByIdInputDto($input->id)
-            );
 
-            if($getPaymentByIdOutputDto->notification->hasErrors()){
-                return new DeletePaymentOutputDto(null, $getPaymentByIdOutputDto->notification);
+            $payment = $this->paymentsRepository->getById($input->id);
+
+            if(is_null($payment)) {
+                $this->notification->addError([
+                    'context' => 'delete_payment',
+                    'message' => 'Pagamento não registrado!',
+                ]);
+
+                return new DeletePaymentOutputDto(null, $this->notification);
             }
-
-            $payment = $getPaymentByIdOutputDto->payment;
 
             if ($payment->paid()) {
                 $this->notification->addError([

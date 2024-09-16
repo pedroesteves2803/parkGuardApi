@@ -14,8 +14,7 @@ class SendPendingNotificationService implements ISendPendingNotificationService
 
     public function execute(Vehicle $vehicle): void
     {
-        Notification::route('mail', 'teste@teste.com')
-            ->route('vonage', '5511935051520')
+        Notification::route('vonage', '5511935051520')
             ->notify(new VehiclePendingNotification($vehicle));
     }
 }

@@ -16,7 +16,9 @@ use Src\Administration\Domain\Repositories\IPasswordResetRepository;
 use Src\Administration\Domain\Services\ILoginEmployeeService;
 use Src\Administration\Domain\Services\ISendPasswordResetTokenService;
 use Src\Payments\Domain\Repositories\IPaymentRepository;
+use Src\Vehicles\Application\Service\VehicleService;
 use Src\Vehicles\Domain\Repositories\IConsultVehicleRepository;
+use Src\Vehicles\Domain\Service\IVehicleService;
 use Src\Vehicles\Domain\Services\ISendPendingNotificationService;
 use Src\Vehicles\Domain\Repositories\IVehicleRepository;
 
@@ -35,6 +37,7 @@ class AppServiceProvider extends ServiceProvider
         app()->bind(IPaymentRepository::class, EloquentPaymentRepository::class);
         app()->bind(IPasswordResetRepository::class, EloquentPasswordResetRepository::class);
         app()->bind(ISendPasswordResetTokenService::class, SendPasswordResetTokenService::class);
+        app()->bind(IVehicleService::class, VehicleService::class);
 
         $this->app->register(\L5Swagger\L5SwaggerServiceProvider::class);
     }

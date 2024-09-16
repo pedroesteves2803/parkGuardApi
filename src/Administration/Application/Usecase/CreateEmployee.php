@@ -4,19 +4,17 @@ namespace Src\Administration\Application\Usecase;
 
 use Src\Administration\Application\Dtos\CreateEmployeeInputDto;
 use Src\Administration\Application\Dtos\CreateEmployeeOutputDto;
-use Src\Administration\Domain\Entities\Employee;
+use Src\Administration\Domain\Factory\EmployeeFactory;
 use Src\Administration\Domain\Repositories\IEmployeeRepository;
 use Src\Administration\Domain\ValueObjects\Email;
-use Src\Administration\Domain\ValueObjects\Name;
-use Src\Administration\Domain\ValueObjects\Password;
-use Src\Administration\Domain\ValueObjects\Type;
 use Src\Shared\Utils\Notification;
 
 final readonly class CreateEmployee
 {
     public function __construct(
-        public IEmployeeRepository $iEmployeeRepository,
-        public Notification        $notification,
+        private IEmployeeRepository $iEmployeeRepository,
+        private Notification        $notification,
+        private EmployeeFactory $employeeFactory
     ) {}
 
     public function execute(CreateEmployeeInputDto $input): CreateEmployeeOutputDto
@@ -36,12 +34,12 @@ final readonly class CreateEmployee
             }
 
             $employee = $this->iEmployeeRepository->create(
-                new Employee(
+                $this->employeeFactory->create(
                     null,
-                    new Name($input->name),
-                    new Email($input->email),
-                    new Password($input->password),
-                    new Type($input->type),
+                    $input->name,
+                    $input->email,
+                    $input->password,
+                    $input->type,
                     null
                 )
             );

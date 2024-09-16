@@ -15,30 +15,34 @@ use Src\Shared\Utils\Notification;
 final readonly class GeneratePasswordResetTokenEmployee
 {
     public function __construct(
-        public IPasswordResetRepository       $iPasswordResetRepository,
-        public IEmployeeRepository            $iEmployeeRepository,
-        public ISendPasswordResetTokenService $iSendPasswordResetTokenService,
-        public Notification                   $notification,
-    ) {
-    }
+        private IPasswordResetRepository $passwordResetRepository,
+        private IEmployeeRepository $employeeRepository,
+        private ISendPasswordResetTokenService $sendPasswordResetTokenService,
+        private Notification $notification
+    ) {}
 
     public function execute(GeneratePasswordResetTokenEmployeeInputDto $input): GeneratePasswordResetTokenEmployeeOutputDto
     {
         try {
-            $this->handlePasswordResetForEmail($input->email);
-            $employee = $this->assertGetEmployeeByEmail($input->email);
+            $this->removeExistingPasswordResetTokens($input->email);
 
-            $passwordResetRepository = $this->iPasswordResetRepository->create(
-                new PasswordResetToken(
-                    $employee->email(),
-                    null,
-                    null
-                )
+            $employee = $this->findEmployeeByEmail($input->email);
+
+            if (is_null($employee)) {
+                return new GeneratePasswordResetTokenEmployeeOutputDto(null, $this->notification);
+            }
+
+            $passwordResetToken = new PasswordResetToken(
+                $employee->email(),
+                null,
+                null
             );
 
-            $this->iSendPasswordResetTokenService->execute($passwordResetRepository);
+            $this->passwordResetRepository->create($passwordResetToken);
 
-            return new GeneratePasswordResetTokenEmployeeOutputDto($passwordResetRepository, $this->notification);
+            $this->sendPasswordResetTokenService->execute($passwordResetToken);
+
+            return new GeneratePasswordResetTokenEmployeeOutputDto($passwordResetToken, $this->notification);
         } catch (\Exception $e) {
             $this->notification->addError([
                 'context' => 'generate_token_employee',
@@ -49,29 +53,28 @@ final readonly class GeneratePasswordResetTokenEmployee
         }
     }
 
-    private function assertGetEmployeeByEmail(string $employeeEmail): Employee
+    private function findEmployeeByEmail(string $email): ?Employee
     {
-        $employee = $this->iEmployeeRepository->getByEmail(
-            new Email($employeeEmail)
-        );
+        $employee = $this->employeeRepository->getByEmail(new Email($email));
 
-        if (!$employee) {
-            throw new \RuntimeException('Funcionário não existe!');
+        if ($employee === null) {
+            $this->notification->addError([
+                'context' => 'generate_token_employee',
+                'message' => 'Funcionário não encontrado.',
+            ]);
         }
 
         return $employee;
     }
 
-    private function handlePasswordResetForEmail(string $employeeEmail): void
+    private function removeExistingPasswordResetTokens(string $email): void
     {
-        $employee = $this->iPasswordResetRepository->getByEmail(
-            new Email($employeeEmail)
-        );
+        $existingToken = $this->passwordResetRepository->getByEmail(new Email($email));
 
-        if ($employee) {
-            $this->iPasswordResetRepository->delete(
-                new Email($employeeEmail)
-            );
+        if ($existingToken !== null) {
+            $this->passwordResetRepository->delete(new Email($email));
         }
     }
+
+
 }

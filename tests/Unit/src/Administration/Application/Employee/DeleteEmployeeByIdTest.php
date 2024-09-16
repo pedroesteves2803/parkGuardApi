@@ -40,9 +40,9 @@ it('can delete an existing employee by ID', function () {
 
     $outputDto = $deleteEmployeeById->execute($inputDto);
 
-    expect($outputDto)->toBeInstanceOf(DeleteEmployeeByIdOutputDto::class);
-    expect($outputDto->employee)->toBeNull();
-    expect($outputDto->notification->getErrors())->toBeEmpty();
+    expect($outputDto)->toBeInstanceOf(DeleteEmployeeByIdOutputDto::class)
+        ->and($outputDto->employee)->toBeNull()
+        ->and($outputDto->notification->getErrors())->toBeEmpty();
 });
 
 it('returns error notification when trying to delete a non-existing employee', function () {
@@ -58,12 +58,12 @@ it('returns error notification when trying to delete a non-existing employee', f
 
     $outputDto = $deleteEmployeeById->execute($inputDto);
 
-    expect($outputDto)->toBeInstanceOf(DeleteEmployeeByIdOutputDto::class);
-    expect($outputDto->employee)->toBeNull();
-    expect($outputDto->notification->getErrors())->toBe([
-        [
-            'context' => 'delete_employee_by_id',
-            'message' => 'Funcionario não encontrado!',
-        ],
-    ]);
+    expect($outputDto)->toBeInstanceOf(DeleteEmployeeByIdOutputDto::class)
+        ->and($outputDto->employee)->toBeNull()
+        ->and($outputDto->notification->getErrors())->toBe([
+            [
+                'context' => 'delete_employee_by_id',
+                'message' => 'Funcionario não encontrado!',
+            ],
+        ]);
 });

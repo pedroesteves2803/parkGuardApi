@@ -8,17 +8,7 @@ use Illuminate\Support\Collection;
 use Src\Payments\Domain\Entities\Payment;
 use Src\Payments\Domain\Factory\PaymentFactory;
 use Src\Payments\Domain\Repositories\IPaymentRepository;
-use Src\Payments\Domain\ValueObjects\PaymentMethod;
-use Src\Payments\Domain\ValueObjects\RegistrationTime;
-use Src\Payments\Domain\ValueObjects\Value;
-use Src\Shared\Utils\Notification;
-use Src\Vehicles\Domain\Entities\Vehicle;
-use Src\Vehicles\Domain\ValueObjects\Color;
-use Src\Vehicles\Domain\ValueObjects\DepartureTimes;
-use Src\Vehicles\Domain\ValueObjects\EntryTimes;
-use Src\Vehicles\Domain\ValueObjects\LicensePlate;
-use Src\Vehicles\Domain\ValueObjects\Manufacturer;
-use Src\Vehicles\Domain\ValueObjects\Model;
+use Src\Vehicles\Domain\Factory\VehicleFactory;
 
 final class EloquentPaymentRepository implements IPaymentRepository
 {
@@ -99,17 +89,16 @@ final class EloquentPaymentRepository implements IPaymentRepository
         $modelsPayment->delete();
     }
 
-
     public function createPaymentFromModels(ModelsVehicle $modelsVehicle, ModelsPayment $payment): Payment
     {
-        $vehicle = new Vehicle(
+        $vehicle = (new VehicleFactory())->create(
             $modelsVehicle->id,
-            is_null($modelsVehicle->manufacturer) ? null : new Manufacturer($modelsVehicle->manufacturer),
-            is_null($modelsVehicle->color) ? null : new Color($modelsVehicle->color),
-            is_null($modelsVehicle->model) ? null : new Model($modelsVehicle->model),
-            new LicensePlate($modelsVehicle->license_plate),
-            new EntryTimes($modelsVehicle->entry_times),
-            is_null($modelsVehicle->departure_times) ? null : new DepartureTimes($modelsVehicle->departure_times)
+            is_null($modelsVehicle->manufacturer) ? null : $modelsVehicle->manufacturer,
+            is_null($modelsVehicle->color) ? null : $modelsVehicle->color,
+            is_null($modelsVehicle->model) ? null : $modelsVehicle->model,
+            $modelsVehicle->license_plate,
+            $modelsVehicle->entry_times,
+            is_null($modelsVehicle->departure_times) ? null :$modelsVehicle->departure_times
         );
 
         return (new PaymentFactory())->create(

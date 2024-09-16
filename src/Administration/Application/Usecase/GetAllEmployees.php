@@ -2,7 +2,6 @@
 
 namespace Src\Administration\Application\Usecase;
 
-use Illuminate\Support\Collection;
 use Src\Administration\Application\Dtos\GetAllEmployeesOutputDto;
 use Src\Administration\Domain\Repositories\IEmployeeRepository;
 use Src\Shared\Utils\Notification;
@@ -18,7 +17,16 @@ final readonly class GetAllEmployees
     public function execute(): GetAllEmployeesOutputDto
     {
         try {
-            $employees = $this->getEmployees();
+            $employees = $this->iEmployeeRepository->getAll();
+
+            if (is_null($employees)) {
+                $this->notification->addError([
+                    'context' => 'get_all_employees',
+                    'message' => 'Não possui funcionarios!',
+                ]);
+
+                return new GetAllEmployeesOutputDto(null, $this->notification);
+            }
 
             return new GetAllEmployeesOutputDto($employees, $this->notification);
         } catch (\Exception $e) {
@@ -29,16 +37,5 @@ final readonly class GetAllEmployees
 
             return new GetAllEmployeesOutputDto(null, $this->notification);
         }
-    }
-
-    private function getEmployees(): Collection
-    {
-        $employees = $this->iEmployeeRepository->getAll();
-
-        if (is_null($employees)) {
-            throw new \RuntimeException('Não possui funcionarios!');
-        }
-
-        return $employees;
     }
 }

@@ -40,9 +40,9 @@ it('can retrieve an vehicle by ID from the repository', function () {
 
     $outputDto = $getVehicleById->execute($inputDto);
 
-    expect($outputDto)->toBeInstanceOf(GetVehicleOutputDto::class);
-    expect($outputDto->vehicle)->toBe($vehicle);
-    expect($outputDto->notification->getErrors())->toBeEmpty();
+    expect($outputDto)->toBeInstanceOf(GetVehicleOutputDto::class)
+        ->and($outputDto->vehicle)->toBe($vehicle)
+        ->and($outputDto->notification->getErrors())->toBeEmpty();
 });
 
 it('returns error notification when trying to retrieve a non-existing vehicle', function () {

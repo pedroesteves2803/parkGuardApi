@@ -7,6 +7,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Collection;
 use Src\Administration\Domain\Entities\Employee;
 use Src\Administration\Domain\Entities\PasswordResetToken;
+use Src\Administration\Domain\Factory\EmployeeFactory;
 use Src\Administration\Domain\ValueObjects\Email;
 use Src\Administration\Domain\ValueObjects\ExpirationTime;
 use Src\Administration\Domain\ValueObjects\Name;
@@ -34,11 +35,13 @@ it('can get all employees', function () {
         'type' => 2,
     ]);
 
-    $repository = new EloquentEmployeeRepository();
+    $repository = new EloquentEmployeeRepository(
+        new EmployeeFactory()
+    );
     $employees = $repository->getAll();
 
-    expect($employees)->toBeInstanceOf(Collection::class);
-    expect($employees)->toHaveCount(3);
+    expect($employees)->toBeInstanceOf(Collection::class)
+        ->and($employees)->toHaveCount(3);
 });
 
 it('can get employee by id', function () {
@@ -48,17 +51,19 @@ it('can get employee by id', function () {
         'type' => 1,
     ]);
 
-    $repository = new EloquentEmployeeRepository();
+    $repository = new EloquentEmployeeRepository(
+        new EmployeeFactory()
+    );
 
     $retrievedEmployee = $repository->getById($employee->id);
 
-    expect($retrievedEmployee)->toBeInstanceOf(Employee::class);
+    expect($retrievedEmployee)->toBeInstanceOf(Employee::class)
+        ->and($retrievedEmployee->id())->toBe($employee->id)
+        ->and($retrievedEmployee->name()->value())->toBe($employee->name)
+        ->and($retrievedEmployee->email()->value())->toBe($employee->email)
+        ->and($retrievedEmployee->password()->value())->toBe($employee->password)
+        ->and($retrievedEmployee->type()->value())->toBe($employee->type);
 
-    expect($retrievedEmployee->id())->toBe($employee->id);
-    expect($retrievedEmployee->name()->value())->toBe($employee->name);
-    expect($retrievedEmployee->email()->value())->toBe($employee->email);
-    expect($retrievedEmployee->password()->value())->toBe($employee->password);
-    expect($retrievedEmployee->type()->value())->toBe($employee->type);
 });
 
 it('creates a new employee', function () {
@@ -71,14 +76,16 @@ it('creates a new employee', function () {
         null
     );
 
-    $repository = new EloquentEmployeeRepository();
+    $repository = new EloquentEmployeeRepository(
+        new EmployeeFactory()
+    );
     $createdEmployee = $repository->create($employeeData);
 
     expect($createdEmployee)->toBeInstanceOf(Employee::class);
     $this->assertNotNull($createdEmployee->id());
-    expect($createdEmployee->name()->value())->toBe($employeeData->name()->value());
-    expect($createdEmployee->email()->value())->toBe($employeeData->email()->value());
-    expect($createdEmployee->type()->value())->toBe($employeeData->type()->value());
+    expect($createdEmployee->name()->value())->toBe($employeeData->name()->value())
+        ->and($createdEmployee->email()->value())->toBe($employeeData->email()->value())
+        ->and($createdEmployee->type()->value())->toBe($employeeData->type()->value());
 });
 
 it('update a employee', function () {
@@ -97,14 +104,16 @@ it('update a employee', function () {
         null
     );
 
-    $repository = new EloquentEmployeeRepository();
+    $repository = new EloquentEmployeeRepository(
+        new EmployeeFactory()
+    );
     $createdEmployee = $repository->update($employeeData);
 
     expect($createdEmployee)->toBeInstanceOf(Employee::class);
     $this->assertNotNull($createdEmployee->id());
-    expect($createdEmployee->name()->value())->toBe($employeeData->name()->value());
-    expect($createdEmployee->email()->value())->toBe($employeeData->email()->value());
-    expect($createdEmployee->type()->value())->toBe($employeeData->type()->value());
+    expect($createdEmployee->name()->value())->toBe($employeeData->name()->value())
+        ->and($createdEmployee->email()->value())->toBe($employeeData->email()->value())
+        ->and($createdEmployee->type()->value())->toBe($employeeData->type()->value());
 });
 
 it('delete a employee', function () {
@@ -114,7 +123,9 @@ it('delete a employee', function () {
         'type' => 1,
     ]);
 
-    $repository = new EloquentEmployeeRepository();
+    $repository = new EloquentEmployeeRepository(
+        new EmployeeFactory()
+    );
     $repository->delete(1);
     $deleteEmployee = $repository->getById(1);
 
@@ -128,7 +139,9 @@ it('check if there is an employee', function () {
         'type' => 1,
     ]);
 
-    $repository = new EloquentEmployeeRepository();
+    $repository = new EloquentEmployeeRepository(
+        new EmployeeFactory()
+    );
     $existEmployee = $repository->existByEmail(
         new Email('email1@teste.com')
     );
@@ -143,7 +156,9 @@ it('check if there is no employee', function () {
         'type' => 1,
     ]);
 
-    $repository = new EloquentEmployeeRepository();
+    $repository = new EloquentEmployeeRepository(
+        new EmployeeFactory()
+    );
     $existEmployee = $repository->existByEmail(
         new Email('emailerrado@teste.com')
     );
@@ -177,12 +192,14 @@ it('update a password', function () {
         new ExpirationTime($modelsPasswordResetToken->expirationTime)
     );
 
-    $repository = new EloquentEmployeeRepository();
+    $repository = new EloquentEmployeeRepository(
+        new EmployeeFactory()
+    );
     $updatePassword = $repository->updatePassword($passwordResetToken, $employee, new Token($modelsPasswordResetToken->token));
 
     expect($updatePassword)->toBeInstanceOf(Employee::class);
     $this->assertNotNull($updatePassword->id());
-    expect($updatePassword->name()->value())->toBe($employee->name()->value());
-    expect($updatePassword->email()->value())->toBe($employee->email()->value());
-    expect($updatePassword->type()->value())->toBe($employee->type()->value());
+    expect($updatePassword->name()->value())->toBe($employee->name()->value())
+        ->and($updatePassword->email()->value())->toBe($employee->email()->value())
+        ->and($updatePassword->type()->value())->toBe($employee->type()->value());
 });
