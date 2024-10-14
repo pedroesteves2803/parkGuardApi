@@ -13,6 +13,7 @@ return new class() extends Migration {
             $table->string('email')->unique();
             $table->string('password');
             $table->integer('type');
+            $table->foreign('parking_id')->references('id')->on('parkings');
             $table->timestamps();
         });
     }

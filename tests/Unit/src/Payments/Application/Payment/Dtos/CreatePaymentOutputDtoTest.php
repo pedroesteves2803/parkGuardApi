@@ -26,13 +26,13 @@ it('can create an instance of CreatePaymentOutputDto with null employee and erro
 
     $outputDto = new CreatePaymentOutputDto(null, $notification);
 
-    expect($outputDto)->toBeInstanceOf(CreatePaymentOutputDto::class);
-    expect($outputDto->payment)->toBeNull();
-    expect($outputDto->notification->getErrors())->toBe([
-        [
-            'context' => 'test_error',
-            'message' => 'test',
-        ],
-    ]);
+    expect($outputDto)->toBeInstanceOf(CreatePaymentOutputDto::class)
+        ->and($outputDto->payment)->toBeNull()
+        ->and($outputDto->notification->getErrors())->toBe([
+            [
+                'context' => 'test_error',
+                'message' => 'test',
+            ],
+        ]);
 });
 

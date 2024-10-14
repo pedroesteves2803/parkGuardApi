@@ -13,8 +13,8 @@ it('can create an instance of CreatePaymentInputDto with valid data', function (
         $vehicle_id,
     );
 
-    expect($inputDto)->toBeInstanceOf(CreatePaymentInputDto::class);
-    expect($inputDto->dateTime)->toBe($dateTime);
-    expect($inputDto->paymentMethod)->toBe($paymentMethod);
-    expect($inputDto->vehicle_id)->toBe($vehicle_id);
+    expect($inputDto)->toBeInstanceOf(CreatePaymentInputDto::class)
+        ->and($inputDto->dateTime)->toBe($dateTime)
+        ->and($inputDto->paymentMethod)->toBe($paymentMethod)
+        ->and($inputDto->vehicle_id)->toBe($vehicle_id);
 });
