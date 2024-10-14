@@ -19,7 +19,7 @@ final class PricePerHour extends ValueObject
         }
     }
 
-    public function value(): string
+    public function value(): float
     {
         return $this->pricePerHour;
     }

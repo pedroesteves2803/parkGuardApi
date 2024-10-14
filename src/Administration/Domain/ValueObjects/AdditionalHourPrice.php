@@ -19,7 +19,7 @@ class AdditionalHourPrice extends ValueObject
         }
     }
 
-    public function value(): string
+    public function value(): float
     {
         return $this->additionalHourPrice;
     }
