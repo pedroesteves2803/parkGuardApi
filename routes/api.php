@@ -5,6 +5,8 @@ use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\VehicleController;
 use Illuminate\Support\Facades\Route;
 
+Route::post('/parking', [\App\Http\Controllers\ParkingController::class, 'store'])->name('parking.store');
+
 Route::post('/employee/login', [EmployeeController::class, 'login'])->name('employee.login');
 Route::post('/employee/logout', [EmployeeController::class, 'logout'])->name('employee.logout');
 Route::post('/employee/password/reset', [EmployeeController::class, 'passwordResetToken'])->name('employee.password.reset');

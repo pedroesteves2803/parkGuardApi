@@ -14,7 +14,7 @@ class Parking extends Entity implements IAggregateRoot
         readonly private ?int $id,
         readonly private Name $name,
         readonly private string $responsibleIdentification,
-        readonly private string $responsibleName,
+        readonly private Name $responsibleName,
         readonly private PricePerHour $pricePerHour,
         readonly private AdditionalHourPrice $additionalHourPrice
     ) {
@@ -35,7 +35,7 @@ class Parking extends Entity implements IAggregateRoot
         return $this->responsibleIdentification;
     }
 
-    public function responsibleName(): string
+    public function responsibleName(): Name
     {
         return $this->responsibleName;
     }

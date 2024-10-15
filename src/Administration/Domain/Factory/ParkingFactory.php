@@ -22,7 +22,7 @@ class ParkingFactory
             $id,
             New Name($name),
             $responsibleIdentification,
-            $responsibleName,
+            new Name($responsibleName),
             new PricePerHour($pricePerHour),
             new AdditionalHourPrice($additionalHourPrice)
         );
