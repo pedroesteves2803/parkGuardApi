@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Parking\CreateParkingRequest;
+use App\Http\Resources\Parking\CreateParkingResource;
 use Illuminate\Http\Request;
 use Src\Administration\Application\Dtos\CreateParkingInputDto;
 use Src\Administration\Application\Usecase\CreateParking;
@@ -28,7 +30,7 @@ class ParkingController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(
-        Request $request,
+        CreateParkingRequest $request,
         CreateParking $createParking
     )
     {
@@ -40,9 +42,9 @@ class ParkingController extends Controller
             $request->additionalHourPrice,
         );
 
-        $output = $createParking->execute($inputDto);
+        $createParkingOutput = $createParking->execute($inputDto);
 
-        dd($output);
+        return new CreateParkingResource($createParkingOutput);
     }
 
     /**

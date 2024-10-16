@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Repositories\Administration\EloquentEmployeeRepository;
+use App\Repositories\Administration\EloquentParkingRepository;
 use App\Repositories\Administration\EloquentPasswordResetRepository;
 use App\Repositories\Payments\EloquentPaymentRepository;
 use App\Repositories\Vehicles\ApiConsultVehicleRepository;
@@ -12,6 +13,7 @@ use App\Services\SendPasswordResetTokenService;
 use App\Services\SendPendingNotificationService;
 use Illuminate\Support\ServiceProvider;
 use Src\Administration\Domain\Repositories\IEmployeeRepository;
+use Src\Administration\Domain\Repositories\IParkingRepository;
 use Src\Administration\Domain\Repositories\IPasswordResetRepository;
 use Src\Administration\Domain\Services\ILoginEmployeeService;
 use Src\Administration\Domain\Services\ISendPasswordResetTokenService;
@@ -38,6 +40,7 @@ class AppServiceProvider extends ServiceProvider
         app()->bind(IPasswordResetRepository::class, EloquentPasswordResetRepository::class);
         app()->bind(ISendPasswordResetTokenService::class, SendPasswordResetTokenService::class);
         app()->bind(IVehicleService::class, VehicleService::class);
+        app()->bind(IParkingRepository::class, EloquentParkingRepository::class);
 
         $this->app->register(\L5Swagger\L5SwaggerServiceProvider::class);
     }
