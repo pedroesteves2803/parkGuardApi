@@ -2,6 +2,7 @@
 
 namespace Src\Administration\Application\Usecase\Parking;
 
+use Src\Administration\Application\Dtos\Parking\CreateParkingOutputDto;
 use Src\Administration\Application\Dtos\Parking\UpdateParkingInputDto;
 use Src\Administration\Application\Dtos\Parking\UpdateParkingOutputDto;
 use Src\Administration\Domain\Factory\ParkingFactory;
@@ -19,6 +20,7 @@ final readonly class UpdateParking
     public function execute(UpdateParkingInputDto $input): UpdateParkingOutputDto
     {
         try {
+
             $parking = $this->parkingRepository->getById(
                 $input->id
             );
@@ -30,6 +32,21 @@ final readonly class UpdateParking
                 ]);
 
                 return new UpdateParkingOutputDto(null, $this->notification);
+            }
+
+            if(!$parking->hasIdentification($input->responsibleIdentification)){
+                $existParkingWithIdentification = $this->parkingRepository->exists(
+                    $input->responsibleIdentification
+                );
+
+                if ($existParkingWithIdentification) {
+                    $this->notification->addError([
+                        'context' => 'update_parking',
+                        'message' => 'Idenficador de responsavel já cadastrado!',
+                    ]);
+
+                    return new UpdateParkingOutputDto(null, $this->notification);
+                }
             }
 
             $employee = $this->parkingRepository->update(

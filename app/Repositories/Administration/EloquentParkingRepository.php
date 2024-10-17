@@ -90,5 +90,4 @@ final readonly class EloquentParkingRepository implements IParkingRepository
     {
         return ModelsParking::where('responsible_identification', $identification)->exists();
     }
-
 }

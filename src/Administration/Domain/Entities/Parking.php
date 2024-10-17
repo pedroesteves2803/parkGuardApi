@@ -49,4 +49,9 @@ class Parking extends Entity implements IAggregateRoot
     {
         return $this->additionalHourPrice;
     }
+
+    public function hasIdentification(string $identification): bool
+    {
+        return $this->responsibleIdentification() === $identification;
+    }
 }

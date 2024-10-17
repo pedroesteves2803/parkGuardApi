@@ -18,5 +18,4 @@ interface IParkingRepository
     public function delete(int $id): void;
 
     public function exists(string $identification): bool;
-
 }
