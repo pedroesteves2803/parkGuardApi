@@ -1,6 +1,6 @@
 <?php
 
-use Src\Administration\Application\Dtos\GetEmployeeByIdOutputDto;
+use Src\Administration\Application\Dtos\Employee\GetEmployeeByIdOutputDto;
 use Src\Administration\Domain\Entities\Employee;
 use Src\Administration\Domain\ValueObjects\Email;
 use Src\Administration\Domain\ValueObjects\Name;

@@ -1,6 +1,6 @@
 <?php
 
-use Src\Administration\Application\Dtos\DeleteEmployeeByIdOutputDto;
+use Src\Administration\Application\Dtos\Employee\DeleteEmployeeByIdOutputDto;
 use Src\Shared\Utils\Notification;
 
 it('can create an instance of DeleteEmployeeByIdOutputDto with null employee and empty notification', function () {

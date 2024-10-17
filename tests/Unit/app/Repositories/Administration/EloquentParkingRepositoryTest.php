@@ -1,5 +1,4 @@
 <?php
-
 use App\Models\Parking as ModelsParking;
 use App\Repositories\Administration\EloquentParkingRepository;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -36,27 +35,28 @@ describe('EloquentParkingRepository', function () {
 //        ->and($employees)->toHaveCount(3);
 //});
 
-//it('can get employee by id', function () {
-//    $employee = ModelsEmployee::factory()->create([
-//        'name' => 'nome 1',
-//        'email' => 'email1@teste.com',
-//        'type' => 1,
-//    ]);
-//
-//    $repository = new EloquentEmployeeRepository(
-//        new EmployeeFactory()
-//    );
-//
-//    $retrievedEmployee = $repository->getById($employee->id);
-//
-//    expect($retrievedEmployee)->toBeInstanceOf(Employee::class)
-//        ->and($retrievedEmployee->id())->toBe($employee->id)
-//        ->and($retrievedEmployee->name()->value())->toBe($employee->name)
-//        ->and($retrievedEmployee->email()->value())->toBe($employee->email)
-//        ->and($retrievedEmployee->password()->value())->toBe($employee->password)
-//        ->and($retrievedEmployee->type()->value())->toBe($employee->type);
-//
-//});
+it('can get parking by id', function () {
+
+    $parking = ModelsParking::factory()->create([
+        'responsible_identification' => '50598542809',
+        'responsible_name' => 'Estacionamento',
+        'price_per_hour' => 10.0,
+        'additional_hour_price' => 2.0,
+    ]);
+
+    $repository = new EloquentParkingRepository(
+        new ParkingFactory()
+    );
+
+    $retrievedParking = $repository->getById($parking->id);
+
+    expect($retrievedParking)->toBeInstanceOf(Parking::class)
+        ->and($retrievedParking->name()->value())->toBe($parking->name)
+        ->and($retrievedParking->responsibleIdentification())->toBe($parking->responsible_identification)
+        ->and($retrievedParking->responsibleName()->value())->toBe($parking->responsible_name)
+        ->and($retrievedParking->pricePerHour()->value())->toBe($parking->price_per_hour)
+        ->and($retrievedParking->additionalHourPrice()->value())->toBe($parking->additional_hour_price);
+});
 
     it('creates a new parking', function () {
 
@@ -88,33 +88,40 @@ describe('EloquentParkingRepository', function () {
             ->and($createdParking->additionalHourPrice()->value())->toBe($parkingData->additionalHourPrice()->value());
     });
 
-//it('update a employee', function () {
-//    ModelsEmployee::factory()->create([
-//        'name' => 'nome 1',
-//        'email' => 'email1@teste.com',
-//        'type' => 1,
-//    ]);
-//
-//    $employeeData = new Employee(
-//        1,
-//        new Name('Update'),
-//        new Email('update@test.com'),
-//        new Password('Password@123'),
-//        new Type(1),
-//        null
-//    );
-//
-//    $repository = new EloquentEmployeeRepository(
-//        new EmployeeFactory()
-//    );
-//    $createdEmployee = $repository->update($employeeData);
-//
-//    expect($createdEmployee)->toBeInstanceOf(Employee::class);
-//    $this->assertNotNull($createdEmployee->id());
-//    expect($createdEmployee->name()->value())->toBe($employeeData->name()->value())
-//        ->and($createdEmployee->email()->value())->toBe($employeeData->email()->value())
-//        ->and($createdEmployee->type()->value())->toBe($employeeData->type()->value());
-//});
+it('update a parking', function () {
+    ModelsParking::factory()->create([
+        'name' => 'teste',
+        'responsible_identification' => '50598542809',
+        'responsible_name' => 'Estacionamento',
+        'price_per_hour' => 10.0,
+        'additional_hour_price' => 2.0,
+    ]);
+
+    $parkingFactory = new ParkingFactory();
+
+    $parkingData = $parkingFactory->create(
+        1,
+        'Parking',
+        '12345678945',
+        'Teste name',
+        10,
+        5
+    );
+
+    $repository = new EloquentParkingRepository(
+        $parkingFactory
+    );
+
+    $updateParking = $repository->update($parkingData);
+
+    expect($updateParking)->toBeInstanceOf(Parking::class);
+    $this->assertNotNull($updateParking->id());
+    expect($updateParking->name()->value())->toBe($parkingData->name()->value())
+        ->and($updateParking->responsibleIdentification())->toBe($parkingData->responsibleIdentification())
+        ->and($updateParking->responsibleName()->value())->toBe($parkingData->responsibleName()->value())
+        ->and($updateParking->pricePerHour()->value())->toBe($parkingData->pricePerHour()->value())
+        ->and($updateParking->additionalHourPrice()->value())->toBe($parkingData->additionalHourPrice()->value());
+});
 
 //it('delete a employee', function () {
 //    ModelsEmployee::factory()->create([

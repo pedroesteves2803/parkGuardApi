@@ -1,11 +1,13 @@
 <?php
 
 use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\ParkingController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\VehicleController;
 use Illuminate\Support\Facades\Route;
 
-Route::post('/parking', [\App\Http\Controllers\ParkingController::class, 'store'])->name('parking.store');
+Route::post('/parking', [ParkingController::class, 'store'])->name('parking.store');
+Route::put('/parking/{parking}', [ParkingController::class, 'update'])->name('parking.update');
 
 Route::post('/employee/login', [EmployeeController::class, 'login'])->name('employee.login');
 Route::post('/employee/logout', [EmployeeController::class, 'logout'])->name('employee.logout');

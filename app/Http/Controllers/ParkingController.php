@@ -3,10 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Parking\CreateParkingRequest;
+use App\Http\Requests\Parking\UpdateParkingRequest;
 use App\Http\Resources\Parking\CreateParkingResource;
+use App\Http\Resources\Parking\UpdateParkingResource;
 use Illuminate\Http\Request;
-use Src\Administration\Application\Dtos\CreateParkingInputDto;
-use Src\Administration\Application\Usecase\CreateParking;
+use Src\Administration\Application\Dtos\Parking\CreateParkingInputDto;
+use Src\Administration\Application\Dtos\Parking\UpdateParkingInputDto;
+use Src\Administration\Application\Usecase\Parking\CreateParking;
+use Src\Administration\Application\Usecase\Parking\UpdateParking;
 
 class ParkingController extends Controller
 {
@@ -66,9 +70,24 @@ class ParkingController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(
+        UpdateParkingRequest $request,
+        string $id,
+        UpdateParking $updateParking
+    )
     {
-        //
+        $inputDto = new UpdateParkingInputDto(
+            $id,
+            $request->name,
+            $request->responsibleIdentification,
+            $request->responsibleName,
+            $request->pricePerHour,
+            $request->additionalHourPrice,
+        );
+
+        $updateParkingOutput = $updateParking->execute($inputDto);
+
+        return new UpdateParkingResource($updateParkingOutput);
     }
 
     /**

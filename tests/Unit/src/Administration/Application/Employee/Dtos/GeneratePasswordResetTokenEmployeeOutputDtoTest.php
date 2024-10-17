@@ -1,6 +1,6 @@
 <?php
 
-use Src\Administration\Application\Dtos\GeneratePasswordResetTokenEmployeeOutputDto;
+use Src\Administration\Application\Dtos\Employee\GeneratePasswordResetTokenEmployeeOutputDto;
 use Src\Administration\Domain\Entities\PasswordResetToken;
 use Src\Administration\Domain\ValueObjects\Email;
 use Src\Administration\Domain\ValueObjects\ExpirationTime;

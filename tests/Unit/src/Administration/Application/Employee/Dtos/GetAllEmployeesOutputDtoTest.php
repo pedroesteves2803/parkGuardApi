@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Collection;
-use Src\Administration\Application\Dtos\GetAllEmployeesOutputDto;
+use Src\Administration\Application\Dtos\Employee\GetAllEmployeesOutputDto;
 use Src\Administration\Domain\Entities\Employee;
 use Src\Administration\Domain\ValueObjects\Email;
 use Src\Administration\Domain\ValueObjects\Name;

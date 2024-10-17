@@ -1,8 +1,8 @@
 <?php
 
-use Src\Administration\Application\Dtos\GetEmployeeByIdInputDto;
-use Src\Administration\Application\Dtos\GetEmployeeByIdOutputDto;
-use Src\Administration\Application\Usecase\GetEmployeeById;
+use Src\Administration\Application\Dtos\Employee\GetEmployeeByIdInputDto;
+use Src\Administration\Application\Dtos\Employee\GetEmployeeByIdOutputDto;
+use Src\Administration\Application\Usecase\Employee\GetEmployeeById;
 use Src\Administration\Domain\Entities\Employee;
 use Src\Administration\Domain\Repositories\IEmployeeRepository;
 use Src\Administration\Domain\ValueObjects\Email;

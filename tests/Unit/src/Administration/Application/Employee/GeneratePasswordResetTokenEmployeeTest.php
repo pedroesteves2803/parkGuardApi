@@ -1,8 +1,8 @@
 <?php
 
-use Src\Administration\Application\Dtos\GeneratePasswordResetTokenEmployeeInputDto;
-use Src\Administration\Application\Dtos\GeneratePasswordResetTokenEmployeeOutputDto;
-use Src\Administration\Application\Usecase\GeneratePasswordResetTokenEmployee;
+use Src\Administration\Application\Dtos\Employee\GeneratePasswordResetTokenEmployeeInputDto;
+use Src\Administration\Application\Dtos\Employee\GeneratePasswordResetTokenEmployeeOutputDto;
+use Src\Administration\Application\Usecase\Employee\GeneratePasswordResetTokenEmployee;
 use Src\Administration\Domain\Entities\Employee;
 use Src\Administration\Domain\Entities\PasswordResetToken;
 use Src\Administration\Domain\Repositories\IEmployeeRepository;

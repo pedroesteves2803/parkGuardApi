@@ -1,6 +1,6 @@
 <?php
 
-use Src\Administration\Application\Dtos\GetEmployeeByIdInputDto;
+use Src\Administration\Application\Dtos\Employee\GetEmployeeByIdInputDto;
 
 it('can create an instance of GetEmployeeByIdInputDto with a valid ID', function () {
     $id = '1';

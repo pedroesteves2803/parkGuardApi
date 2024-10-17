@@ -1,6 +1,6 @@
 <?php
 
-use Src\Administration\Application\Dtos\UpdateEmployeeInputDto;
+use Src\Administration\Application\Dtos\Employee\UpdateEmployeeInputDto;
 
 it('can update an instance of UpdateEmployeeInputDto with valid data', function () {
     $id = 1;
