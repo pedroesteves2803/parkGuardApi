@@ -13,11 +13,13 @@ test('validates instance employee', function () {
 
 it('validates a valid employee', function () {
     $employee = createValidEmployee();
-    expect($employee->id())->toBe(1);
-    expect($employee->name()->value())->toBe('Employee 1');
-    expect($employee->email()->value())->toBe('employee@test.com');
-    expect($employee->password()->value())->toBe('Password@123');
-    expect($employee->type()->value())->toBe(1);
+
+    expect($employee->id())->toBe(1)
+        ->and($employee->name()->value())->toBe('Employee 1')
+        ->and($employee->email()->value())->toBe('employee@test.com')
+        ->and($employee->password()->value())->toBe('Password@123')
+        ->and($employee->type()->value())->toBe(1)
+        ->and($employee->hasEmail(new Email('employee@test.com')))->toBeTrue();
 });
 
 test('test employee object to string conversion', function () {

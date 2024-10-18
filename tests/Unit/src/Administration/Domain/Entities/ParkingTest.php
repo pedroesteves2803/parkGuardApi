@@ -18,9 +18,10 @@ describe("Parking", function() {
         expect($parking->id())->toBe(1)
             ->and($parking->name()->value())->toBe('Parking 24h')
             ->and($parking->responsibleIdentification())->toBe('123456789')
-            ->and($parking->responsibleName())->toBe('Test Responsible')
+            ->and($parking->responsibleName()->value())->toBe('Test Responsible')
             ->and($parking->pricePerHour()->value())->toBe(20.0)
-            ->and($parking->additionalHourPrice()->value())->toBe(10.0);
+            ->and($parking->additionalHourPrice()->value())->toBe(10.0)
+            ->and($parking->hasIdentification('123456789'))->toBeTrue();
     });
 
     function createValidParking(): Parking
