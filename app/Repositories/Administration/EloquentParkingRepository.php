@@ -16,9 +16,17 @@ final readonly class EloquentParkingRepository implements IParkingRepository
     {}
     public function getAll(): ?Collection
     {
-        throw new \RuntimeException('Não implementado!');
+        return ModelsParking::orderBy('id', 'desc')->get()->map(function ($parking) {
+            return $this->parkingFactory->create(
+                $parking->id,
+                $parking->name,
+                $parking->responsible_identification,
+                $parking->responsible_name,
+                $parking->price_per_hour,
+                $parking->additional_hour_price,
+            );
+        });
     }
-
     public function getById(int $id): ?Parking
     {
         $parking = ModelsParking::find($id);

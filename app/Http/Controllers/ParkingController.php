@@ -5,21 +5,27 @@ namespace App\Http\Controllers;
 use App\Http\Requests\Parking\CreateParkingRequest;
 use App\Http\Requests\Parking\UpdateParkingRequest;
 use App\Http\Resources\Parking\CreateParkingResource;
+use App\Http\Resources\Parking\GetAllParkingResource;
+use App\Http\Resources\Parking\GetParkingByIdResource;
 use App\Http\Resources\Parking\UpdateParkingResource;
-use Illuminate\Http\Request;
 use Src\Administration\Application\Dtos\Parking\CreateParkingInputDto;
+use Src\Administration\Application\Dtos\Parking\GetParkingByIdInputDto;
 use Src\Administration\Application\Dtos\Parking\UpdateParkingInputDto;
 use Src\Administration\Application\Usecase\Parking\CreateParking;
+use Src\Administration\Application\Usecase\Parking\GetAllParkings;
+use Src\Administration\Application\Usecase\Parking\GetParkingById;
 use Src\Administration\Application\Usecase\Parking\UpdateParking;
 
 class ParkingController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+
+    public function index(
+        GetAllParkings $getAllParkings
+    ) : GetAllParkingResource
     {
-        //
+        $parkings = $getAllParkings->execute();
+
+        return new GetAllParkingResource($parkings);
     }
 
     /**
@@ -54,9 +60,18 @@ class ParkingController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(
+        string $parkingId,
+        GetParkingById  $getParkingById
+    )
     {
-        //
+        $inputDto = new GetParkingByIdInputDto(
+            $parkingId,
+        );
+
+        $output = $getParkingById->execute($inputDto);
+
+        return new GetParkingByIdResource($output);
     }
 
     /**

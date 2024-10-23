@@ -35,11 +35,11 @@ it('can create an instance of GetAllEmployeesOutputDto with employees collection
 
     $outputDto = new GetAllEmployeesOutputDto($employees, $notification);
 
-    expect($outputDto)->toBeInstanceOf(GetAllEmployeesOutputDto::class);
-    expect($outputDto->employees)->toBe($employees);
+    expect($outputDto)->toBeInstanceOf(GetAllEmployeesOutputDto::class)
+        ->and($outputDto->employees)->toBe($employees);
     $this->assertCount($employees->count(), $outputDto->employees);
-    expect($outputDto->notification)->toBe($notification);
-    expect($outputDto->notification->getErrors())->toBe([]);
+    expect($outputDto->notification)->toBe($notification)
+        ->and($outputDto->notification->getErrors())->toBe([]);
 });
 
 it('can create an instance of GetAllEmployeesOutputDto with null employee and error notifications', function () {
@@ -52,12 +52,12 @@ it('can create an instance of GetAllEmployeesOutputDto with null employee and er
 
     $outputDto = new GetAllEmployeesOutputDto(null, $notification);
 
-    expect($outputDto)->toBeInstanceOf(GetAllEmployeesOutputDto::class);
-    expect($outputDto->employees)->toBeNull();
-    expect($outputDto->notification->getErrors())->toBe([
-        [
-            'context' => 'test_error',
-            'message' => 'test',
-        ],
-    ]);
+    expect($outputDto)->toBeInstanceOf(GetAllEmployeesOutputDto::class)
+        ->and($outputDto->employees)->toBeNull()
+        ->and($outputDto->notification->getErrors())->toBe([
+            [
+                'context' => 'test_error',
+                'message' => 'test',
+            ],
+        ]);
 });

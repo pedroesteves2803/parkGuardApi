@@ -6,6 +6,8 @@ use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\VehicleController;
 use Illuminate\Support\Facades\Route;
 
+Route::get('/parkings', [ParkingController::class, 'index'])->name('parking.index');
+Route::get('/parking/{parking}', [ParkingController::class, 'show'])->name('parking.show');
 Route::post('/parking', [ParkingController::class, 'store'])->name('parking.store');
 Route::put('/parking/{parking}', [ParkingController::class, 'update'])->name('parking.update');
 

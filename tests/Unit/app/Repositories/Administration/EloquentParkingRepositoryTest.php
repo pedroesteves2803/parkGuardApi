@@ -5,35 +5,44 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Src\Administration\Domain\Entities\Parking;
 use Src\Administration\Domain\Factory\ParkingFactory;
 use Tests\TestCase;
+use Illuminate\Support\Collection;
+
 
 uses(TestCase::class, RefreshDatabase::class);
 
 describe('EloquentParkingRepository', function () {
-    //it('can get all employees', function () {
-//    ModelsEmployee::factory()->create([
-//        'name' => 'nome 1',
-//        'email' => 'email1@teste.com',
-//        'type' => 1,
-//    ]);
-//    ModelsEmployee::factory()->create([
-//        'name' => 'nome 2',
-//        'email' => 'email2@teste.com',
-//        'type' => 2,
-//    ]);
-//    ModelsEmployee::factory()->create([
-//        'name' => 'nome 3',
-//        'email' => 'email3@teste.com',
-//        'type' => 2,
-//    ]);
-//
-//    $repository = new EloquentEmployeeRepository(
-//        new EmployeeFactory()
-//    );
-//    $employees = $repository->getAll();
-//
-//    expect($employees)->toBeInstanceOf(Collection::class)
-//        ->and($employees)->toHaveCount(3);
-//});
+
+    it('can get all parkings', function () {
+        ModelsParking::factory()->create([
+            'responsible_identification' => '50598542809',
+            'responsible_name' => 'Estacionamento 1',
+            'price_per_hour' => 12.0,
+            'additional_hour_price' => 2.0,
+        ]);
+
+        ModelsParking::factory()->create([
+            'responsible_identification' => '123132131',
+            'responsible_name' => 'Estacionamento 2',
+            'price_per_hour' => 13.0,
+            'additional_hour_price' => 2.0,
+        ]);
+
+        ModelsParking::factory()->create([
+            'responsible_identification' => '3123312321',
+            'responsible_name' => 'Estacionamento 3',
+            'price_per_hour' => 13.0,
+            'additional_hour_price' => 2.0,
+        ]);
+
+        $repository = new EloquentParkingRepository(
+            new ParkingFactory()
+        );
+
+        $parkings = $repository->getAll();
+
+        expect($parkings)->toBeInstanceOf(Collection::class)
+            ->and($parkings)->toHaveCount(3);
+    });
 
 it('can get parking by id', function () {
 
